@@ -1,0 +1,20 @@
+//
+//  PrefixHeader.pch
+//  Slack Files
+//
+//  Created by Chris DeSalvo on 5/30/16.
+//  Copyright © 2016 Chris DeSalvo. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#if !defined(IsEmptyString)
+#define IsEmptyString(x) ((nil == (x)) || ![(x) isKindOfClass:[NSString class]] || ([(x) length] < 1))
+#endif
+
+#if !defined(IsStringWithContents)
+#define IsStringWithContents(a) (! IsEmptyString((a)))
+#endif
+
+#endif /* PrefixHeader_pch */

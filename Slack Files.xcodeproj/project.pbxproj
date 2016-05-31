@@ -1,0 +1,338 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AE951CFD3BD500A39387 /* AppDelegate.m */; };
+		83A1AE991CFD3BD500A39387 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AE981CFD3BD500A39387 /* main.m */; };
+		83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */; };
+		83A1AE9E1CFD3BD600A39387 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */; };
+		83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AEA81CFD411E00A39387 /* SlackAuth.m */; };
+		83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AEAD1CFD486500A39387 /* NSURL+QueryArgs.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		83A1AE911CFD3BD500A39387 /* Slack Files.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slack Files.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		83A1AE941CFD3BD500A39387 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		83A1AE951CFD3BD500A39387 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		83A1AE981CFD3BD500A39387 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83A1AE9D1CFD3BD600A39387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		83A1AE9F1CFD3BD600A39387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Slack Files.entitlements"; sourceTree = "<group>"; };
+		83A1AEA71CFD411E00A39387 /* SlackAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlackAuth.h; sourceTree = "<group>"; };
+		83A1AEA81CFD411E00A39387 /* SlackAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlackAuth.m; sourceTree = "<group>"; };
+		83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		83A1AEAC1CFD486500A39387 /* NSURL+QueryArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+QueryArgs.h"; sourceTree = "<group>"; };
+		83A1AEAD1CFD486500A39387 /* NSURL+QueryArgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+QueryArgs.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		83A1AE8E1CFD3BD400A39387 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		83A1AE881CFD3BD400A39387 = {
+			isa = PBXGroup;
+			children = (
+				83A1AE931CFD3BD500A39387 /* Slack Files */,
+				83A1AE921CFD3BD500A39387 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		83A1AE921CFD3BD500A39387 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				83A1AE911CFD3BD500A39387 /* Slack Files.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		83A1AE931CFD3BD500A39387 /* Slack Files */ = {
+			isa = PBXGroup;
+			children = (
+				83A1AE941CFD3BD500A39387 /* AppDelegate.h */,
+				83A1AE951CFD3BD500A39387 /* AppDelegate.m */,
+				83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */,
+				83A1AEAB1CFD480D00A39387 /* Categories */,
+				83A1AE9F1CFD3BD600A39387 /* Info.plist */,
+				83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */,
+				83A1AEA61CFD40E400A39387 /* OAuth2 */,
+				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
+				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
+				83A1AE971CFD3BD500A39387 /* Supporting Files */,
+			);
+			path = "Slack Files";
+			sourceTree = "<group>";
+		};
+		83A1AE971CFD3BD500A39387 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				83A1AE981CFD3BD500A39387 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		83A1AEA61CFD40E400A39387 /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				83A1AEA71CFD411E00A39387 /* SlackAuth.h */,
+				83A1AEA81CFD411E00A39387 /* SlackAuth.m */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
+		83A1AEAB1CFD480D00A39387 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				83A1AEAC1CFD486500A39387 /* NSURL+QueryArgs.h */,
+				83A1AEAD1CFD486500A39387 /* NSURL+QueryArgs.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		83A1AE901CFD3BD400A39387 /* Slack Files */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83A1AEA21CFD3BD600A39387 /* Build configuration list for PBXNativeTarget "Slack Files" */;
+			buildPhases = (
+				83A1AE8D1CFD3BD400A39387 /* Sources */,
+				83A1AE8E1CFD3BD400A39387 /* Frameworks */,
+				83A1AE8F1CFD3BD400A39387 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Slack Files";
+			productName = "Slack Files";
+			productReference = 83A1AE911CFD3BD500A39387 /* Slack Files.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83A1AE891CFD3BD400A39387 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Chris DeSalvo";
+				TargetAttributes = {
+					83A1AE901CFD3BD400A39387 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 9V7A84BPER;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 83A1AE8C1CFD3BD400A39387 /* Build configuration list for PBXProject "Slack Files" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 83A1AE881CFD3BD400A39387;
+			productRefGroup = 83A1AE921CFD3BD500A39387 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				83A1AE901CFD3BD400A39387 /* Slack Files */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		83A1AE8F1CFD3BD400A39387 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */,
+				83A1AE9E1CFD3BD600A39387 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		83A1AE8D1CFD3BD400A39387 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83A1AE991CFD3BD500A39387 /* main.m in Sources */,
+				83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */,
+				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
+				83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83A1AE9D1CFD3BD600A39387 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		83A1AEA01CFD3BD600A39387 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		83A1AEA11CFD3BD600A39387 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		83A1AEA31CFD3BD600A39387 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Slack Files/Slack Files.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = "Slack Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "Slack Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.desalvo.Slack-Files";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		83A1AEA41CFD3BD600A39387 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Slack Files/Slack Files.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = "Slack Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "Slack Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.desalvo.Slack-Files";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		83A1AE8C1CFD3BD400A39387 /* Build configuration list for PBXProject "Slack Files" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83A1AEA01CFD3BD600A39387 /* Debug */,
+				83A1AEA11CFD3BD600A39387 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83A1AEA21CFD3BD600A39387 /* Build configuration list for PBXNativeTarget "Slack Files" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83A1AEA31CFD3BD600A39387 /* Debug */,
+				83A1AEA41CFD3BD600A39387 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83A1AE891CFD3BD400A39387 /* Project object */;
+}
