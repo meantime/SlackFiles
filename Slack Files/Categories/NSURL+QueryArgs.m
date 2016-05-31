@@ -13,20 +13,12 @@
 - (NSDictionary *)dictionaryFromQueryArgs
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    NSString            *queryArgs = self.query;
-    NSArray             *keyValuePairs = [queryArgs componentsSeparatedByString:@"&"];
+    NSURLComponents     *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
+    NSArray             *args = [components queryItems];
 
-    for (NSString *keyValuePair in keyValuePairs)
+    for (NSURLQueryItem *item in args)
     {
-        NSArray *kv = [keyValuePair componentsSeparatedByString:@"="];
-
-        if (kv.count == 2)
-        {
-            NSString    *key = [kv[0] stringByRemovingPercentEncoding];
-            NSString    *value = [kv[1] stringByRemovingPercentEncoding];
-
-            result[key] = value;
-        }
+        result[item.name] = item.value;
     }
 
     return [NSDictionary dictionaryWithDictionary:result];

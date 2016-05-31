@@ -6,8 +6,13 @@
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface SlackAuth : NSObject
+
+@property (readonly, copy, nonnull) NSString    *uniqueId;
+
+- (void)run;
+- (void)processResponse:(nonnull NSURL *)response;
 
 @end

@@ -9,10 +9,12 @@
 #import "AppDelegate.h"
 
 #import "NSURL+QueryArgs.h"
+#import "SlackAuth.h"
 
 @interface AppDelegate ()
 
 @property (weak)    IBOutlet    NSWindow    *window;
+@property (strong)              SlackAuth   *auth;
 
 @end
 
@@ -28,7 +30,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    self.auth = [SlackAuth new];
 
+    [self.auth run];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -48,7 +52,10 @@
         {
             NSDictionary    *queryArgs = [url dictionaryFromQueryArgs];
 
-            NSLog(@"%@", queryArgs);
+            if ([queryArgs[@"state"] hasPrefix:self.auth.uniqueId])
+            {
+                [self.auth processResponse:url];
+            }
         }
     }
 }
