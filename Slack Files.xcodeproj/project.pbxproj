@@ -13,6 +13,8 @@
 		83A1AE9E1CFD3BD600A39387 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */; };
 		83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AEA81CFD411E00A39387 /* SlackAuth.m */; };
 		83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AEAD1CFD486500A39387 /* NSURL+QueryArgs.m */; };
+		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
+		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,9 @@
 		83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		83A1AEAC1CFD486500A39387 /* NSURL+QueryArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+QueryArgs.h"; sourceTree = "<group>"; };
 		83A1AEAD1CFD486500A39387 /* NSURL+QueryArgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+QueryArgs.m"; sourceTree = "<group>"; };
+		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
+		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
+		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +91,9 @@
 		83A1AEA61CFD40E400A39387 /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
+				83DD493B1CFFFD3C00622724 /* AuthWindowController.h */,
+				83DD493C1CFFFD3C00622724 /* AuthWindowController.m */,
+				83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */,
 				83A1AEA71CFD411E00A39387 /* SlackAuth.h */,
 				83A1AEA81CFD411E00A39387 /* SlackAuth.m */,
 			);
@@ -164,6 +172,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */,
 				83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */,
 				83A1AE9E1CFD3BD600A39387 /* MainMenu.xib in Resources */,
 			);
@@ -176,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */,
 				83A1AE991CFD3BD500A39387 /* main.m in Sources */,
 				83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */,
 				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
@@ -331,6 +341,7 @@
 				83A1AEA41CFD3BD600A39387 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

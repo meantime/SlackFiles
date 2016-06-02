@@ -10,10 +10,11 @@
 
 #import "SlackAuth.h"
 
+#import "AuthWindowController.h"
 #import "NSURL+QueryArgs.h"
 
-static NSString *kClientId          = @"xxxxxxx.xxxxxxx";
-static NSString *kClientSecret      = @"xxxxxxxxxxxxxxx";
+static NSString *kClientId          = @"xxxxx.xxxxx";
+static NSString *kClientSecret      = @"xxxxxxxxxxx";
 static NSString *kAuthEndpoint      = @"https://slack.com/oauth/authorize";
 static NSString *kAccessEndpoint    = @"https://slack.com/api/oauth.access";
 static NSString *kRedirectURI       = @"slackfiles://authendpoint";
@@ -26,11 +27,11 @@ static NSString *kRedirectArg       = @"redirect_uri";
 static NSString *kStateArg          = @"state";
 static NSString *kCodeArg           = @"code";
 
-@interface SlackAuth ()
+@interface SlackAuth () <AuthWindowDelegate>
 
-@property (copy, readwrite)     NSString                *uniqueId;
-@property (nullable, strong)    NSURLSession            *networkSession;
-@property (nullable, strong)    NSURLSessionDataTask    *accessTask;
+@property (nonnull, copy)       NSString                *uniqueId;
+@property (nullable)            AuthWindowController    *authWindowController;
+@property (nullable)            NSDictionary            *authResponse;
 
 @end
 
@@ -46,17 +47,6 @@ static NSString *kCodeArg           = @"code";
     }
 
     return self;
-}
-
-- (void)configureNetworkSession
-{
-    NSURLSessionConfiguration   *networkConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-
-    networkConfig.TLSMinimumSupportedProtocol = kTLSProtocol12;
-    networkConfig.HTTPMaximumConnectionsPerHost = 5;
-    networkConfig.HTTPShouldUsePipelining = YES;
-
-    self.networkSession = [NSURLSession sessionWithConfiguration:networkConfig];
 }
 
 - (void)run
@@ -79,29 +69,11 @@ static NSString *kCodeArg           = @"code";
 
     c.queryItems = args;
 
-    NSURL   *url = c.URL;
+    NSURLRequest    *request = [NSURLRequest requestWithURL:c.URL];
 
-    [[NSWorkspace sharedWorkspace] openURL:url];
-}
-
-- (void)processResponse:(nonnull NSURL *)response
-{
-    NSDictionary    *args = [response dictionaryFromQueryArgs];
-    NSString        *state = args[kStateArg];
-
-    if (NO == [state hasPrefix:self.uniqueId])
-    {
-        return;
-    }
-
-    if ([state hasSuffix:@"auth"])
-    {
-        [self processAuthResponse:args];
-    }
-    else if ([state hasSuffix:@"access"])
-    {
-        [self processAccessResponse:args];
-    }
+    self.authWindowController = [AuthWindowController authWindowController];
+    self.authWindowController.delegate = self;
+    [self.authWindowController startAuthSessionWithRequest:request];
 }
 
 - (void)processAuthResponse:(nonnull NSDictionary *)response
@@ -129,48 +101,49 @@ static NSString *kCodeArg           = @"code";
 
     NSURL   *url = c.URL;
 
-    if (nil == self.networkSession)
-    {
-        [self configureNetworkSession];
-    }
-
-    self.accessTask = [self.networkSession dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-
-        dispatch_async(dispatch_get_main_queue(), ^ {
-
-            [self processAccessResponse:response data:data error:error];
-        });
-    }];
-
-    [self.accessTask resume];
+    [self.authWindowController startAccessSessionWithRequest:[NSURLRequest requestWithURL:url]];
 }
 
-- (void)processAccessResponse:(nonnull NSDictionary *)response
+- (void)shutDownAuthWindow
 {
-    NSLog(@"%@", response);
+    [self.authWindowController finishSession];
+    self.authWindowController = nil;
 }
 
-- (void)processAccessResponse:(nonnull NSURLResponse *)response data:(nullable NSData *)data error:(nullable NSError *)error
+#pragma mark - <AuthWindowDelegate>
+
+- (void)authWindow:(nonnull AuthWindowController *)windowController didReceiveURLResponse:(nonnull NSURL *)url
 {
-    NSHTTPURLResponse   *r = (NSHTTPURLResponse *) response;
+    NSDictionary    *args = [url dictionaryFromQueryArgs];
 
-    if (200 == r.statusCode)
-    {
-        if (data)
-        {
-            NSDictionary    *args = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    [self processAuthResponse:args];
+}
 
-            NSLog(@"%@", args);
-        }
-    }
-    else if (error)
-    {
-        NSAlert *alert = [NSAlert alertWithError:error];
+- (void)authWindow:(nonnull AuthWindowController *)windowController didReceiveJSONResponse:(nonnull NSString *)jsonString
+{
+    NSData          *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary    *args = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 
-        [alert runModal];
-    }
+    self.authResponse = args;
 
-    self.accessTask = nil;
+    [self shutDownAuthWindow];
+}
+
+- (void)authWindow:(nonnull AuthWindowController *)windowController didReceiveTextResponse:(nonnull NSString *)text
+{
+    NSLog(@"%@", text);
+}
+
+- (void)authWindow:(nonnull AuthWindowController *)windowController didReceiveErrorResponse:(nonnull NSError *)error
+{
+    NSAlert *alert = [NSAlert alertWithError:error];
+
+    [alert runModal];
+}
+
+- (void)authWindowCanceledByUser:(nonnull AuthWindowController *)windowController
+{
+    [self shutDownAuthWindow];
 }
 
 @end

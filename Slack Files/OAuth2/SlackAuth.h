@@ -10,9 +10,6 @@
 
 @interface SlackAuth : NSObject
 
-@property (readonly, copy, nonnull) NSString    *uniqueId;
-
 - (void)run;
-- (void)processResponse:(nonnull NSURL *)response;
 
 @end
