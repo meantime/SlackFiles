@@ -29,9 +29,9 @@ static NSString *kCodeArg           = @"code";
 
 @interface SlackAuth () <AuthWindowDelegate>
 
-@property (nonnull, copy)       NSString                *uniqueId;
-@property (nullable)            AuthWindowController    *authWindowController;
-@property (nullable)            NSDictionary            *authResponse;
+@property (nonnull, copy)   NSString                *uniqueId;
+@property (nullable)        AuthWindowController    *authWindowController;
+@property (nullable)        NSDictionary            *authResponse;
 
 @end
 
