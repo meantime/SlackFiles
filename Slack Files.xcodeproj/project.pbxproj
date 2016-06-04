@@ -24,6 +24,7 @@
 		833230F91D02690000933E7E /* SlackAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlackAPI.m; sourceTree = "<group>"; };
 		833230FB1D02769A00933E7E /* Team.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Team.h; sourceTree = "<group>"; };
 		833230FC1D02769A00933E7E /* Team.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Team.m; sourceTree = "<group>"; };
+		833230FE1D028C3300933E7E /* Credentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Credentials.h; sourceTree = "<group>"; };
 		83A1AE911CFD3BD500A39387 /* Slack Files.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slack Files.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A1AE941CFD3BD500A39387 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		83A1AE951CFD3BD500A39387 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 				83DD493B1CFFFD3C00622724 /* AuthWindowController.h */,
 				83DD493C1CFFFD3C00622724 /* AuthWindowController.m */,
 				83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */,
+				833230FE1D028C3300933E7E /* Credentials.h */,
 				83A1AEA71CFD411E00A39387 /* SlackAuth.h */,
 				83A1AEA81CFD411E00A39387 /* SlackAuth.m */,
 			);

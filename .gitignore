@@ -23,6 +23,8 @@ xcuserdata
 *.xcuserstate
 *.xcscmblueprint
 
+Slack Files/OAuth2/Credentials.h
+
 ## Obj-C/Swift specific
 *.hmap
 *.ipa

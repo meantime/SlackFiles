@@ -11,11 +11,10 @@
 #import "SlackAuth.h"
 
 #import "AuthWindowController.h"
+#import "Credentials.h"
 #import "NSURL+QueryArgs.h"
 #import "SlackAPI.h"
 
-static NSString *kClientId          = @"xxxxx.xxxxx";
-static NSString *kClientSecret      = @"xxxxxxxxxxx";
 static NSString *kAuthEndpoint      = @"https://slack.com/oauth/authorize";
 static NSString *kRedirectURI       = @"slackfiles://authendpoint";
 static NSString *kScope             = @"channels:read files:read groups:read im:read mpim:read team:read users:read";
@@ -92,6 +91,14 @@ static NSString *kCodeArg           = @"code";
     NSURLRequest    *request = [self.api requestForEndpoint:SlackEndpoints.oauthAccess arguments:args];
 
     [self.authWindowController startAccessSessionWithRequest:request];
+
+    [self.api callEndpoint:SlackEndpoints.oauthAccess withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        self.authResponse = args;
+
+        [self shutDownAuthWindow];
+
+    }];
 }
 
 - (void)shutDownAuthWindow

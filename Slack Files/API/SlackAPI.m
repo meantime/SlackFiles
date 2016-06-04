@@ -26,7 +26,27 @@ const struct SlackEndpoints SlackEndpoints =
     .usersList          = @"users.list"
 };
 
+@interface SlackAPI ()
+
+@property (nullable, strong)    NSURLSession            *networkSession;
+@property (nullable, strong)    NSURLSessionDataTask    *activeTask;
+@property (nonnull, strong)     NSMutableArray          *pendingTasks;
+
+@end
+
 @implementation SlackAPI
+
+- (instancetype)init
+{
+    self = [super init];
+
+    if (self)
+    {
+        self.pendingTasks = [NSMutableArray array];
+    }
+
+    return self;
+}
 
 - (NSURLRequest *)requestForEndpoint:(NSString *)endpoint arguments:(nullable NSDictionary *)args
 {
@@ -66,9 +86,64 @@ const struct SlackEndpoints SlackEndpoints =
 
 - (void)callEndpoint:(NSString *)endpoint withArguments:(nullable NSDictionary *)args completion:(APICompletionBlock)completion
 {
-    NSURLRequest    *request = [self requestForEndpoint:endpoint arguments:args];
+    [self configureNetworkSession];
 
-    NSLog(@"%@", request);
+    NSURLRequest            *request = [self requestForEndpoint:endpoint arguments:args];
+    NSURLSessionDataTask    *accessTask = [self.networkSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+        if (completion)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^ {
+
+                NSDictionary    *result = nil;
+
+                if (data && data.length > 0)
+                {
+                    result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                }
+
+                completion(result, error);
+            });
+        }
+
+        self.activeTask = nil;
+        [self dispatchNextTask];
+    }];
+
+    [self.pendingTasks addObject:accessTask];
+    [self dispatchNextTask];
+}
+
+- (void)dispatchNextTask
+{
+    if (self.activeTask)
+    {
+        return;
+    }
+
+    self.activeTask = [self.pendingTasks firstObject];
+
+    if (self.activeTask)
+    {
+        [self.pendingTasks removeObjectAtIndex:0];
+        [self.activeTask resume];
+    }
+}
+
+- (void)configureNetworkSession
+{
+    if (self.networkSession)
+    {
+        return;
+    }
+    
+    NSURLSessionConfiguration   *networkConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+
+    networkConfig.TLSMinimumSupportedProtocol = kTLSProtocol12;
+    networkConfig.HTTPMaximumConnectionsPerHost = 5;
+    networkConfig.HTTPShouldUsePipelining = YES;
+
+    self.networkSession = [NSURLSession sessionWithConfiguration:networkConfig];
 }
 
 @end
