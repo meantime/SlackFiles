@@ -123,7 +123,7 @@ NSString * const SlackAuthDidAuthenticateTeamNotification = @"SlackAuthDidAuthen
 
 - (void)authWindow:(nonnull AuthWindowController *)windowController didReceiveTextResponse:(nonnull NSString *)text
 {
-    NSLog(@"%@", text);
+    NSLog(@"authWindow:didReceiveTextResponse: %@", text);
 }
 
 - (void)authWindow:(nonnull AuthWindowController *)windowController didReceiveErrorResponse:(nonnull NSError *)error

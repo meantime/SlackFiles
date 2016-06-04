@@ -105,7 +105,7 @@ NS_ENUM(NSUInteger, AuthResponseType)
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    NSLog(@"decidePolicyForNavigationAction:%@", navigationAction);
+    //NSLog(@"decidePolicyForNavigationAction:%@", navigationAction);
 
     WKNavigationActionPolicy    response = WKNavigationActionPolicyAllow;
     NSURL                       *url = navigationAction.request.URL;
@@ -125,7 +125,7 @@ NS_ENUM(NSUInteger, AuthResponseType)
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
 {
-    NSLog(@"decidePolicyForNavigationResponse:%@", navigationResponse);
+    //NSLog(@"decidePolicyForNavigationResponse:%@", navigationResponse);
 
     NSString    *responseMIMEType = navigationResponse.response.MIMEType;
 
@@ -153,27 +153,27 @@ NS_ENUM(NSUInteger, AuthResponseType)
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation
 {
-    NSLog(@"didStartProvisionalNavigation:");
+    //NSLog(@"didStartProvisionalNavigation:");
 }
 
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation
 {
-    NSLog(@"didReceiveServerRedirectForProvisionalNavigation:");
+    //NSLog(@"didReceiveServerRedirectForProvisionalNavigation:");
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
 {
-    NSLog(@"didFailProvisionalNavigation:");
+    //NSLog(@"didFailProvisionalNavigation:");
 }
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation
 {
-    NSLog(@"didCommitNavigation:");
+    //NSLog(@"didCommitNavigation:");
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
-    NSLog(@"didFinishNavigation:");
+    //NSLog(@"didFinishNavigation:");
 
     if (AuthResponseTypeJSON == self.responseType)
     {
@@ -213,18 +213,18 @@ NS_ENUM(NSUInteger, AuthResponseType)
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
 {
-    NSLog(@"didFailNavigation:");
+    //NSLog(@"didFailNavigation:");
 }
 
 - (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *__nullable credential))completionHandler
 {
-    NSLog(@"didReceiveAuthenticationChallenge:%@", challenge);
+    //NSLog(@"didReceiveAuthenticationChallenge:%@", challenge);
     completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
 {
-    NSLog(@"webViewWebContentProcessDidTerminate:");
+    //NSLog(@"webViewWebContentProcessDidTerminate:");
 }
 
 @end

@@ -65,7 +65,7 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FilesWindowWillCloseNotification object:nil];
 }
 
 - (void)configureRealm
