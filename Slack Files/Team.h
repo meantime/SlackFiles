@@ -7,9 +7,22 @@
 //
 
 @import Foundation;
+@import Realm;
 
-@interface Team : NSObject
+@interface Team : RLMObject
 
-@property (nonatomic, nullable, readonly)   NSString    *apiToken;
+@property NSString    *apiToken;
+
+@property NSString    *teamId;
+@property NSString    *teamName;
+@property NSString    *userId;
+@property NSString    *userName;
+
+@property NSDate      *lastSyncDate;
+
+- (instancetype)initWithAuthResponse:(NSDictionary *)response;
+- (void)updateWithAuthResponse:(NSDictionary *)response;
+
+- (void)updateLastSyncDate;
 
 @end

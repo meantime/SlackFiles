@@ -26,11 +26,12 @@ static NSString *kRedirectArg       = @"redirect_uri";
 static NSString *kStateArg          = @"state";
 static NSString *kCodeArg           = @"code";
 
+NSString * const SlackAuthDidAuthenticateTeamNotification = @"SlackAuthDidAuthenticateTeamNotification";
+
 @interface SlackAuth () <AuthWindowDelegate>
 
 @property (nonnull, copy)   NSString                *uniqueId;
 @property (nullable)        AuthWindowController    *authWindowController;
-@property (nullable)        NSDictionary            *authResponse;
 @property (nonnull, strong) SlackAPI                *api;
 
 @end
@@ -88,16 +89,10 @@ static NSString *kCodeArg           = @"code";
         kStateArg         : [NSString stringWithFormat:@"%@-access", self.uniqueId]
     };
 
-    NSURLRequest    *request = [self.api requestForEndpoint:SlackEndpoints.oauthAccess arguments:args];
-
-    [self.authWindowController startAccessSessionWithRequest:request];
-
     [self.api callEndpoint:SlackEndpoints.oauthAccess withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
 
-        self.authResponse = args;
-
+        [[NSNotificationCenter defaultCenter] postNotificationName:SlackAuthDidAuthenticateTeamNotification object:result];
         [self shutDownAuthWindow];
-
     }];
 }
 
@@ -121,7 +116,7 @@ static NSString *kCodeArg           = @"code";
     NSData          *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary    *args = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 
-    self.authResponse = args;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SlackAuthDidAuthenticateTeamNotification object:args];
 
     [self shutDownAuthWindow];
 }
