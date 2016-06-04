@@ -13,3 +13,5 @@
 - (void)run;
 
 @end
+
+extern NSString * const SlackAuthDidAuthenticateTeamNotification;

@@ -87,12 +87,6 @@ NS_ENUM(NSUInteger, AuthResponseType)
     [self.webview loadRequest:request];
 }
 
-- (void)startAccessSessionWithRequest:(nonnull NSURLRequest *)request
-{
-    self.responseType = AuthResponseTypeUnknown;
-    [self.webview loadRequest:request];
-}
-
 - (void)windowWillClose:(NSNotification *)notification
 {
     if (notification.object != self.window)

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 
 @protocol AuthWindowDelegate;
 
@@ -17,7 +17,6 @@
 + (nullable instancetype)authWindowController;
 
 - (void)startAuthSessionWithRequest:(nonnull NSURLRequest *)request;
-- (void)startAccessSessionWithRequest:(nonnull NSURLRequest *)request;
 - (void)finishSession;
 
 @end

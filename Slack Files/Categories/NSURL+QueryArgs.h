@@ -6,7 +6,7 @@
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface NSURL (QueryArgs)
 
