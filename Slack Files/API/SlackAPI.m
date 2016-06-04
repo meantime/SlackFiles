@@ -38,10 +38,16 @@ const struct SlackEndpoints SlackEndpoints =
 
 - (instancetype)init
 {
+    return [self initWithTeam:nil];
+}
+
+- (instancetype)initWithTeam:(nullable Team *)team
+{
     self = [super init];
 
     if (self)
     {
+        self.team = team;
         self.pendingTasks = [NSMutableArray array];
     }
 
@@ -52,7 +58,7 @@ const struct SlackEndpoints SlackEndpoints =
 {
     if (IsStringWithContents(self.team.apiToken))
     {
-        NSMutableDictionary  *a = [args mutableCopy];
+        NSMutableDictionary  *a = [NSMutableDictionary dictionary];
 
         if (args)
         {

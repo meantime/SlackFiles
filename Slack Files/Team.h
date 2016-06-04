@@ -25,4 +25,6 @@
 
 - (void)updateLastSyncDate;
 
++ (NSString *)bestImageURLFromTeamInfo:(NSDictionary *)info;
+
 @end

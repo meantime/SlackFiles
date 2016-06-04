@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 
+#import "FilesWindowController.h"
 #import "KeychainAccess.h"
 #import "NSURL+QueryArgs.h"
 #import "SlackAuth.h"
@@ -17,8 +18,8 @@
 
 @interface AppDelegate ()
 
-@property (weak)    IBOutlet    NSWindow    *window;
-@property (strong)              SlackAuth   *auth;
+@property SlackAuth       *auth;
+@property NSMutableArray  *filesWindowControllers;
 
 @end
 
@@ -31,6 +32,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    self.filesWindowControllers = [NSMutableArray array];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didAuthenticateTeam:)
                                                  name:SlackAuthDidAuthenticateTeamNotification
@@ -38,7 +41,14 @@
 
     RLMResults<Team *>  *teams = [Team allObjects];
 
-    if (0 == teams.count)
+    if (teams.count)
+    {
+        for (Team *team in teams)
+        {
+            [self openWindowForTeam:team];
+        }
+    }
+    else
     {
         self.auth = [SlackAuth new];
 
@@ -106,6 +116,16 @@
 
         [realm addOrUpdateObject:team];
     }];
+
+    self.auth = nil;
+}
+
+- (void)openWindowForTeam:(Team *)team
+{
+    FilesWindowController   *w = [FilesWindowController windowControllerForTeam:team];
+
+    [self.filesWindowControllers addObject:w];
+    [w window];
 }
 
 @end

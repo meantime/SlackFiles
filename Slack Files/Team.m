@@ -44,4 +44,25 @@
     self.lastSyncDate = [NSDate date];
 }
 
++ (NSString *)bestImageURLFromTeamInfo:(NSDictionary *)info
+{
+    NSDictionary    *team = info[@"team"];
+    NSDictionary    *icons = team[@"icon"];
+
+#define TryIconNamed(x) { if (IsStringWithContents(icons[(x)])) return icons[(x)]; }
+
+    TryIconNamed(@"image_original");
+    TryIconNamed(@"image_230");
+    TryIconNamed(@"image_132");
+    TryIconNamed(@"image_102");
+    TryIconNamed(@"image_88");
+    TryIconNamed(@"image_68");
+    TryIconNamed(@"image_44");
+    TryIconNamed(@"image_34");
+
+#undef TryIconNamed
+
+    return @"";
+}
+
 @end
