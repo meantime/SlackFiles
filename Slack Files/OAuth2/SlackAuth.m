@@ -12,11 +12,11 @@
 
 #import "AuthWindowController.h"
 #import "NSURL+QueryArgs.h"
+#import "SlackAPI.h"
 
 static NSString *kClientId          = @"xxxxx.xxxxx";
 static NSString *kClientSecret      = @"xxxxxxxxxxx";
 static NSString *kAuthEndpoint      = @"https://slack.com/oauth/authorize";
-static NSString *kAccessEndpoint    = @"https://slack.com/api/oauth.access";
 static NSString *kRedirectURI       = @"slackfiles://authendpoint";
 static NSString *kScope             = @"channels:read files:read groups:read im:read mpim:read team:read users:read";
 
@@ -32,6 +32,7 @@ static NSString *kCodeArg           = @"code";
 @property (nonnull, copy)   NSString                *uniqueId;
 @property (nullable)        AuthWindowController    *authWindowController;
 @property (nullable)        NSDictionary            *authResponse;
+@property (nonnull, strong) SlackAPI                *api;
 
 @end
 
@@ -44,6 +45,7 @@ static NSString *kCodeArg           = @"code";
     if (self)
     {
         self.uniqueId = [[NSUUID UUID] UUIDString];
+        self.api = [SlackAPI new];
     }
 
     return self;
@@ -78,30 +80,18 @@ static NSString *kCodeArg           = @"code";
 
 - (void)processAuthResponse:(nonnull NSDictionary *)response
 {
-    NSURLComponents *c = [NSURLComponents componentsWithString:kAccessEndpoint];
-    NSMutableArray  *args = [NSMutableArray array];
-    NSURLQueryItem  *arg;
+    NSDictionary *args = @{
 
-    arg = [NSURLQueryItem queryItemWithName:kClientIdArg value:kClientId];
-    [args addObject:arg];
+        kClientIdArg      : kClientId,
+        kClientSecretArg  : kClientSecret,
+        kCodeArg          : response[kCodeArg],
+        kRedirectArg      : kRedirectURI,
+        kStateArg         : [NSString stringWithFormat:@"%@-access", self.uniqueId]
+    };
 
-    arg = [NSURLQueryItem queryItemWithName:kClientSecretArg value:kClientSecret];
-    [args addObject:arg];
+    NSURLRequest    *request = [self.api requestForEndpoint:SlackEndpoints.oauthAccess arguments:args];
 
-    arg = [NSURLQueryItem queryItemWithName:kCodeArg value:response[kCodeArg]];
-    [args addObject:arg];
-
-    arg = [NSURLQueryItem queryItemWithName:kRedirectArg value:kRedirectURI];
-    [args addObject:arg];
-
-    arg = [NSURLQueryItem queryItemWithName:kStateArg value:[NSString stringWithFormat:@"%@-access", self.uniqueId]];
-    [args addObject:arg];
-
-    c.queryItems = args;
-
-    NSURL   *url = c.URL;
-
-    [self.authWindowController startAccessSessionWithRequest:[NSURLRequest requestWithURL:url]];
+    [self.authWindowController startAccessSessionWithRequest:request];
 }
 
 - (void)shutDownAuthWindow

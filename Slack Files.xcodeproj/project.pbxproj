@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		833230FA1D02690000933E7E /* SlackAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 833230F91D02690000933E7E /* SlackAPI.m */; };
+		833230FD1D02769A00933E7E /* Team.m in Sources */ = {isa = PBXBuildFile; fileRef = 833230FC1D02769A00933E7E /* Team.m */; };
 		83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AE951CFD3BD500A39387 /* AppDelegate.m */; };
 		83A1AE991CFD3BD500A39387 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AE981CFD3BD500A39387 /* main.m */; };
 		83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */; };
@@ -18,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		833230F81D02690000933E7E /* SlackAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlackAPI.h; sourceTree = "<group>"; };
+		833230F91D02690000933E7E /* SlackAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlackAPI.m; sourceTree = "<group>"; };
+		833230FB1D02769A00933E7E /* Team.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Team.h; sourceTree = "<group>"; };
+		833230FC1D02769A00933E7E /* Team.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Team.m; sourceTree = "<group>"; };
 		83A1AE911CFD3BD500A39387 /* Slack Files.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slack Files.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A1AE941CFD3BD500A39387 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		83A1AE951CFD3BD500A39387 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,6 +53,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		833230F71D0268BD00933E7E /* API */ = {
+			isa = PBXGroup;
+			children = (
+				833230F81D02690000933E7E /* SlackAPI.h */,
+				833230F91D02690000933E7E /* SlackAPI.m */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		83A1AE881CFD3BD400A39387 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +81,7 @@
 		83A1AE931CFD3BD500A39387 /* Slack Files */ = {
 			isa = PBXGroup;
 			children = (
+				833230F71D0268BD00933E7E /* API */,
 				83A1AE941CFD3BD500A39387 /* AppDelegate.h */,
 				83A1AE951CFD3BD500A39387 /* AppDelegate.m */,
 				83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */,
@@ -76,6 +92,8 @@
 				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
 				83A1AE971CFD3BD500A39387 /* Supporting Files */,
+				833230FB1D02769A00933E7E /* Team.h */,
+				833230FC1D02769A00933E7E /* Team.m */,
 			);
 			path = "Slack Files";
 			sourceTree = "<group>";
@@ -188,7 +206,9 @@
 				83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */,
 				83A1AE991CFD3BD500A39387 /* main.m in Sources */,
 				83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */,
+				833230FA1D02690000933E7E /* SlackAPI.m in Sources */,
 				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
+				833230FD1D02769A00933E7E /* Team.m in Sources */,
 				83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
