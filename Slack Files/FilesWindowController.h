@@ -14,8 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FilesWindowController : NSWindowController
 
+@property (readonly)    Team    *team;
+
 + (instancetype)windowControllerForTeam:(Team *)team;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+extern NSString * const FilesWindowWillCloseNotification;

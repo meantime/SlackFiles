@@ -13,10 +13,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotification";
+
 @interface FilesWindowController () <NSWindowDelegate>
 
-@property   Team        *team;
-@property   SlackAPI    *api;
+@property (readwrite)   Team        *team;
+@property               SlackAPI    *api;
 
 @end
 
@@ -52,9 +54,23 @@ NS_ASSUME_NONNULL_BEGIN
 
         button.image = icon;
     }];
+
+    [self.api callEndpoint:SlackEndpoints.filesList withArguments:nil completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        NSLog(@"%@", result);
+    }];
 }
 
 #pragma mark - <NSWindowDelegate>
+
+- (BOOL)windowShouldClose:(id)sender
+{
+    [self.api suspend];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:FilesWindowWillCloseNotification object:self.team.teamId];
+    
+    return YES;
+}
 
 - (BOOL)window:(NSWindow *)window shouldPopUpDocumentPathMenu: (NSMenu *)menu
 {

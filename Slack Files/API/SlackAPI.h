@@ -38,6 +38,9 @@ extern const struct SlackEndpoints
 - (NSURLRequest *)requestForEndpoint:(NSString *)endpoint arguments:(nullable NSDictionary *)args;
 - (void)callEndpoint:(NSString *)endpoint withArguments:(nullable NSDictionary *)args completion:(APICompletionBlock)completion;
 
+- (void)suspend;
+- (void)resume;
+
 @end
 
 NS_ASSUME_NONNULL_END

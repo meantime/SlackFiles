@@ -34,10 +34,17 @@
 {
     self.filesWindowControllers = [NSMutableArray array];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didAuthenticateTeam:)
-                                                 name:SlackAuthDidAuthenticateTeamNotification
-                                               object:nil];
+    NSNotificationCenter    *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self
+           selector:@selector(didAuthenticateTeam:)
+               name:SlackAuthDidAuthenticateTeamNotification
+             object:nil];
+
+    [nc addObserver:self
+           selector:@selector(fileWindowWillClose:)
+               name:FilesWindowWillCloseNotification
+             object:nil];
 
     RLMResults<Team *>  *teams = [Team allObjects];
 
@@ -100,12 +107,13 @@
     }
 
     RLMRealm     *realm = [RLMRealm defaultRealm];
+    __block Team *team = nil;
 
     [realm transactionWithBlock:^{
 
         NSString    *teamId = args[@"team_id"];
 
-        Team        *team = [Team objectForPrimaryKey:teamId];
+        team = [Team objectForPrimaryKey:teamId];
 
         if (nil == team)
         {
@@ -118,14 +126,61 @@
     }];
 
     self.auth = nil;
+    [self openWindowForTeam:team];
 }
 
 - (void)openWindowForTeam:(Team *)team
 {
+    for (FilesWindowController *wc in self.filesWindowControllers)
+    {
+        if ([team.teamId isEqualToString:wc.team.teamId])
+        {
+            [wc.window makeKeyAndOrderFront:nil];
+            return;
+        }
+    }
+
     FilesWindowController   *w = [FilesWindowController windowControllerForTeam:team];
 
     [self.filesWindowControllers addObject:w];
     [w window];
+}
+
+- (void)fileWindowWillClose:(NSNotification *)note
+{
+    NSString    *teamId = (NSString *) note.object;
+
+    for (FilesWindowController *wc in self.filesWindowControllers)
+    {
+        if ([teamId isEqualToString:wc.team.teamId])
+        {
+            [self removeDataForTeam:wc.team];
+            [self.filesWindowControllers removeObject:wc];
+
+            return;
+        }
+    }
+}
+
+- (IBAction)addNewTeam:(id)sender
+{
+    if (self.auth)
+    {
+        return;
+    }
+
+    self.auth = [SlackAuth new];
+    [self.auth run];
+}
+
+- (void)removeDataForTeam:(Team *)team
+{
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+
+    [realm transactionWithBlock:^{
+
+        [realm deleteObject:team];
+    }];
 }
 
 @end

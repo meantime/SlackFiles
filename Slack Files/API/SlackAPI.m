@@ -120,6 +120,24 @@ const struct SlackEndpoints SlackEndpoints =
     [self dispatchNextTask];
 }
 
+- (void)suspend
+{
+    [self.activeTask suspend];
+}
+
+- (void)resume
+{
+    if (self.activeTask)
+    {
+        [self.activeTask resume];
+    }
+    else
+    {
+        [self dispatchNextTask];
+    }
+
+}
+
 - (void)dispatchNextTask
 {
     if (self.activeTask)
