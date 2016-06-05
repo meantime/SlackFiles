@@ -8,6 +8,8 @@
 
 #import "Team.h"
 
+#import "File.h"
+
 @implementation Team
 
 + (NSString *)primaryKey
@@ -41,7 +43,21 @@
 
 - (void)updateLastSyncDate
 {
-    self.lastSyncDate = [NSDate date];
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    RLMResults  *files = [File objectsInRealm:realm where:@"team = %@", self];
+
+    NSDate      *newestTimestamp = [files maxOfProperty:@"creationDate"];
+
+    if (nil == newestTimestamp)
+    {
+        newestTimestamp = [NSDate date];
+    }
+
+    [realm transactionWithBlock:^{
+
+        self.lastSyncDate = newestTimestamp;
+    }];
+
 }
 
 + (NSString *)bestImageURLFromTeamInfo:(NSDictionary *)info

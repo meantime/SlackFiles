@@ -67,20 +67,33 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
     if ((self.highestPage == self.numPages) && (YES == self.fetchInProgress))
     {
         self.fetchInProgress = NO;
+        [self.team updateLastSyncDate];
+
         return;
     }
 
     self.fetchInProgress = YES;
 
-    NSDictionary    *args = nil;
+    NSMutableDictionary *args = [NSMutableDictionary dictionary];
 
+    //  Configure time range we're searching over
+    NSTimeInterval      ts = [self.team.lastSyncDate timeIntervalSince1970];
+
+    if (ts < 0)
+    {
+        ts = 0;
+    }
+
+    args[@"ts_from"] = [NSString stringWithFormat:@"%.0f", ts];
+
+    //  Select the next page number of results, if any
     if (self.numPages > 0)
     {
         if (self.highestPage < self.numPages)
         {
-            NSUInteger  page = self.highestPage + 1;
+            NSUInteger      page = self.highestPage + 1;
 
-            args = @{ @"page" : [NSString stringWithFormat:@"%ld", page] };
+            args[@"page"] = [NSString stringWithFormat:@"%ld", page];
         }
     }
 
@@ -93,6 +106,12 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
         {
             self.numPages = number;
         }
+        else if (number == 0)
+        {
+            //  The MAX is because if there are no files found the Slack API says that it is returning
+            //  page 1 of 0.
+            self.numPages = 1;
+        }
 
         number = [paging[@"page"] unsignedIntegerValue];
 
@@ -101,6 +120,7 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
             self.highestPage = number;
         }
 
+        NSLog(@"[%@] page %ld of %ld", self.team.teamName, self.highestPage, self.numPages);
         [self processFileList:result[@"files"]];
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -112,6 +132,11 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
 
 - (void)processFileList:(NSArray *)files
 {
+    if (files.count < 1)
+    {
+        return;
+    }
+
     RLMRealm    *realm = [RLMRealm defaultRealm];
 
     [realm transactionWithBlock:^{
