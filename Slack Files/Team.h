@@ -11,19 +11,16 @@
 
 @interface Team : RLMObject
 
-@property NSString    *apiToken;
+@property NSString  *apiToken;
 
-@property NSString    *teamId;
-@property NSString    *teamName;
-@property NSString    *userId;
-@property NSString    *userName;
+@property NSString  *teamId;
+@property NSString  *teamName;
+@property NSString  *userId;
+@property NSString  *userName;
+@property NSDate    *syncBoundary;
 
-@property NSDate      *lastSyncDate;
-
-- (instancetype)initWithAuthResponse:(NSDictionary *)response;
 - (void)updateWithAuthResponse:(NSDictionary *)response;
-
-- (void)updateLastSyncDate;
+- (void)updateSyncBoundaryToDate:(NSDate *)date;
 
 + (NSString *)bestImageURLFromTeamInfo:(NSDictionary *)info;
 

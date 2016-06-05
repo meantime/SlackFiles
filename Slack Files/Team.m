@@ -17,13 +17,13 @@
     return @"teamId";
 }
 
-- (instancetype)initWithAuthResponse:(NSDictionary *)response
+- (instancetype)init
 {
     self = [super init];
 
     if (self)
     {
-        [self updateWithAuthResponse:response];
+        self.syncBoundary = [NSDate date];
     }
 
     return self;
@@ -37,27 +37,17 @@
         self.teamId = response[@"team_id"];
         self.teamName = response[@"team_name"];
         self.userId = response[@"user_id"];
-        self.lastSyncDate = [NSDate distantPast];
     }
 }
 
-- (void)updateLastSyncDate
+- (void)updateSyncBoundaryToDate:(NSDate *)date
 {
     RLMRealm    *realm = [RLMRealm defaultRealm];
-    RLMResults  *files = [File objectsInRealm:realm where:@"team = %@", self];
-
-    NSDate      *newestTimestamp = [files maxOfProperty:@"creationDate"];
-
-    if (nil == newestTimestamp)
-    {
-        newestTimestamp = [NSDate date];
-    }
 
     [realm transactionWithBlock:^{
 
-        self.lastSyncDate = newestTimestamp;
+        self.syncBoundary = date;
     }];
-
 }
 
 + (NSString *)bestImageURLFromTeamInfo:(NSDictionary *)info

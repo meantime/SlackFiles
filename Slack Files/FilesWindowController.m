@@ -16,6 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotification";
 
+NS_ENUM(NSUInteger, FetchState)
+{
+    FetchStateNone,
+    FetchStateOldMessages,
+    FetchStateGapMessages,
+    FetchStateNewMessages,
+    FetchStateSyncComplete
+};
+
 @interface FilesWindowController () <NSWindowDelegate>
 
 @property (readwrite)   Team                *team;
@@ -23,6 +32,9 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
 @property               NSUInteger          highestPage;
 @property               NSUInteger          numPages;
 @property               BOOL                fetchInProgress;
+@property               enum FetchState     fetchState;
+@property (nullable)    NSDate              *fetchFromDate;
+@property (nullable)    NSDate              *fetchToDate;
 
 @end
 
@@ -64,12 +76,59 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
 
 - (void)fetchNextPage
 {
+    if (FetchStateNone == self.fetchState)
+    {
+        NSLog(@"Kicking off new sync with old message backfill");
+
+        //  We're just starting off so we'll be backfilling old messages
+        self.fetchState = FetchStateOldMessages;
+
+        self.fetchFromDate = [NSDate dateWithTimeIntervalSince1970:0.0];
+        self.fetchToDate = [File oldestTimestampForTeam:self.team];
+
+        [self reportDateRange];
+    }
+
+    //  Figure out what to do after each phase of fetching completes
     if ((self.highestPage == self.numPages) && (YES == self.fetchInProgress))
     {
-        self.fetchInProgress = NO;
-        [self.team updateLastSyncDate];
+        self.highestPage = 0;
+        self.numPages = 0;
 
-        return;
+        if (FetchStateOldMessages == self.fetchState)
+        {
+            NSLog(@"Transitioning to gap messages");
+            self.fetchState = FetchStateGapMessages;
+
+            self.fetchFromDate = self.team.syncBoundary;
+            self.fetchToDate = [File oldesetTimestampInGapForTeam:self.team];
+
+            [self reportDateRange];
+        }
+        else if (FetchStateGapMessages == self.fetchState)
+        {
+            NSLog(@"Transitioning to new messages");
+            self.fetchState = FetchStateNewMessages;
+
+            self.fetchFromDate = [File newestTimestampForTeam:self.team];
+            self.fetchToDate = [NSDate date];
+
+            [self reportDateRange];
+        }
+        else if (FetchStateNewMessages == self.fetchState)
+        {
+            NSLog(@"Sync complete");
+
+            self.fetchState = FetchStateNone;
+            self.fetchInProgress = NO;
+
+            [self.team updateSyncBoundaryToDate:self.fetchToDate];
+
+            self.fetchFromDate = nil;
+            self.fetchToDate = nil;
+
+            return;
+        }
     }
 
     self.fetchInProgress = YES;
@@ -77,14 +136,11 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
     NSMutableDictionary *args = [NSMutableDictionary dictionary];
 
     //  Configure time range we're searching over
-    NSTimeInterval      ts = [self.team.lastSyncDate timeIntervalSince1970];
+    NSTimeInterval  tsFrom = [self.fetchFromDate timeIntervalSince1970];
+    NSTimeInterval  tsTo = [self.fetchToDate timeIntervalSince1970];
 
-    if (ts < 0)
-    {
-        ts = 0;
-    }
-
-    args[@"ts_from"] = [NSString stringWithFormat:@"%.0f", ts];
+    args[@"ts_from"] = [NSString stringWithFormat:@"%.0f", tsFrom];
+    args[@"ts_to"] = [NSString stringWithFormat:@"%.0f", tsTo];
 
     //  Select the next page number of results, if any
     if (self.numPages > 0)
@@ -97,6 +153,8 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
         }
     }
 
+    args[@"count"] = @"100";
+
     [self.api callEndpoint:SlackEndpoints.filesList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
 
         NSDictionary    *paging = result[@"paging"];
@@ -108,8 +166,7 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
         }
         else if (number == 0)
         {
-            //  The MAX is because if there are no files found the Slack API says that it is returning
-            //  page 1 of 0.
+            //  If there are no files found the Slack API says that it is returning page 1 of 0.
             self.numPages = 1;
         }
 
@@ -132,6 +189,8 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
 
 - (void)processFileList:(NSArray *)files
 {
+    NSLog(@"Processing %ld files", files.count);
+    
     if (files.count < 1)
     {
         return;
@@ -160,6 +219,20 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
 {
     [self.api suspend];
     [super close];
+}
+
+- (void)reportDateRange
+{
+    NSDateFormatter *formatter = [NSDateFormatter new];
+
+    formatter.dateStyle = NSDateFormatterMediumStyle;
+    formatter.timeStyle = NSDateFormatterMediumStyle;
+    formatter.timeZone = [NSTimeZone localTimeZone];
+
+    NSString    *fromString = [formatter stringFromDate:self.fetchFromDate];
+    NSString    *toString = [formatter stringFromDate:self.fetchToDate];
+
+    NSLog(@"Fetching from %@ - %@", fromString, toString);
 }
 
 #pragma mark - <NSWindowDelegate>

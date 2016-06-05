@@ -8,7 +8,7 @@
 
 @import Realm;
 
-#import "Team.h"
+@class Team;
 
 @interface File : RLMObject
 
@@ -24,6 +24,10 @@
 @property   NSData              *jsonBlob;
 
 + (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response;
+
++ (NSDate *)oldestTimestampForTeam:(Team *)team;
++ (NSDate *)oldesetTimestampInGapForTeam:(Team *)team;
++ (NSDate *)newestTimestampForTeam:(Team *)team;
 
 @end
 
