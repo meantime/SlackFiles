@@ -173,6 +173,45 @@
     [self.auth run];
 }
 
+- (IBAction)removeAllData:(id)sender
+{
+    for (FilesWindowController *wc in self.filesWindowControllers)
+    {
+        [wc close];
+        [self.filesWindowControllers removeObject:wc];
+    }
+
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+
+    [realm transactionWithBlock:^{
+
+        [realm deleteAllObjects];
+    }];
+}
+
+- (IBAction)logRealmKey:(id)sender
+{
+    NSData  *realmKey = [KeychainAccess readDataWithServiceName:@"Slack Files Realm key" error:nil];
+
+    if (nil == realmKey)
+    {
+        NSLog(@"No Realm encryption key stored");
+    }
+    else
+    {
+        NSString        *hex = realmKey.description;
+        NSMutableCharacterSet  *c = [NSMutableCharacterSet whitespaceAndNewlineCharacterSet];
+
+        [c addCharactersInString:@"<>"];
+
+        NSArray *hexBits = [hex componentsSeparatedByCharactersInSet:c];
+
+        hex = [hexBits componentsJoinedByString:@""];
+
+        NSLog(@"Realm key: %@", hex);
+    }
+}
+
 - (void)removeDataForTeam:(Team *)team
 {
     RLMRealm    *realm = [RLMRealm defaultRealm];

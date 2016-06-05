@@ -386,6 +386,25 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Debug" id="8cY-qB-a4f">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Debug" id="pD1-sy-8WE">
+                        <items>
+                            <menuItem title="Remove All Data" id="low-UJ-ItR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="removeAllData:" target="Voe-Tx-rLC" id="l0E-6a-0Z5"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Log Realm Key" id="8Ap-E4-7L4">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="logRealmKey:" target="Voe-Tx-rLC" id="iVP-bC-jzJ"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
             </items>
         </menu>
     </objects>

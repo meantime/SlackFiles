@@ -156,6 +156,12 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
     }];
 }
 
+- (void)close
+{
+    [self.api suspend];
+    [super close];
+}
+
 #pragma mark - <NSWindowDelegate>
 
 - (BOOL)windowShouldClose:(id)sender
