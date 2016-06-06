@@ -14,6 +14,7 @@
 #import "FilesWindowController.h"
 #import "KeychainAccess.h"
 #import "NSURL+QueryArgs.h"
+#import "PDFWindowController.h"
 #import "SlackAuth.h"
 #import "Team.h"
 #import "TextWindowController.h"
@@ -288,6 +289,15 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     else if ([mimeType isEqualToString:@"text/html"])
     {
 
+    }
+    else if ([mimeType isEqualToString:@"application/pdf"])
+    {
+        PDFWindowController *window = [PDFWindowController windowControllerForFile:file];
+
+        [window window];
+        [window.window makeKeyAndOrderFront:self];
+
+        [self.otherWindowControllers addObject:window];
     }
 }
 
