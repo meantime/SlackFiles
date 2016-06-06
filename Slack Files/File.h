@@ -21,6 +21,7 @@
 @property   NSDate              *creationDate;
 @property   NSNumber<RLMInt>    *filesize;
 @property   NSString            *creatorUserId;
+@property   NSString            *thumbnailURL;
 @property   NSData              *jsonBlob;
 
 + (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response;

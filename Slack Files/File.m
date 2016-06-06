@@ -41,9 +41,28 @@ static NSCache  *gExtensionIconCache;
     number = [response[@"size"] unsignedIntegerValue];
     values[@"filesize"] = [NSNumber numberWithUnsignedInteger:number];
 
+    values[@"thumbnailURL"] = [File bestThumbnailImageURLFromFileInfo:response];
     values[@"jsonBlob"] = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
 
     return [NSDictionary dictionaryWithDictionary:values];
+}
+
++ (NSString *)bestThumbnailImageURLFromFileInfo:(NSDictionary *)info
+{
+#define TryIconNamed(x) { if (IsStringWithContents(info[(x)])) return info[(x)]; }
+
+    TryIconNamed(@"thumb_160");
+    TryIconNamed(@"thumb_80");
+    TryIconNamed(@"thumb_64");
+    TryIconNamed(@"thumb_360");
+    TryIconNamed(@"thumb_480");
+    TryIconNamed(@"thumb_720");
+    TryIconNamed(@"thumb_960");
+    TryIconNamed(@"thumb_1024");
+
+#undef TryIconNamed
+
+    return @"";
 }
 
 + (NSString *)primaryKey

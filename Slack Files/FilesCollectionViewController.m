@@ -50,6 +50,21 @@
 
 #pragma mark - <NSCollectionViewDelegate>
 
+- (void)collectionView:(NSCollectionView *)collectionView willDisplayItem:(NSCollectionViewItem *)item forRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath
+{
+    File                    *file = self.files[indexPath.item];
+    FilesCollectionViewItem *viewItem = (FilesCollectionViewItem *) item;
+
+    [viewItem configureWithFile:file];
+}
+
+- (void)collectionView:(NSCollectionView *)collectionView didEndDisplayingItem:(NSCollectionViewItem *)item forRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath
+{
+    FilesCollectionViewItem *viewItem = (FilesCollectionViewItem *) item;
+
+    [viewItem prepareForReuse];
+}
+
 #pragma mark - <NSCollectionViewDataSource>
 
 - (NSInteger)collectionView:(NSCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -59,12 +74,7 @@
 
 - (NSCollectionViewItem *)collectionView:(NSCollectionView *)collectionView itemForRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath
 {
-    FilesCollectionViewItem *item = [self.collectionView makeItemWithIdentifier:@"FilesCollectionViewItem" forIndexPath:indexPath];
-    File                    *file = self.files[indexPath.item];
-
-    [item configureWithFile:file];
-
-    return item;
+    return [self.collectionView makeItemWithIdentifier:@"FilesCollectionViewItem" forIndexPath:indexPath];
 }
 
 @end
