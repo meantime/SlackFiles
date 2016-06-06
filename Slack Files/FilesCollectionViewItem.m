@@ -83,7 +83,8 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 
 - (void)prepareForReuse
 {
-    [self.iconTask suspend];
+    [self.iconTask cancel];
+    self.iconTask = nil;
 }
 
 - (void)configureNetworkSession
