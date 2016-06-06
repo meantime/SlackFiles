@@ -12,7 +12,16 @@
 
 #import "Team.h"
 
+static NSCache  *gMIMETypeIconCache;
+static NSCache  *gExtensionIconCache;
+
 @implementation File
+
++ (void)initialize
+{
+    gMIMETypeIconCache = [NSCache new];
+    gExtensionIconCache = [NSCache new];
+}
 
 + (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response
 {
@@ -92,22 +101,52 @@
     //  The the file extension first
     NSString    *extension = [self.filename pathExtension];
 
-    iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:extension];
+    iconImage = [gExtensionIconCache objectForKey:extension];
 
     if (nil == iconImage)
     {
-        //  Ok, let's try it by MIME type
-        CFStringRef MIMEType = (__bridge CFStringRef) self.mimeType;
-        CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
-        NSString    *UTIString = (__bridge_transfer NSString *) UTI;
+        iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:extension];
 
-        iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:UTIString];
+        if (iconImage)
+        {
+            [gExtensionIconCache setObject:iconImage forKey:extension];
+        }
     }
 
     if (nil == iconImage)
     {
-        //  Last resort, try to load a generic document icon
-        iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:(__bridge NSString *) kUTTypeItem];
+        iconImage = [gMIMETypeIconCache objectForKey:self.mimeType];
+
+        if (nil == iconImage)
+        {
+            //  Ok, let's try it by MIME type
+            CFStringRef MIMEType = (__bridge CFStringRef) self.mimeType;
+            CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
+            NSString    *UTIString = (__bridge_transfer NSString *) UTI;
+
+            iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:UTIString];
+
+            if (iconImage)
+            {
+                [gMIMETypeIconCache setObject:iconImage forKey:self.mimeType];
+            }
+        }
+    }
+
+    if (nil == iconImage)
+    {
+        iconImage = [gExtensionIconCache objectForKey:(__bridge NSString *) kUTTypeItem];
+
+        if (nil == iconImage)
+        {
+            //  Last resort, try to load a generic document icon
+            iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:(__bridge NSString *) kUTTypeItem];
+
+            if (iconImage)
+            {
+                [gExtensionIconCache setObject:iconImage forKey:(__bridge NSString *) kUTTypeItem];
+            }
+        }
     }
 
     return iconImage;

@@ -10,6 +10,8 @@
 
 #import "File.h"
 
+static NSDateFormatter  *gDateFormatter;
+
 @interface FilesCollectionViewItem ()
 
 @property   IBOutlet    NSImageView *iconView;
@@ -19,6 +21,15 @@
 @end
 
 @implementation FilesCollectionViewItem
+
++ (void)initialize
+{
+    gDateFormatter = [NSDateFormatter new];
+
+    gDateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    gDateFormatter.timeStyle = NSDateFormatterShortStyle;
+    gDateFormatter.timeZone = [NSTimeZone localTimeZone];
+}
 
 - (void)viewDidLoad
 {
@@ -35,14 +46,7 @@
     self.iconView.image = [file filesystemIcon];
     self.titleView.stringValue = file.title;
 
-    NSDateFormatter *formatter = [NSDateFormatter new];
-
-    formatter.dateStyle = NSDateFormatterMediumStyle;
-    formatter.timeStyle = NSDateFormatterMediumStyle;
-    formatter.timeZone = [NSTimeZone localTimeZone];
-
-    self.dateView.stringValue = [formatter stringFromDate:file.creationDate];
-
+    self.dateView.stringValue = [gDateFormatter stringFromDate:file.creationDate];
 }
 
 @end

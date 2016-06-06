@@ -37,18 +37,13 @@
 {
     [super viewDidLoad];
 
-//    NSCollectionViewFlowLayout  *layout = [NSCollectionViewFlowLayout new];
-//
-//    layout.estimatedItemSize = CGSizeMake(165, 215);
-//    layout.minimumInteritemSpacing = 10.0;
-//    layout.minimumLineSpacing = 10.0;
-//    
-//    self.collectionView.collectionViewLayout = layout;
     self.view.wantsLayer = YES;
 
     [self.collectionView registerClass:[FilesCollectionViewItem class] forItemWithIdentifier:@"FilesCollectionViewItem"];
 
-    self.files = [File objectsWhere:@"team = %@", self.team];
+    RLMResults  *results = [File objectsWhere:@"team = %@", self.team];
+
+    self.files = [results sortedResultsUsingProperty:@"creationDate" ascending:YES];
 
     [self.collectionView reloadData];
 }
