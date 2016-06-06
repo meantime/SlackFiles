@@ -243,6 +243,8 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     File        *file = (File *) note.object;
     NSString    *mimeType = file.mimeType;
 
+    NSLog(@"Request to open file of type: %@", mimeType);
+
     if ([mimeType hasPrefix:@"video/"])
     {
         VideoWindowController   *window = [VideoWindowController windowControllerForFile:file];
@@ -258,7 +260,20 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     }
     else if ([mimeType hasPrefix:@"audio/"])
     {
-        
+        VideoWindowController   *window = [VideoWindowController windowControllerForFile:file];
+
+        [window window];
+        [window.window makeKeyAndOrderFront:self];
+
+        [self.otherWindowControllers addObject:window];
+    }
+    else if ([mimeType isEqualToString:@"text/plain"])
+    {
+
+    }
+    else if ([mimeType isEqualToString:@"text/html"])
+    {
+
     }
 }
 
