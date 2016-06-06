@@ -127,14 +127,6 @@
 				83A1AE951CFD3BD500A39387 /* AppDelegate.m */,
 				83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */,
 				83A1AEAB1CFD480D00A39387 /* Categories */,
-				834359741D0386D200F309B9 /* File.h */,
-				834359751D0386D200F309B9 /* File.m */,
-				837E36101D04DBB500483B61 /* FilesCollectionViewController.h */,
-				837E36111D04DBB500483B61 /* FilesCollectionViewController.m */,
-				837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */,
-				837E36151D04DD4D00483B61 /* FilesCollectionViewItem.h */,
-				837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */,
-				837E36171D04DD4D00483B61 /* FilesCollectionViewItem.xib */,
 				83A717D01D03681A00C4DE32 /* FilesWindowController.h */,
 				83A717D11D03681A00C4DE32 /* FilesWindowController.m */,
 				83A717D21D03681A00C4DE32 /* FilesWindowController.xib */,
@@ -142,12 +134,12 @@
 				83A717C41D034DD500C4DE32 /* KeychainAccess.h */,
 				83A717C51D034DD500C4DE32 /* KeychainAccess.m */,
 				83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */,
+				83B262091D05399D00737310 /* Models */,
 				83A1AEA61CFD40E400A39387 /* OAuth2 */,
 				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
 				83A1AE971CFD3BD500A39387 /* Supporting Files */,
-				833230FB1D02769A00933E7E /* Team.h */,
-				833230FC1D02769A00933E7E /* Team.m */,
+				83B262081D05396800737310 /* View Controllers */,
 			);
 			path = "Slack Files";
 			sourceTree = "<group>";
@@ -188,6 +180,30 @@
 				83A717C81D03564700C4DE32 /* Realm.framework */,
 			);
 			path = External;
+			sourceTree = "<group>";
+		};
+		83B262081D05396800737310 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				837E36101D04DBB500483B61 /* FilesCollectionViewController.h */,
+				837E36111D04DBB500483B61 /* FilesCollectionViewController.m */,
+				837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */,
+				837E36151D04DD4D00483B61 /* FilesCollectionViewItem.h */,
+				837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */,
+				837E36171D04DD4D00483B61 /* FilesCollectionViewItem.xib */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		83B262091D05399D00737310 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				834359741D0386D200F309B9 /* File.h */,
+				834359751D0386D200F309B9 /* File.m */,
+				833230FB1D02769A00933E7E /* Team.h */,
+				833230FC1D02769A00933E7E /* Team.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
