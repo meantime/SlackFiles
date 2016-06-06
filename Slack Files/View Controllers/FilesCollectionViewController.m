@@ -40,10 +40,13 @@
     self.view.wantsLayer = YES;
 
     [self.collectionView registerClass:[FilesCollectionViewItem class] forItemWithIdentifier:@"FilesCollectionViewItem"];
+}
 
+- (void)loadFilesData
+{
     RLMResults  *results = [File objectsWhere:@"team = %@", self.team];
 
-    self.files = [results sortedResultsUsingProperty:@"creationDate" ascending:YES];
+    self.files = [results sortedResultsUsingProperty:@"creationDate" ascending:NO];
 
     [self.collectionView reloadData];
 }
@@ -75,6 +78,13 @@
 - (NSCollectionViewItem *)collectionView:(NSCollectionView *)collectionView itemForRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.collectionView makeItemWithIdentifier:@"FilesCollectionViewItem" forIndexPath:indexPath];
+}
+
+#pragma mark - <SyncUIDelegate>
+
+- (void)didFetchMoreFiles
+{
+    [self loadFilesData];
 }
 
 @end

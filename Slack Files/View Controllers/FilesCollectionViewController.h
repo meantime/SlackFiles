@@ -8,9 +8,11 @@
 
 @import Cocoa;
 
+#import "FilesWindowController.h"
+
 @class Team;
 
-@interface FilesCollectionViewController : NSViewController
+@interface FilesCollectionViewController : NSViewController<SyncUIDelegate>
 
 + (instancetype)viewControllerForTeam:(Team *)team;
 

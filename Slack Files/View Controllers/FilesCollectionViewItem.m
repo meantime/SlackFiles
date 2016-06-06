@@ -9,6 +9,7 @@
 #import "FilesCollectionViewItem.h"
 
 #import "File.h"
+#import "FileCollectionViewItemView.h"
 
 static NSDateFormatter              *gDateFormatter;
 static NSURLSessionConfiguration    *gNetworkConfiguration;
@@ -45,16 +46,22 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 {
     [super viewDidLoad];
 
-    self.view.wantsLayer = YES;
-    self.view.layer.borderColor = [NSColor lightGrayColor].CGColor;
-    self.view.layer.borderWidth = 1.0;
-    self.view.layer.cornerRadius = 8.0;
+    FileCollectionViewItemView  *view = (FileCollectionViewItemView *) self.view;
+
+    view.wantsLayer = YES;
+    view.layer.borderColor = [NSColor lightGrayColor].CGColor;
+    view.layer.borderWidth = 1.0;
+    view.layer.cornerRadius = 8.0;
 
     [self configureNetworkSession];
 }
 
 - (void)configureWithFile:(File *)file
 {
+    FileCollectionViewItemView  *view = (FileCollectionViewItemView *) self.view;
+
+    view.file = file;
+
     self.iconView.image = [file filesystemIcon];
     self.titleView.stringValue = file.title;
 
@@ -83,6 +90,8 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 
 - (void)prepareForReuse
 {
+    self.iconView.image = nil;
+    
     [self.iconTask cancel];
     self.iconTask = nil;
 }

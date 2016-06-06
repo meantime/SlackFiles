@@ -25,6 +25,7 @@
 		83A717CE1D03569A00C4DE32 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 83A717C81D03564700C4DE32 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A717D11D03681A00C4DE32 /* FilesWindowController.m */; };
 		83A717D41D03681A00C4DE32 /* FilesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A717D21D03681A00C4DE32 /* FilesWindowController.xib */; };
+		83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B262101D05432300737310 /* FileCollectionViewItemView.m */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,8 @@
 		83A717D01D03681A00C4DE32 /* FilesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesWindowController.h; sourceTree = "<group>"; };
 		83A717D11D03681A00C4DE32 /* FilesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesWindowController.m; sourceTree = "<group>"; };
 		83A717D21D03681A00C4DE32 /* FilesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesWindowController.xib; sourceTree = "<group>"; };
+		83B2620F1D05432300737310 /* FileCollectionViewItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCollectionViewItemView.h; sourceTree = "<group>"; };
+		83B262101D05432300737310 /* FileCollectionViewItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCollectionViewItemView.m; sourceTree = "<group>"; };
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
 		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
 		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
@@ -185,6 +188,8 @@
 		83B262081D05396800737310 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				83B2620F1D05432300737310 /* FileCollectionViewItemView.h */,
+				83B262101D05432300737310 /* FileCollectionViewItemView.m */,
 				837E36101D04DBB500483B61 /* FilesCollectionViewController.h */,
 				837E36111D04DBB500483B61 /* FilesCollectionViewController.m */,
 				837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */,
@@ -295,6 +300,7 @@
 				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
 				837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */,
 				837E36131D04DBB500483B61 /* FilesCollectionViewController.m in Sources */,
+				83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */,
 				83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */,
 				833230FD1D02769A00933E7E /* Team.m in Sources */,
 				83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */,

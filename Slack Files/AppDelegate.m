@@ -10,11 +10,14 @@
 
 #import "AppDelegate.h"
 
+#import "File.h"
 #import "FilesWindowController.h"
 #import "KeychainAccess.h"
 #import "NSURL+QueryArgs.h"
 #import "SlackAuth.h"
 #import "Team.h"
+
+NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
 @interface AppDelegate ()
 
@@ -44,6 +47,11 @@
     [nc addObserver:self
            selector:@selector(fileWindowWillClose:)
                name:FilesWindowWillCloseNotification
+             object:nil];
+
+    [nc addObserver:self
+           selector:@selector(openFileWindow:)
+               name:OpenFileWindowNotification
              object:nil];
 
     RLMResults<Team *>  *teams = [Team allObjects];
@@ -220,6 +228,18 @@
 
         [realm deleteObject:team];
     }];
+}
+
+- (void)openFileWindow:(NSNotification *)note
+{
+    if (NO == [note.object isKindOfClass:[File class]])
+    {
+        return;
+    }
+
+    File    *file = (File *) note.object;
+
+    NSLog(@"%@", file);
 }
 
 @end

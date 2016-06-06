@@ -28,14 +28,15 @@ NS_ENUM(NSUInteger, FetchState)
 
 @interface FilesWindowController () <NSWindowDelegate>
 
-@property (readwrite)   Team                *team;
-@property               SlackAPI            *api;
-@property               NSUInteger          highestPage;
-@property               NSUInteger          numPages;
-@property               BOOL                fetchInProgress;
-@property               enum FetchState     fetchState;
-@property (nullable)    NSDate              *fetchFromDate;
-@property (nullable)    NSDate              *fetchToDate;
+@property (readwrite)               Team                *team;
+@property                           SlackAPI            *api;
+@property                           NSUInteger          highestPage;
+@property                           NSUInteger          numPages;
+@property                           BOOL                fetchInProgress;
+@property                           enum FetchState     fetchState;
+@property (nullable)                NSDate              *fetchFromDate;
+@property (nullable)                NSDate              *fetchToDate;
+@property (weak)        IBOutlet    id<SyncUIDelegate>  syncUIDelegate;
 
 @property               FilesCollectionViewController *viewController;
 
@@ -207,6 +208,8 @@ NS_ENUM(NSUInteger, FetchState)
 
     [realm transactionWithBlock:^{
 
+        NSUInteger  newFileCount = 0;
+
         for (NSDictionary *f in files)
         {
             File    *file = [File objectInRealm:realm forPrimaryKey:f[@"id"]];
@@ -217,8 +220,15 @@ NS_ENUM(NSUInteger, FetchState)
 
                 file = [File createInRealm:realm withValue:values];
                 file.team = self.team;
+
+                newFileCount++;
             }
         }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [self.syncUIDelegate didFetchMoreFiles];
+        });
     }];
 }
 
@@ -249,6 +259,8 @@ NS_ENUM(NSUInteger, FetchState)
     [self.viewController.view removeFromSuperview];
     self.viewController = viewController;
     [parent addSubview:viewController.view];
+
+    self.syncUIDelegate = viewController;
 }
 
 #pragma mark - <NSWindowDelegate>

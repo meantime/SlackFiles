@@ -8,6 +8,8 @@
 
 @import Cocoa;
 
+extern NSString * const OpenFileWindowNotification;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 
