@@ -17,7 +17,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="0VT-iE-JV4">
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="0VT-iE-JV4">
                     <rect key="frame" x="25" y="20" width="435" height="232"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="qr8-gv-KEg">
@@ -29,6 +29,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="GYo-r2-Uxt">
                                     <size key="itemSize" width="165" height="215"/>
+                                    <edgeInsets key="sectionInset" left="5" right="10" top="5" bottom="5"/>
                                 </collectionViewFlowLayout>
                                 <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
@@ -38,12 +39,12 @@
                             </collectionView>
                         </subviews>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1xL-HB-z0x">
-                        <rect key="frame" x="1" y="144" width="233" height="15"/>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="1xL-HB-z0x">
+                        <rect key="frame" x="-100" y="-100" width="414" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="ILv-jK-cBN">
-                        <rect key="frame" x="234" y="1" width="15" height="143"/>
+                        <rect key="frame" x="419" y="5" width="15" height="207"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
