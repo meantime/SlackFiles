@@ -8,6 +8,8 @@
 
 #import "File.h"
 
+@import Cocoa;
+
 #import "Team.h"
 
 @implementation File
@@ -81,6 +83,34 @@
     }
 
     return newestTimestamp;
+}
+
+- (NSImage *)filesystemIcon
+{
+    NSImage     *iconImage = nil;
+
+    //  The the file extension first
+    NSString    *extension = [self.filename pathExtension];
+
+    iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:extension];
+
+    if (nil == iconImage)
+    {
+        //  Ok, let's try it by MIME type
+        CFStringRef MIMEType = (__bridge CFStringRef) self.mimeType;
+        CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
+        NSString    *UTIString = (__bridge_transfer NSString *) UTI;
+
+        iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:UTIString];
+    }
+
+    if (nil == iconImage)
+    {
+        //  Last resort, try to load a generic document icon
+        iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:(__bridge NSString *) kUTTypeItem];
+    }
+
+    return iconImage;
 }
 
 @end

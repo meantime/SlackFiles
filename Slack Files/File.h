@@ -29,6 +29,8 @@
 + (NSDate *)oldesetTimestampInGapForTeam:(Team *)team;
 + (NSDate *)newestTimestampForTeam:(Team *)team;
 
+- (NSImage *)filesystemIcon;
+
 @end
 
 RLM_ARRAY_TYPE(File)

@@ -9,6 +9,7 @@
 #import "FilesWindowController.h"
 
 #import "File.h"
+#import "FilesCollectionViewController.h"
 #import "SlackAPI.h"
 #import "Team.h"
 
@@ -35,6 +36,8 @@ NS_ENUM(NSUInteger, FetchState)
 @property               enum FetchState     fetchState;
 @property (nullable)    NSDate              *fetchFromDate;
 @property (nullable)    NSDate              *fetchToDate;
+
+@property               FilesCollectionViewController *viewController;
 
 @end
 
@@ -70,6 +73,10 @@ NS_ENUM(NSUInteger, FetchState)
 
         button.image = icon;
     }];
+
+    [self switchToViewController:[FilesCollectionViewController viewControllerForTeam:self.team]];
+
+     [[self.window contentView] addSubview:self.viewController.view];
 
     [self fetchNextPage];
 }
@@ -233,6 +240,15 @@ NS_ENUM(NSUInteger, FetchState)
     NSString    *toString = [formatter stringFromDate:self.fetchToDate];
 
     NSLog(@"Fetching from %@ - %@", fromString, toString);
+}
+
+- (void)switchToViewController:(FilesCollectionViewController *)viewController
+{
+    NSView  *parent = [self.window contentView];
+
+    [self.viewController.view removeFromSuperview];
+    self.viewController = viewController;
+    [parent addSubview:viewController.view];
 }
 
 #pragma mark - <NSWindowDelegate>
