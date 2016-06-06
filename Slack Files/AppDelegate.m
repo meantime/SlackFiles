@@ -16,6 +16,7 @@
 #import "NSURL+QueryArgs.h"
 #import "SlackAuth.h"
 #import "Team.h"
+#import "TextWindowController.h"
 #import "VideoWindowController.h"
 
 NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
@@ -267,9 +268,22 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
         [self.otherWindowControllers addObject:window];
     }
-    else if ([mimeType isEqualToString:@"text/plain"])
+    else if ([file.prettyType isEqualToString:@"Post"])
+    {
+        //  This must come before other things that are text/*
+    }
+    else if ([mimeType isEqualToString:@"text/html"])
     {
 
+    }
+    else if ([mimeType hasPrefix:@"text/"])
+    {
+        TextWindowController    *window = [TextWindowController windowControllerForFile:file];
+
+        [window window];
+        [window.window makeKeyAndOrderFront:self];
+
+        [self.otherWindowControllers addObject:window];
     }
     else if ([mimeType isEqualToString:@"text/html"])
     {
