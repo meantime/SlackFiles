@@ -26,6 +26,10 @@
 		83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A717D11D03681A00C4DE32 /* FilesWindowController.m */; };
 		83A717D41D03681A00C4DE32 /* FilesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A717D21D03681A00C4DE32 /* FilesWindowController.xib */; };
 		83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B262101D05432300737310 /* FileCollectionViewItemView.m */; };
+		83B262161D05503B00737310 /* VideoWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B262141D05503B00737310 /* VideoWindowController.m */; };
+		83B262171D05503B00737310 /* VideoWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B262151D05503B00737310 /* VideoWindowController.xib */; };
+		83B262191D0552B200737310 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B262181D0552B200737310 /* AVKit.framework */; };
+		83B2621C1D05548D00737310 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B2621B1D05548D00737310 /* AVFoundation.framework */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
 /* End PBXBuildFile section */
@@ -79,6 +83,11 @@
 		83A717D21D03681A00C4DE32 /* FilesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesWindowController.xib; sourceTree = "<group>"; };
 		83B2620F1D05432300737310 /* FileCollectionViewItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCollectionViewItemView.h; sourceTree = "<group>"; };
 		83B262101D05432300737310 /* FileCollectionViewItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCollectionViewItemView.m; sourceTree = "<group>"; };
+		83B262131D05503B00737310 /* VideoWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoWindowController.h; sourceTree = "<group>"; };
+		83B262141D05503B00737310 /* VideoWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoWindowController.m; sourceTree = "<group>"; };
+		83B262151D05503B00737310 /* VideoWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoWindowController.xib; sourceTree = "<group>"; };
+		83B262181D0552B200737310 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		83B2621B1D05548D00737310 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
 		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
 		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
@@ -89,6 +98,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B2621C1D05548D00737310 /* AVFoundation.framework in Frameworks */,
+				83B262191D0552B200737310 /* AVKit.framework in Frameworks */,
 				83A717CD1D03569A00C4DE32 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,8 +119,9 @@
 		83A1AE881CFD3BD400A39387 = {
 			isa = PBXGroup;
 			children = (
-				83A717C71D03562B00C4DE32 /* External */,
 				83A1AE931CFD3BD500A39387 /* Slack Files */,
+				83A717C71D03562B00C4DE32 /* External */,
+				83B2621A1D05546500737310 /* Frameworks */,
 				83A1AE921CFD3BD500A39387 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,6 +155,7 @@
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
 				83A1AE971CFD3BD500A39387 /* Supporting Files */,
 				83B262081D05396800737310 /* View Controllers */,
+				83B262121D05500600737310 /* Window Controllers */,
 			);
 			path = "Slack Files";
 			sourceTree = "<group>";
@@ -211,6 +224,25 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		83B262121D05500600737310 /* Window Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				83B262131D05503B00737310 /* VideoWindowController.h */,
+				83B262141D05503B00737310 /* VideoWindowController.m */,
+				83B262151D05503B00737310 /* VideoWindowController.xib */,
+			);
+			path = "Window Controllers";
+			sourceTree = "<group>";
+		};
+		83B2621A1D05546500737310 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83B2621B1D05548D00737310 /* AVFoundation.framework */,
+				83B262181D0552B200737310 /* AVKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -275,6 +307,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B262171D05503B00737310 /* VideoWindowController.xib in Resources */,
 				83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */,
 				83A717D41D03681A00C4DE32 /* FilesWindowController.xib in Resources */,
 				83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */,
@@ -298,6 +331,7 @@
 				833230FA1D02690000933E7E /* SlackAPI.m in Sources */,
 				834359761D0386D200F309B9 /* File.m in Sources */,
 				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
+				83B262161D05503B00737310 /* VideoWindowController.m in Sources */,
 				837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */,
 				837E36131D04DBB500483B61 /* FilesCollectionViewController.m in Sources */,
 				83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */,

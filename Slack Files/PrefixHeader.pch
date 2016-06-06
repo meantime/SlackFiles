@@ -9,12 +9,18 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
+#import "AppDelegate.h"
+
 #if !defined(IsEmptyString)
 #define IsEmptyString(x) ((nil == (x)) || ![(x) isKindOfClass:[NSString class]] || ([(x) length] < 1))
 #endif
 
 #if !defined(IsStringWithContents)
 #define IsStringWithContents(a) (! IsEmptyString((a)))
+#endif
+
+#if !defined(AppDelegate)
+#define NSAppDelegate [NSApp delegate]
 #endif
 
 #endif /* PrefixHeader_pch */

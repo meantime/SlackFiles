@@ -16,6 +16,7 @@
 #import "NSURL+QueryArgs.h"
 #import "SlackAuth.h"
 #import "Team.h"
+#import "VideoWindowController.h"
 
 NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
@@ -23,6 +24,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
 @property SlackAuth       *auth;
 @property NSMutableArray  *filesWindowControllers;
+@property NSMutableArray  *otherWindowControllers;
 
 @end
 
@@ -36,6 +38,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     self.filesWindowControllers = [NSMutableArray array];
+    self.otherWindowControllers = [NSMutableArray array];
 
     NSNotificationCenter    *nc = [NSNotificationCenter defaultCenter];
 
@@ -237,9 +240,31 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
         return;
     }
 
-    File    *file = (File *) note.object;
+    File        *file = (File *) note.object;
+    NSString    *mimeType = file.mimeType;
 
-    NSLog(@"%@", file);
+    if ([mimeType hasPrefix:@"video/"])
+    {
+        VideoWindowController   *window = [VideoWindowController windowControllerForFile:file];
+
+        [window window];
+        [window.window makeKeyAndOrderFront:self];
+
+        [self.otherWindowControllers addObject:window];
+    }
+    else if ([mimeType hasPrefix:@"image/"])
+    {
+
+    }
+    else if ([mimeType hasPrefix:@"audio/"])
+    {
+        
+    }
+}
+
+- (void)windowWillClose:(NSWindowController *)windowController
+{
+    [self.otherWindowControllers removeObject:windowController];
 }
 
 @end
