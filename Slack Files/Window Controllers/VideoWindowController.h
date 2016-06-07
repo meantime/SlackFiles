@@ -8,10 +8,8 @@
 
 @import Cocoa;
 
-@class File;
+#import "WindowController.h"
 
-@interface VideoWindowController : NSWindowController
-
-+ (instancetype)windowControllerForFile:(File *)file;
+@interface VideoWindowController : WindowController
 
 @end

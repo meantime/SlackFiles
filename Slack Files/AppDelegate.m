@@ -12,6 +12,7 @@
 
 #import "File.h"
 #import "FilesWindowController.h"
+#import "ImageWindowController.h"
 #import "KeychainAccess.h"
 #import "NSURL+QueryArgs.h"
 #import "PDFWindowController.h"
@@ -258,7 +259,12 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     }
     else if ([mimeType hasPrefix:@"image/"])
     {
+        ImageWindowController   *window = [ImageWindowController windowControllerForFile:file];
 
+        [window window];
+        [window.window makeKeyAndOrderFront:self];
+
+        [self.otherWindowControllers addObject:window];
     }
     else if ([mimeType hasPrefix:@"audio/"])
     {

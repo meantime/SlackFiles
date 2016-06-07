@@ -11,77 +11,64 @@
 #import "File.h"
 #import "Team.h"
 
-@interface TextWindowController () <NSWindowDelegate>
+@interface TextWindowController ()
 
 @property   IBOutlet    NSTextView              *textView;
-@property               File                    *file;
-@property               NSURLSession            *networkSession;
-@property               NSURLSessionDataTask    *networkTask;
 
 @end
 
 @implementation TextWindowController
 
-+ (instancetype)windowControllerForFile:(File *)file
-{
-    TextWindowController    *result = [[TextWindowController alloc] initWithWindowNibName:@"TextWindowController"];
-
-    result.file = file;
-
-    return result;
-}
-
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 
-    self.window.title = self.file.title;
-    self.window.delegate = self;
-
-    self.textView.font = [NSFont systemFontOfSize:16.0];
+    self.textView.textContainerInset = NSMakeSize(20.0, 20.0);
 
     [self loadTextContent];
 }
 
 - (void)loadTextContent
 {
-    NSURLSessionConfiguration   *networkConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-
-    networkConfig.TLSMinimumSupportedProtocol = kTLSProtocol12;
-    networkConfig.HTTPMaximumConnectionsPerHost = 5;
-    networkConfig.HTTPShouldUsePipelining = YES;
-
-    self.networkSession = [NSURLSession sessionWithConfiguration:networkConfig];
-
-    NSDictionary        *metadata = [NSJSONSerialization JSONObjectWithData:self.file.jsonBlob options:0 error:nil];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:metadata[@"url_private"]]];
-
-    [request setValue:self.file.team.apiToken forHTTPHeaderField:@"Bearer"];
-
-    self.networkTask = [self.networkSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [self loadContentWithCompletion:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         if (data)
         {
             NSString    *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-            dispatch_async(dispatch_get_main_queue(), ^{
-
-                [self.textView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:string]];
-            });
+            self.textView.font = [self fontForFileType];
+            self.textView.string = string;
         }
-    }];
 
-    [self.networkTask resume];
+    }];
 }
 
-#pragma mark - <NSWindowDelegate>
-
-- (BOOL)windowShouldClose:(id)sender
+- (NSFont *)fontForFileType
 {
-    [self.networkSession invalidateAndCancel];
-    [NSAppDelegate windowWillClose:self];
+    NSFont              *font = [NSFont systemFontOfSize:18.0];
+    NSDictionary        *metadata = [NSJSONSerialization JSONObjectWithData:self.file.jsonBlob options:0 error:nil];
+    NSString            *type = metadata[@"filetype"];
+    NSArray<NSString *> *monoTypes = @[ @"applescript", @"boxnote", @"c", @"csharp", @"cpp", @"css",
+                                        @"csv", @"clojure", @"coffeescript", @"cfm", @"d", @"dart",
+                                        @"diff", @"dockerfile", @"erlang", @"fsharp", @"fortran", @"go",
+                                        @"groovy", @"html", @"handlebars", @"haskell", @"haxe", @"java",
+                                        @"javascript", @"kotlin", @"latex", @"lisp", @"lua", @"markdown",
+                                        @"matlab", @"mumps", @"ocaml", @"objc", @"php", @"pascal", @"perl",
+                                        @"pig", @"powershell", @"puppet", @"python", @"r", @"ruby",
+                                        @"rust", @"sql", @"sass", @"scala", @"scheme", @"shell",
+                                        @"smalltalk", @"swift", @"tsv", @"vb", @"vbscript", @"velocity",
+                                        @"verilog", @"xml", @"yaml" ];
 
-    return YES;
+    for (NSString *monoType in monoTypes)
+    {
+        if ([monoType isEqualToString:type])
+        {
+            font = [NSFont userFixedPitchFontOfSize:16.0];
+        }
+    }
+
+    return font;
 }
 
 @end
+

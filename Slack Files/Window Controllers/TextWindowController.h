@@ -8,10 +8,8 @@
 
 @import Cocoa;
 
-@class File;
+#import "WindowController.h"
 
-@interface TextWindowController : NSWindowController
-
-+ (instancetype)windowControllerForFile:(File *)file;
+@interface TextWindowController : WindowController
 
 @end

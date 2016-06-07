@@ -1,8 +1,8 @@
 //
-//  PDFWindowController.h
+//  ImageWindowController.h
 //  Slack Files
 //
-//  Created by Chris DeSalvo on 6/6/16.
+//  Created by Chris DeSalvo on 6/7/16.
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
@@ -10,6 +10,6 @@
 
 #import "WindowController.h"
 
-@interface PDFWindowController : WindowController
+@interface ImageWindowController : WindowController
 
 @end

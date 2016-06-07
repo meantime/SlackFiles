@@ -18,20 +18,9 @@
 
 @property   IBOutlet    AVPlayerView    *playerView;
 
-@property   File    *file;
-
 @end
 
 @implementation VideoWindowController
-
-+ (instancetype)windowControllerForFile:(File *)file
-{
-    VideoWindowController   *result = [[VideoWindowController alloc] initWithWindowNibName:@"VideoWindowController"];
-
-    result.file = file;
-
-    return result;
-}
 
 - (void)dealloc
 {
@@ -42,8 +31,11 @@
 {
     [super windowDidLoad];
 
-    self.window.title = self.file.title;
+    [self loadVideoContent];
+}
 
+- (void)loadVideoContent
+{
     NSDictionary    *metadata = [NSJSONSerialization JSONObjectWithData:self.file.jsonBlob options:0 error:nil];
     NSDictionary    *headers = @{ @"Bearer" : self.file.team.apiToken };
     NSURL           *url = [NSURL URLWithString:metadata[@"url_private"]];
