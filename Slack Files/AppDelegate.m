@@ -278,6 +278,12 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     else if ([file.prettyType isEqualToString:@"Post"])
     {
         //  This must come before other things that are text/*
+        TextWindowController    *window = [TextWindowController windowControllerForFile:file];
+
+        [window window];
+        [window.window makeKeyAndOrderFront:self];
+
+        [self.otherWindowControllers addObject:window];
     }
     else if ([mimeType isEqualToString:@"text/html"])
     {

@@ -38,6 +38,7 @@
 		83B2622A1D056B5300737310 /* PDFWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B262281D056B5300737310 /* PDFWindowController.m */; };
 		83B2622B1D056B5300737310 /* PDFWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B262291D056B5300737310 /* PDFWindowController.xib */; };
 		83B2622D1D056C2500737310 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B2622C1D056C2500737310 /* Quartz.framework */; };
+		83B886CF1D07D46E00C9F3F3 /* PostsProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
 /* End PBXBuildFile section */
@@ -108,6 +109,8 @@
 		83B262281D056B5300737310 /* PDFWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFWindowController.m; sourceTree = "<group>"; };
 		83B262291D056B5300737310 /* PDFWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PDFWindowController.xib; sourceTree = "<group>"; };
 		83B2622C1D056C2500737310 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		83B886CD1D07D46E00C9F3F3 /* PostsProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsProcessor.h; sourceTree = "<group>"; };
+		83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsProcessor.m; sourceTree = "<group>"; };
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
 		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
 		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
@@ -172,6 +175,8 @@
 				83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */,
 				83B262091D05399D00737310 /* Models */,
 				83A1AEA61CFD40E400A39387 /* OAuth2 */,
+				83B886CD1D07D46E00C9F3F3 /* PostsProcessor.h */,
+				83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */,
 				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
 				83A1AE971CFD3BD500A39387 /* Supporting Files */,
@@ -364,6 +369,7 @@
 				83A717C61D034DD500C4DE32 /* KeychainAccess.m in Sources */,
 				83A1AE991CFD3BD500A39387 /* main.m in Sources */,
 				83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */,
+				83B886CF1D07D46E00C9F3F3 /* PostsProcessor.m in Sources */,
 				833230FA1D02690000933E7E /* SlackAPI.m in Sources */,
 				8337E71A1D06A3A600051C17 /* WindowController.m in Sources */,
 				834359761D0386D200F309B9 /* File.m in Sources */,

@@ -76,8 +76,7 @@ NS_ENUM(NSUInteger, FetchState)
     }];
 
     [self switchToViewController:[FilesCollectionViewController viewControllerForTeam:self.team]];
-
-     [[self.window contentView] addSubview:self.viewController.view];
+    [self.contentViewController loadView];
 
     [self fetchNextPage];
 }
@@ -259,6 +258,8 @@ NS_ENUM(NSUInteger, FetchState)
     [self.viewController.view removeFromSuperview];
     self.viewController = viewController;
     [parent addSubview:viewController.view];
+
+    viewController.view.frame = parent.frame;
 
     self.syncUIDelegate = viewController;
 }

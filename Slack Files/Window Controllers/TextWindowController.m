@@ -9,11 +9,12 @@
 #import "TextWindowController.h"
 
 #import "File.h"
+#import "PostsProcessor.h"
 #import "Team.h"
 
 @interface TextWindowController ()
 
-@property   IBOutlet    NSTextView              *textView;
+@property   IBOutlet    NSTextView  *textView;
 
 @end
 
@@ -24,6 +25,7 @@
     [super windowDidLoad];
 
     self.textView.textContainerInset = NSMakeSize(20.0, 20.0);
+    self.textView.font = [NSFont systemFontOfSize:16.0];
 
     [self loadTextContent];
 }
@@ -34,10 +36,21 @@
 
         if (data)
         {
-            NSString    *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            if ([@"Post" isEqualToString:self.file.prettyType])
+            {
+                NSDictionary        *post = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                PostsProcessor      *processor = [PostsProcessor new];
+                NSAttributedString  *text = [processor attributedStringFromPost:post];
 
-            self.textView.font = [self fontForFileType];
-            self.textView.string = string;
+                [self.textView.textStorage appendAttributedString:text];
+            }
+            else
+            {
+                NSString    *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+                self.textView.font = [self fontForFileType];
+                self.textView.string = string;
+            }
         }
 
     }];
