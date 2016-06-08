@@ -167,6 +167,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     self.currentTextColor = self.computedTheme.textColor;
 
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:result];
+    [self applyLinks:paragraph[@"links"] toAttributedString:result];
 
     return result;
 }
@@ -183,6 +184,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     self.currentTextColor = self.computedTheme.preTextColor;
 
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:result];
+    [self applyLinks:paragraph[@"links"] toAttributedString:result];
 
     return result;
 }
@@ -199,6 +201,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     self.currentTextColor = self.computedTheme.textColor;
 
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:formattedText];
+    [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
     NSString                    *number = [NSString stringWithFormat:@"%ld. ", self.nextOLNumber];
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:number
@@ -221,6 +224,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     self.currentTextColor = self.computedTheme.textColor;
 
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:formattedText];
+    [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
     NSString                    *bullet = [NSString stringWithFormat:@"%C ", self.computedTheme.listBullet];
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:bullet
@@ -258,6 +262,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     self.currentBoldItalicFont = self.computedTheme.baseFont;
 
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:formattedText];
+    [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
     NSString                    *markString = [NSString stringWithFormat:@"%C ", mark];
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:markString
@@ -267,6 +272,48 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     [result appendAttributedString:formattedText];
 
     return result;
+}
+
+- (void)applyLinks:(nullable NSDictionary *)links toAttributedString:(nonnull NSMutableAttributedString *)text
+{
+    if (0 == links.count)
+    {
+        return;
+    }
+
+    NSMutableIndexSet   *linkSpans = [NSMutableIndexSet new];
+    NSMutableArray      *linkURLs = [NSMutableArray arrayWithCapacity:links.count];
+
+    for (NSString *url in links.allKeys)
+    {
+        NSArray *spans = links[url];
+
+        [self addSpans:spans toIndexSet:linkSpans];
+
+        for (NSUInteger i = 0; i < (spans.count >> 1); i++)
+        {
+            [linkURLs addObject:url];
+        }
+    }
+
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+
+    attributes[NSForegroundColorAttributeName] = self.computedTheme.linkColor;
+
+    if (self.computedTheme.underlineLinks)
+    {
+        attributes[NSUnderlineStyleAttributeName] = @(1);
+        attributes[NSUnderlineColorAttributeName] = self.computedTheme.linkColor;
+    }
+
+    __block NSUInteger  linkIndex = 0;
+    
+    [linkSpans enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
+
+        attributes[NSLinkAttributeName] = [NSURL URLWithString:linkURLs[linkIndex++]];
+
+        [text addAttributes:attributes range:range];
+    }];
 }
 
 - (void)applyCharacterStyling:(nullable NSDictionary *)formats toAttributedString:(nonnull NSMutableAttributedString *)text
@@ -400,6 +447,8 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
     if (self)
     {
+        NSFontManager   *fontManager = [NSFontManager sharedFontManager];
+
         self.textColor                  = [NSColor blackColor];
         self.backgroundColor            = [NSColor whiteColor];
 
@@ -412,9 +461,9 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
         self.paragraphAlignment         = NSTextAlignmentJustified;
         self.baseFont                   = [NSFont systemFontOfSize:kDefaultFontSize];
-        self.boldFont                   = [NSFont boldSystemFontOfSize:kDefaultFontSize];
-        self.italicFont                 = self.baseFont;
-        self.boldItalicFont             = self.baseFont;
+        self.boldFont                   = [fontManager fontWithFamily:self.baseFont.familyName traits:NSBoldFontMask weight:0 size:kDefaultFontSize];
+        self.italicFont                 = [fontManager fontWithFamily:self.baseFont.familyName traits:NSItalicFontMask weight:0 size:kDefaultFontSize];
+        self.boldItalicFont             = [fontManager fontWithFamily:self.baseFont.familyName traits:(NSBoldFontMask | NSItalicFontMask) weight:0 size:kDefaultFontSize];
 
         self.monospaceFont              = [NSFont userFixedPitchFontOfSize:kDefaultFontSize];
         self.monospaceBoldFont          = self.monospaceFont;
@@ -440,7 +489,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
         self.listIndent                 = kDefaultBulletIndent;
 
         self.checklistUncheckedFont     = [NSFont systemFontOfSize:kDefaultFontSize];
-        self.checklistCheckedFont       = [NSFont systemFontOfSize:kDefaultFontSize];
+        self.checklistCheckedFont       = [fontManager fontWithFamily:self.checklistUncheckedFont.familyName traits:NSItalicFontMask weight:0 size:kDefaultFontSize];
         self.checklistCheckedTextColor  = [NSColor darkGrayColor];
         self.checklistUncheckedTextColor  = [NSColor blackColor];
         self.checklistBackgroundColor   = [NSColor lightGrayColor];
