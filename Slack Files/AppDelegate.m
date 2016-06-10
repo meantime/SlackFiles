@@ -12,6 +12,7 @@
 
 #import "File.h"
 #import "FilesWindowController.h"
+#import "HTMLWindowController.h"
 #import "ImageWindowController.h"
 #import "KeychainAccess.h"
 #import "NSURL+QueryArgs.h"
@@ -244,73 +245,48 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
         return;
     }
 
-    File        *file = (File *) note.object;
-    NSString    *mimeType = file.mimeType;
+    File                *file = (File *) note.object;
+    NSString            *mimeType = file.mimeType;
+    NSWindowController  *controller = nil;
 
     NSLog(@"Request to open file of type: %@", mimeType);
 
     if ([mimeType hasPrefix:@"video/"])
     {
-        VideoWindowController   *window = [VideoWindowController windowControllerForFile:file];
-
-        [window window];
-        [window.window makeKeyAndOrderFront:self];
-
-        [self.otherWindowControllers addObject:window];
+        controller = [VideoWindowController windowControllerForFile:file];
     }
     else if ([mimeType hasPrefix:@"image/"])
     {
-        ImageWindowController   *window = [ImageWindowController windowControllerForFile:file];
-
-        [window window];
-        [window.window makeKeyAndOrderFront:self];
-
-        [self.otherWindowControllers addObject:window];
+        controller = [ImageWindowController windowControllerForFile:file];
     }
     else if ([mimeType hasPrefix:@"audio/"])
     {
-        VideoWindowController   *window = [VideoWindowController windowControllerForFile:file];
-
-        [window window];
-        [window.window makeKeyAndOrderFront:self];
-
-        [self.otherWindowControllers addObject:window];
+        controller = [VideoWindowController windowControllerForFile:file];
     }
     else if ([file.prettyType isEqualToString:@"Post"])
     {
         //  This must come before other things that are text/*
-        TextWindowController    *window = [TextWindowController windowControllerForFile:file];
-
-        [window window];
-        [window.window makeKeyAndOrderFront:self];
-
-        [self.otherWindowControllers addObject:window];
+        controller = [TextWindowController windowControllerForFile:file];
     }
     else if ([mimeType isEqualToString:@"text/html"])
     {
-
+        controller = [HTMLWindowController windowControllerForFile:file];
     }
     else if ([mimeType hasPrefix:@"text/"])
     {
-        TextWindowController    *window = [TextWindowController windowControllerForFile:file];
-
-        [window window];
-        [window.window makeKeyAndOrderFront:self];
-
-        [self.otherWindowControllers addObject:window];
-    }
-    else if ([mimeType isEqualToString:@"text/html"])
-    {
-
+        controller = [TextWindowController windowControllerForFile:file];
     }
     else if ([mimeType isEqualToString:@"application/pdf"])
     {
-        PDFWindowController *window = [PDFWindowController windowControllerForFile:file];
+        controller = [PDFWindowController windowControllerForFile:file];
+    }
 
-        [window window];
-        [window.window makeKeyAndOrderFront:self];
+    if (controller)
+    {
+        [controller window];
+        [controller.window makeKeyAndOrderFront:self];
 
-        [self.otherWindowControllers addObject:window];
+        [self.otherWindowControllers addObject:controller];
     }
 }
 

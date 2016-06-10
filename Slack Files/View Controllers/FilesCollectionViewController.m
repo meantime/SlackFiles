@@ -54,7 +54,8 @@
     self.baseFiles = [File objectsWhere:@"team = %@", self.team];
     self.sortedFiles = [self.baseFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
 
-    [self subscribeToCollectionNotifications];
+    [self.collectionView reloadData];
+//    [self subscribeToCollectionNotifications];
 }
 
 - (void)subscribeToCollectionNotifications

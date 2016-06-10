@@ -38,6 +38,8 @@
 		83B2622A1D056B5300737310 /* PDFWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B262281D056B5300737310 /* PDFWindowController.m */; };
 		83B2622B1D056B5300737310 /* PDFWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B262291D056B5300737310 /* PDFWindowController.xib */; };
 		83B2622D1D056C2500737310 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B2622C1D056C2500737310 /* Quartz.framework */; };
+		83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */; };
+		83B4B3201D0AC0C400EC9912 /* HTMLWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */; };
 		83B886CF1D07D46E00C9F3F3 /* PostsProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
@@ -109,6 +111,9 @@
 		83B262281D056B5300737310 /* PDFWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFWindowController.m; sourceTree = "<group>"; };
 		83B262291D056B5300737310 /* PDFWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PDFWindowController.xib; sourceTree = "<group>"; };
 		83B2622C1D056C2500737310 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		83B4B31C1D0AC0C400EC9912 /* HTMLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLWindowController.h; sourceTree = "<group>"; };
+		83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLWindowController.m; sourceTree = "<group>"; };
+		83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTMLWindowController.xib; sourceTree = "<group>"; };
 		83B886CD1D07D46E00C9F3F3 /* PostsProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsProcessor.h; sourceTree = "<group>"; };
 		83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsProcessor.m; sourceTree = "<group>"; };
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
@@ -253,6 +258,9 @@
 		83B262121D05500600737310 /* Window Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				83B4B31C1D0AC0C400EC9912 /* HTMLWindowController.h */,
+				83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */,
+				83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */,
 				8337E71B1D06B8B600051C17 /* ImageWindowController.h */,
 				8337E71C1D06B8B600051C17 /* ImageWindowController.m */,
 				8337E71D1D06B8B600051C17 /* ImageWindowController.xib */,
@@ -348,6 +356,7 @@
 				83B262171D05503B00737310 /* VideoWindowController.xib in Resources */,
 				83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */,
 				83B2622B1D056B5300737310 /* PDFWindowController.xib in Resources */,
+				83B4B3201D0AC0C400EC9912 /* HTMLWindowController.xib in Resources */,
 				83B262211D055FC800737310 /* TextWindowController.xib in Resources */,
 				83A717D41D03681A00C4DE32 /* FilesWindowController.xib in Resources */,
 				83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */,
@@ -379,6 +388,7 @@
 				837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */,
 				8337E71E1D06B8B600051C17 /* ImageWindowController.m in Sources */,
 				837E36131D04DBB500483B61 /* FilesCollectionViewController.m in Sources */,
+				83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */,
 				83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */,
 				83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */,
 				833230FD1D02769A00933E7E /* Team.m in Sources */,
