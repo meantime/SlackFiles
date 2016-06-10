@@ -36,6 +36,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     [self configureRealm];
+    [File fixBadTimestamps];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

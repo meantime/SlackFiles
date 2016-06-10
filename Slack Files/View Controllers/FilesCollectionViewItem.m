@@ -65,7 +65,7 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
     self.iconView.image = [file filesystemIcon];
     self.titleView.stringValue = file.title;
 
-    self.dateView.stringValue = [gDateFormatter stringFromDate:file.creationDate];
+    self.dateView.stringValue = [gDateFormatter stringFromDate:file.timestamp];
 
     if (IsStringWithContents(file.thumbnailURL))
     {

@@ -52,7 +52,7 @@
 - (void)loadFilesData
 {
     self.baseFiles = [File objectsWhere:@"team = %@", self.team];
-    self.sortedFiles = [self.baseFiles sortedResultsUsingProperty:@"creationDate" ascending:NO];
+    self.sortedFiles = [self.baseFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
 
     [self subscribeToCollectionNotifications];
 }
@@ -103,7 +103,7 @@
 
     for (NSNumber *changedRow in changedRows)
     {
-        NSIndexPath *path = [NSIndexPath indexPathWithIndex:[changedRow integerValue]];
+        NSIndexPath *path = [NSIndexPath indexPathForItem:[changedRow integerValue] inSection:0];
 
         [result addObject:path];
     }

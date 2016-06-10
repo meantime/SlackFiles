@@ -37,6 +37,8 @@ NS_ENUM(NSUInteger, FetchState)
 @property (nullable)                NSDate              *fetchFromDate;
 @property (nullable)                NSDate              *fetchToDate;
 @property (weak)        IBOutlet    id<SyncUIDelegate>  syncUIDelegate;
+@property                           NSUInteger          totalNewFileCount;
+@property                           NSUInteger          totalFiles;
 
 @property               FilesCollectionViewController *viewController;
 
@@ -160,37 +162,53 @@ NS_ENUM(NSUInteger, FetchState)
         }
     }
 
-    args[@"count"] = @"100";
+    args[@"count"] = @"200";
 
     [self.api callEndpoint:SlackEndpoints.filesList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
 
         NSDictionary    *paging = result[@"paging"];
         NSUInteger      number = [paging[@"pages"] unsignedIntegerValue];
 
-        if (number > self.numPages)
-        {
-            self.numPages = number;
-        }
-        else if (number == 0)
+        if (YES == [result[@"ok"] boolValue])
         {
             //  If there are no files found the Slack API says that it is returning page 1 of 0.
-            self.numPages = 1;
+            number = MAX(number, 1);
+            self.numPages = MAX(self.numPages, number);
+
+            number = [paging[@"page"] unsignedIntegerValue];
+            self.highestPage = MAX(self.highestPage, number);
+
+            number = [paging[@"total"] unsignedIntegerValue];
+            self.totalFiles = MAX(self.totalFiles, number);
+
+            NSLog(@"[%@] page %ld of %ld", self.team.teamName, self.highestPage, self.numPages);
+            [self processFileList:result[@"files"]];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+                [self fetchNextPage];
+            });
         }
-
-        number = [paging[@"page"] unsignedIntegerValue];
-
-        if (number > self.highestPage)
+        else
         {
-            self.highestPage = number;
+            if ([@"max_page_limit" isEqualToString:result[@"error"]])
+            {
+                self.fetchState = self.fetchState - 1;
+
+                if (FetchStateNone == self.fetchState)
+                {
+                    self.fetchInProgress = NO;
+                }
+
+                self.highestPage = 0;
+                self.numPages = 0;
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+
+                    [self fetchNextPage];
+                });
+            }
         }
-
-        NSLog(@"[%@] page %ld of %ld", self.team.teamName, self.highestPage, self.numPages);
-        [self processFileList:result[@"files"]];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-
-            [self fetchNextPage];
-        });
     }];
 }
 
@@ -223,6 +241,9 @@ NS_ENUM(NSUInteger, FetchState)
                 newFileCount++;
             }
         }
+
+        self.totalNewFileCount = self.totalNewFileCount + newFileCount;
+        NSLog(@"Total files added: %ld out of %ld", self.totalNewFileCount, self.totalFiles);
 
         dispatch_async(dispatch_get_main_queue(), ^{
 

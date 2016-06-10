@@ -18,13 +18,16 @@
 @property   NSString            *title;
 @property   NSString            *mimeType;
 @property   NSString            *prettyType;
-@property   NSDate              *creationDate;
+@property   NSDate              *created;
+@property   NSDate              *timestamp;
 @property   NSNumber<RLMInt>    *filesize;
 @property   NSString            *creatorUserId;
 @property   NSString            *thumbnailURL;
 @property   NSData              *jsonBlob;
 
 + (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response;
+
++ (void)fixBadTimestamps;
 
 + (NSDate *)oldestTimestampForTeam:(Team *)team;
 + (NSDate *)oldesetTimestampInGapForTeam:(Team *)team;

@@ -34,9 +34,10 @@ static NSCache  *gExtensionIconCache;
     values[@"prettyType"] = response[@"pretty_type"];
     values[@"creatorUserId"] = response[@"user"];
 
-    NSUInteger  number = [response[@"created"] unsignedIntegerValue];
+    values[@"created"] = [File dateFromResponse:response withKey:@"created"];
+    values[@"timestamp"] = [File dateFromResponse:response withKey:@"timestamp"];
 
-    values[@"creationDate"] = [NSDate dateWithTimeIntervalSince1970:number];
+    NSUInteger  number;
 
     number = [response[@"size"] unsignedIntegerValue];
     values[@"filesize"] = [NSNumber numberWithUnsignedInteger:number];
@@ -45,6 +46,13 @@ static NSCache  *gExtensionIconCache;
     values[@"jsonBlob"] = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
 
     return [NSDictionary dictionaryWithDictionary:values];
+}
+
++ (NSDate *)dateFromResponse:(NSDictionary *)response withKey:(NSString *)key
+{
+    NSUInteger  number = [response[key] unsignedIntegerValue];
+
+    return [NSDate dateWithTimeIntervalSince1970:number];
 }
 
 + (NSString *)bestThumbnailImageURLFromFileInfo:(NSDictionary *)info
@@ -70,11 +78,31 @@ static NSCache  *gExtensionIconCache;
     return @"fileId";
 }
 
++ (void)fixBadTimestamps
+{
+    NSCalendar          *calendar = [NSCalendar currentCalendar];
+    NSDate              *testDate = [calendar dateWithEra:1 year:2000 month:1 day:1 hour:1 minute:1 second:1 nanosecond:1];
+
+    NSLog(@"%@", testDate);
+
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    RLMResults  *files = [File objectsInRealm:realm where:@"timestamp < %@", testDate];
+
+    [realm transactionWithBlock:^{
+
+        for (File *file in files)
+        {
+            file.timestamp = file.created;
+        }
+    }];
+}
+
 + (NSDate *)oldestTimestampForTeam:(Team *)team
 {
     RLMRealm    *realm = [RLMRealm defaultRealm];
+
     RLMResults  *files = [File objectsInRealm:realm where:@"team = %@", team];
-    NSDate      *oldestTimestamp = [files minOfProperty:@"creationDate"];
+    NSDate      *oldestTimestamp = [files minOfProperty:@"timestamp"];
 
     if (nil == oldestTimestamp)
     {
@@ -87,8 +115,8 @@ static NSCache  *gExtensionIconCache;
 + (NSDate *)oldesetTimestampInGapForTeam:(Team *)team
 {
     RLMRealm    *realm = [RLMRealm defaultRealm];
-    RLMResults  *files = [File objectsInRealm:realm where:@"team = %@ AND creationDate > %@", team, team.syncBoundary];
-    NSDate      *oldestTimestamp = [files minOfProperty:@"creationDate"];
+    RLMResults  *files = [File objectsInRealm:realm where:@"team = %@ AND timestamp > %@", team, team.syncBoundary];
+    NSDate      *oldestTimestamp = [files minOfProperty:@"timestamp"];
 
     if (nil == oldestTimestamp)
     {
@@ -103,7 +131,7 @@ static NSCache  *gExtensionIconCache;
     RLMRealm    *realm = [RLMRealm defaultRealm];
     RLMResults  *files = [File objectsInRealm:realm where:@"team = %@", team];
 
-    NSDate      *newestTimestamp = [files maxOfProperty:@"creationDate"];
+    NSDate      *newestTimestamp = [files maxOfProperty:@"timestamp"];
 
     if (nil == newestTimestamp)
     {
