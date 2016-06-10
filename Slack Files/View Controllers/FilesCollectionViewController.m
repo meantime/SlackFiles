@@ -44,6 +44,7 @@
 {
     [super viewDidLoad];
 
+    [[self.collectionView enclosingScrollView] becomeFirstResponder];
     self.view.wantsLayer = YES;
 
     [self.collectionView registerClass:[FilesCollectionViewItem class] forItemWithIdentifier:@"FilesCollectionViewItem"];

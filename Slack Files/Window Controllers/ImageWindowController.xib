@@ -25,7 +25,7 @@
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="T4z-hM-deg">
                         <rect key="frame" x="0.0" y="0.0" width="676" height="486"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="FS6-0n-Zcd"/>
+                        <imageCell key="cell" alignment="left" imageScaling="proportionallyDown" id="FS6-0n-Zcd"/>
                     </imageView>
                 </subviews>
             </view>
