@@ -17,15 +17,15 @@
             <rect key="frame" x="0.0" y="0.0" width="509" height="402"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="0VT-iE-JV4">
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="0VT-iE-JV4">
                     <rect key="frame" x="0.0" y="0.0" width="509" height="402"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="qr8-gv-KEg">
-                        <rect key="frame" x="1" y="1" width="507" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="509" height="402"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" allowsMultipleSelection="YES" id="fUy-wL-pbq">
-                                <rect key="frame" x="0.0" y="0.0" width="507" height="400"/>
+                                <rect key="frame" x="0.0" y="0.0" width="509" height="402"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="GYo-r2-Uxt">
                                     <size key="itemSize" width="165" height="215"/>
