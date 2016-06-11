@@ -36,12 +36,13 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
-    [self configureRealm];
     [File fixBadTimestamps];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [self configureRealm];
+
     self.filesWindowControllers = [NSMutableArray array];
     self.otherWindowControllers = [NSMutableArray array];
 
@@ -110,6 +111,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     RLMRealmConfiguration   *config = [RLMRealmConfiguration defaultConfiguration];
 
     config.encryptionKey = realmKey;
+
     [RLMRealmConfiguration setDefaultConfiguration:config];
 }
 

@@ -12,6 +12,7 @@
 #import "FilesCollectionViewController.h"
 #import "SlackAPI.h"
 #import "Team.h"
+#import "User.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -80,7 +81,7 @@ NS_ENUM(NSUInteger, FetchState)
     [self switchToViewController:[FilesCollectionViewController viewControllerForTeam:self.team]];
     [self.contentViewController loadView];
 
-    [self fetchNextPage];
+    [self fetchUserList];
 }
 
 - (BOOL)canBecomeKeyWindow
@@ -93,7 +94,28 @@ NS_ENUM(NSUInteger, FetchState)
     return YES;
 }
 
-- (void)fetchNextPage
+- (void)fetchUserList
+{
+    NSDictionary    *args = @{ @"presence" : @"0" };
+    typeof(self)    weakSelf = self;
+
+    [self.api callEndpoint:SlackEndpoints.usersList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        if (YES == [result[@"ok"] boolValue])
+        {
+            NSArray *userList = result[@"members"];
+
+            [weakSelf processUserList:userList];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [weakSelf fetchNextPageOfFiles];
+        });
+    }];
+}
+
+- (void)fetchNextPageOfFiles
 {
     if (FetchStateNone == self.fetchState)
     {
@@ -196,7 +218,7 @@ NS_ENUM(NSUInteger, FetchState)
 
             dispatch_async(dispatch_get_main_queue(), ^{
 
-                [self fetchNextPage];
+                [self fetchNextPageOfFiles];
             });
         }
         else
@@ -215,7 +237,7 @@ NS_ENUM(NSUInteger, FetchState)
 
                 dispatch_async(dispatch_get_main_queue(), ^{
 
-                    [self fetchNextPage];
+                    [self fetchNextPageOfFiles];
                 });
             }
         }
@@ -243,22 +265,54 @@ NS_ENUM(NSUInteger, FetchState)
 
             if (nil == file)
             {
-                NSDictionary    *values = [File valuesFromNetworkResponse:f];
-
-                file = [File createInRealm:realm withValue:values];
-                file.team = self.team;
-
                 newFileCount++;
             }
+
+            NSDictionary    *values = [File valuesFromNetworkResponse:f];
+            User            *creator = [User objectInRealm:realm forPrimaryKey:f[@"user"]];
+
+            file = [File createOrUpdateInRealm:realm withValue:values];
+            file.team = self.team;
+            file.creator = creator;
         }
 
         self.totalNewFileCount = self.totalNewFileCount + newFileCount;
         NSLog(@"Total files added: %ld out of %ld", self.totalNewFileCount, self.totalFiles);
 
-        dispatch_async(dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//
+//            [self.syncUIDelegate didFetchMoreFiles];
+//        });
+    }];
+}
 
-            [self.syncUIDelegate didFetchMoreFiles];
-        });
+- (void)processUserList:(NSArray *)users
+{
+    NSLog(@"Processling %ld users", users.count);
+
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
+
+    [realm transactionWithBlock:^{
+
+        NSUInteger  newUserCount = 0;
+
+        for (NSDictionary *u in users)
+        {
+            User    *user = [User objectInRealm:realm forPrimaryKey:u[@"id"]];
+
+            if (nil == user)
+            {
+                newUserCount++;
+            }
+
+            NSDictionary    *values = [User valuesFromNetworkResponse:u];
+
+            user = [User createOrUpdateInRealm:realm withValue:values];
+            user.team = team;
+        }
+
+        NSLog(@"New users added: %ld", newUserCount);
     }];
 }
 

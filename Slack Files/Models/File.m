@@ -10,8 +10,6 @@
 
 @import Cocoa;
 
-#import "Team.h"
-
 static NSCache  *gMIMETypeIconCache;
 static NSCache  *gExtensionIconCache;
 

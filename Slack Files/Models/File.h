@@ -8,12 +8,14 @@
 
 @import Realm;
 
-@class Team;
+#import "Team.h"
+#import "User.h"
 
 @interface File : RLMObject
 
 @property   NSString            *fileId;
 @property   Team                *team;
+@property   User                *creator;
 @property   NSString            *filename;
 @property   NSString            *title;
 @property   NSString            *mimeType;
@@ -21,7 +23,6 @@
 @property   NSDate              *created;
 @property   NSDate              *timestamp;
 @property   NSNumber<RLMInt>    *filesize;
-@property   NSString            *creatorUserId;
 @property   NSString            *thumbnailURL;
 @property   NSData              *jsonBlob;
 
