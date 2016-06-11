@@ -14,6 +14,8 @@
 		833620FD1D0CB59100589089 /* SlackModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620FC1D0CB59100589089 /* SlackModelObject.m */; };
 		833621001D0CB8F700589089 /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620FF1D0CB8F700589089 /* Channel.m */; };
 		833621031D0CBA4A00589089 /* IM.m in Sources */ = {isa = PBXBuildFile; fileRef = 833621021D0CBA4A00589089 /* IM.m */; };
+		833621091D0CCAEC00589089 /* ChannelFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833621071D0CCAEC00589089 /* ChannelFilterViewController.m */; };
+		8336210A1D0CCAEC00589089 /* ChannelFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833621081D0CCAEC00589089 /* ChannelFilterViewController.xib */; };
 		8337E71A1D06A3A600051C17 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337E7191D06A3A600051C17 /* WindowController.m */; };
 		8337E71E1D06B8B600051C17 /* ImageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337E71C1D06B8B600051C17 /* ImageWindowController.m */; };
 		8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8337E71D1D06B8B600051C17 /* ImageWindowController.xib */; };
@@ -80,6 +82,9 @@
 		833620FF1D0CB8F700589089 /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
 		833621011D0CBA4A00589089 /* IM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IM.h; sourceTree = "<group>"; };
 		833621021D0CBA4A00589089 /* IM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IM.m; sourceTree = "<group>"; };
+		833621061D0CCAEC00589089 /* ChannelFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelFilterViewController.h; sourceTree = "<group>"; };
+		833621071D0CCAEC00589089 /* ChannelFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelFilterViewController.m; sourceTree = "<group>"; };
+		833621081D0CCAEC00589089 /* ChannelFilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelFilterViewController.xib; sourceTree = "<group>"; };
 		8337E7181D06A3A600051C17 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		8337E7191D06A3A600051C17 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		8337E71B1D06B8B600051C17 /* ImageWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageWindowController.h; sourceTree = "<group>"; };
@@ -158,6 +163,31 @@
 				833230F91D02690000933E7E /* SlackAPI.m */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		833621041D0CCA8900589089 /* File Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				83B2620F1D05432300737310 /* FileCollectionViewItemView.h */,
+				83B262101D05432300737310 /* FileCollectionViewItemView.m */,
+				837E36101D04DBB500483B61 /* FilesCollectionViewController.h */,
+				837E36111D04DBB500483B61 /* FilesCollectionViewController.m */,
+				837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */,
+				837E36151D04DD4D00483B61 /* FilesCollectionViewItem.h */,
+				837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */,
+				837E36171D04DD4D00483B61 /* FilesCollectionViewItem.xib */,
+			);
+			name = "File Collection View";
+			sourceTree = "<group>";
+		};
+		833621051D0CCA9D00589089 /* Filter List */ = {
+			isa = PBXGroup;
+			children = (
+				833621061D0CCAEC00589089 /* ChannelFilterViewController.h */,
+				833621071D0CCAEC00589089 /* ChannelFilterViewController.m */,
+				833621081D0CCAEC00589089 /* ChannelFilterViewController.xib */,
+			);
+			name = "Filter List";
 			sourceTree = "<group>";
 		};
 		83A1AE881CFD3BD400A39387 = {
@@ -247,14 +277,8 @@
 		83B262081D05396800737310 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				83B2620F1D05432300737310 /* FileCollectionViewItemView.h */,
-				83B262101D05432300737310 /* FileCollectionViewItemView.m */,
-				837E36101D04DBB500483B61 /* FilesCollectionViewController.h */,
-				837E36111D04DBB500483B61 /* FilesCollectionViewController.m */,
-				837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */,
-				837E36151D04DD4D00483B61 /* FilesCollectionViewItem.h */,
-				837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */,
-				837E36171D04DD4D00483B61 /* FilesCollectionViewItem.xib */,
+				833621041D0CCA8900589089 /* File Collection View */,
+				833621051D0CCA9D00589089 /* Filter List */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -384,6 +408,7 @@
 				83B4B3201D0AC0C400EC9912 /* HTMLWindowController.xib in Resources */,
 				83B262211D055FC800737310 /* TextWindowController.xib in Resources */,
 				83A717D41D03681A00C4DE32 /* FilesWindowController.xib in Resources */,
+				8336210A1D0CCAEC00589089 /* ChannelFilterViewController.xib in Resources */,
 				83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */,
 				83A1AE9E1CFD3BD600A39387 /* MainMenu.xib in Resources */,
 				8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */,
@@ -407,6 +432,7 @@
 				833230FA1D02690000933E7E /* SlackAPI.m in Sources */,
 				8337E71A1D06A3A600051C17 /* WindowController.m in Sources */,
 				834359761D0386D200F309B9 /* File.m in Sources */,
+				833621091D0CCAEC00589089 /* ChannelFilterViewController.m in Sources */,
 				833620F41D0C848E00589089 /* User.m in Sources */,
 				833620FD1D0CB59100589089 /* SlackModelObject.m in Sources */,
 				83B2622A1D056B5300737310 /* PDFWindowController.m in Sources */,

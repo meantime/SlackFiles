@@ -23,11 +23,13 @@
     [values addEntriesFromDictionary:base];
 
     values[@"imId"] = response[@"id"];
-    values[@"name"] = response[@"name"];
 
     NSString    *otherUserId = response[@"user"];
 
-    values[@"user"] = [User objectForPrimaryKey:otherUserId];
+    User    *user = [User objectForPrimaryKey:otherUserId];
+
+    values[@"user"] = user;
+    values[@"name"] = user.username;
 
     NSUInteger  number;
 

@@ -9,6 +9,7 @@
 #import "FilesWindowController.h"
 
 #import "Channel.h"
+#import "ChannelFilterViewController.h"
 #import "File.h"
 #import "Group.h"
 #import "IM.h"
@@ -52,7 +53,8 @@ NS_ENUM(NSUInteger, FetchState)
 @property (nullable)    IBOutlet    NSTextField         *statusMessage;
 @property (nullable)    IBOutlet    NSProgressIndicator *progress;
 
-@property               FilesCollectionViewController *viewController;
+@property               FilesCollectionViewController   *viewController;
+@property (nullable)    ChannelFilterViewController     *filterController;
 
 @end
 
@@ -625,6 +627,42 @@ NS_ENUM(NSUInteger, FetchState)
             [self.syncUIDelegate didFetchMoreFiles];
         }
     });
+}
+
+- (IBAction)toggleFilterView:(id)sender
+{
+    if (FetchStateSyncComplete != self.fetchState)
+    {
+        return;
+    }
+
+    CGRect  windowBounds = [[self.window contentView] bounds];
+
+    if (self.filterController)
+    {
+        [self.filterController.view removeFromSuperview];
+        self.filterController = nil;
+
+        [self.browserContainer.animator setFrame:windowBounds];
+    }
+    else
+    {
+        self.filterController = [ChannelFilterViewController viewControllerForTeam:self.team];
+
+        [self.filterController loadView];
+
+        CGRect  browserContainerRect = self.browserContainer.frame;
+        CGRect  filterViewRect = self.filterController.view.frame;
+
+        browserContainerRect.size.width -= NSWidth(filterViewRect);
+        filterViewRect.size.height = NSHeight(browserContainerRect);
+        filterViewRect.origin.x = NSMaxX(browserContainerRect);
+
+        [self.browserContainer.animator setFrame:browserContainerRect];
+
+        [[self.window contentView] addSubview:self.filterController.view];
+        self.filterController.view.frame = filterViewRect;
+    }
 }
 
 #pragma mark - <NSWindowDelegate>
