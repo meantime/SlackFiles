@@ -111,6 +111,8 @@
     return [NSSet<NSIndexPath *> setWithSet:result];
 }
 
+#pragma mark - NSResponder Actions
+
 - (void)scrollPageDown:(id)sender
 {
     NSLog(@"scrollPageDown: mother fucker!!!!");
@@ -131,9 +133,23 @@
     NSLog(@"scrollToEndOfDocument: mother fucker!!!!");
 }
 
+- (void)insertNewline:(id)sender
+{
+    NSSet   *selection = [self.collectionView selectionIndexPaths];
+
+    if (selection.count)
+    {
+        NSCollectionViewItem    *item = [self.collectionView itemAtIndexPath:[selection anyObject]];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:OpenFileWindowNotification object:item.representedObject];
+    }
+}
+
 - (void)doCommandBySelector:(SEL)aSelector
 {
     NSLog(@"Asked to: %@", NSStringFromSelector(aSelector));
+
+    [super doCommandBySelector:aSelector];
 }
 
 #pragma mark - <NSCollectionViewDelegate>
