@@ -120,17 +120,33 @@
 
 - (void)scrollPageUp:(id)sender
 {
-    NSLog(@"scrollPageUp: mother fucker!!!!");
+
 }
 
 - (void)scrollToBeginningOfDocument:(id)sender
 {
-    NSLog(@"scrollToBeginningOfDocument: mother fucker!!!!");
+    if (0 == self.sortedFiles.count)
+    {
+        return;
+    }
+
+    NSIndexPath *path = [NSIndexPath indexPathForItem:0 inSection:0];
+    NSSet       *item = [NSSet setWithObject:path];
+
+    [self.collectionView scrollToItemsAtIndexPaths:item scrollPosition:NSCollectionViewScrollPositionTop];
 }
 
 - (void)scrollToEndOfDocument:(id)sender
 {
-    NSLog(@"scrollToEndOfDocument: mother fucker!!!!");
+    if (0 == self.sortedFiles.count)
+    {
+        return;
+    }
+
+    NSIndexPath *path = [NSIndexPath indexPathForItem:(self.sortedFiles.count - 1) inSection:0];
+    NSSet       *item = [NSSet setWithObject:path];
+
+    [self.collectionView scrollToItemsAtIndexPaths:item scrollPosition:NSCollectionViewScrollPositionBottom];
 }
 
 - (void)insertNewline:(id)sender
