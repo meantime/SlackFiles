@@ -14,6 +14,8 @@
 
 @interface FilesCollectionViewController : NSViewController<SyncUIDelegate>
 
+@property   IBOutlet    NSCollectionView        *collectionView;
+
 + (instancetype)viewControllerForTeam:(Team *)team;
 
 @end

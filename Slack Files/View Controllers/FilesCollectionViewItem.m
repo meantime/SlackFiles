@@ -61,7 +61,6 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 {
     [super setSelected:selected];
 
-    // Relay the new "selected" state to our AAPLSlideCarrierView.
     [(FileCollectionViewItemView *) [self view] setSelected:selected];
 }
 
@@ -103,6 +102,9 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
     
     [self.iconTask cancel];
     self.iconTask = nil;
+
+    [self setSelected:NO];
+    [self setHighlightState:NSCollectionViewItemHighlightNone];
 }
 
 - (void)configureNetworkSession

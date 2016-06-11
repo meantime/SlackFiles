@@ -83,6 +83,16 @@ NS_ENUM(NSUInteger, FetchState)
     [self fetchNextPage];
 }
 
+- (BOOL)canBecomeKeyWindow
+{
+    return YES;
+}
+
+- (BOOL)canBecomeMainWindow
+{
+    return YES;
+}
+
 - (void)fetchNextPage
 {
     if (FetchStateNone == self.fetchState)

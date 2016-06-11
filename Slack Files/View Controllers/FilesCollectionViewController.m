@@ -15,9 +15,8 @@
 
 @interface FilesCollectionViewController () <NSCollectionViewDelegate, NSCollectionViewDataSource>
 
-@property               IBOutlet    NSCollectionView        *collectionView;
-
 @property                           Team                    *team;
+
 @property (nullable)                RLMResults              *baseFiles;
 @property (nullable)                RLMResults              *sortedFiles;
 @property (nullable)                RLMNotificationToken    *filesNotificationToken;
@@ -110,6 +109,31 @@
     }
 
     return [NSSet<NSIndexPath *> setWithSet:result];
+}
+
+- (void)scrollPageDown:(id)sender
+{
+    NSLog(@"scrollPageDown: mother fucker!!!!");
+}
+
+- (void)scrollPageUp:(id)sender
+{
+    NSLog(@"scrollPageUp: mother fucker!!!!");
+}
+
+- (void)scrollToBeginningOfDocument:(id)sender
+{
+    NSLog(@"scrollToBeginningOfDocument: mother fucker!!!!");
+}
+
+- (void)scrollToEndOfDocument:(id)sender
+{
+    NSLog(@"scrollToEndOfDocument: mother fucker!!!!");
+}
+
+- (void)doCommandBySelector:(SEL)aSelector
+{
+    NSLog(@"Asked to: %@", NSStringFromSelector(aSelector));
 }
 
 #pragma mark - <NSCollectionViewDelegate>
