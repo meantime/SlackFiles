@@ -46,14 +46,23 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 {
     [super viewDidLoad];
 
-    FileCollectionViewItemView  *view = (FileCollectionViewItemView *) self.view;
-
-    view.wantsLayer = YES;
-    view.layer.borderColor = [NSColor lightGrayColor].CGColor;
-    view.layer.borderWidth = 1.0;
-    view.layer.cornerRadius = 8.0;
-
     [self configureNetworkSession];
+}
+
+- (void)setHighlightState:(NSCollectionViewItemHighlightState)newHighlightState
+{
+    [super setHighlightState:newHighlightState];
+
+    // Relay the newHighlightState to our AAPLSlideCarrierView.
+    [(FileCollectionViewItemView *) [self view] setHighlightState:newHighlightState];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+
+    // Relay the new "selected" state to our AAPLSlideCarrierView.
+    [(FileCollectionViewItemView *) [self view] setSelected:selected];
 }
 
 - (void)configureWithFile:(File *)file

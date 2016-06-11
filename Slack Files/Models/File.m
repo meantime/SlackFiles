@@ -83,8 +83,6 @@ static NSCache  *gExtensionIconCache;
     NSCalendar          *calendar = [NSCalendar currentCalendar];
     NSDate              *testDate = [calendar dateWithEra:1 year:2000 month:1 day:1 hour:1 minute:1 second:1 nanosecond:1];
 
-    NSLog(@"%@", testDate);
-
     RLMRealm    *realm = [RLMRealm defaultRealm];
     RLMResults  *files = [File objectsInRealm:realm where:@"timestamp < %@", testDate];
 

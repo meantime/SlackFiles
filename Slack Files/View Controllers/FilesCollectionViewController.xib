@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="509" height="402"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView selectable="YES" allowsMultipleSelection="YES" id="fUy-wL-pbq">
+                            <collectionView selectable="YES" id="fUy-wL-pbq">
                                 <rect key="frame" x="0.0" y="0.0" width="509" height="402"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="GYo-r2-Uxt">

@@ -44,7 +44,6 @@
 {
     [super viewDidLoad];
 
-    [[self.collectionView enclosingScrollView] becomeFirstResponder];
     self.view.wantsLayer = YES;
 
     [self.collectionView registerClass:[FilesCollectionViewItem class] forItemWithIdentifier:@"FilesCollectionViewItem"];
@@ -139,7 +138,11 @@
 
 - (NSCollectionViewItem *)collectionView:(NSCollectionView *)collectionView itemForRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.collectionView makeItemWithIdentifier:@"FilesCollectionViewItem" forIndexPath:indexPath];
+    NSCollectionViewItem    *item = [self.collectionView makeItemWithIdentifier:@"FilesCollectionViewItem" forIndexPath:indexPath];
+
+    item.representedObject = self.sortedFiles[indexPath.item];
+
+    return item;
 }
 
 #pragma mark - <SyncUIDelegate>

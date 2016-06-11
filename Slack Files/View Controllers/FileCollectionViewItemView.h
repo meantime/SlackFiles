@@ -11,7 +11,13 @@
 @class File;
 
 @interface FileCollectionViewItemView : NSView
+{
+    NSCollectionViewItemHighlightState highlightState;
+    BOOL    selected;
+}
 
-@property   File    *file;
+@property   File                    *file;
+@property (getter=isSelected) BOOL  selected;
+@property NSCollectionViewItemHighlightState highlightState;
 
 @end
