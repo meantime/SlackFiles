@@ -36,12 +36,13 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
-    [File fixBadTimestamps];
+
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self configureRealm];
+    [File fixBadTimestamps];
 
     self.filesWindowControllers = [NSMutableArray array];
     self.otherWindowControllers = [NSMutableArray array];

@@ -41,6 +41,10 @@ NS_ENUM(NSUInteger, FetchState)
 @property                           NSUInteger          totalNewFileCount;
 @property                           NSUInteger          totalFiles;
 
+@property               IBOutlet    NSView              *browserContainer;
+@property (nullable)    IBOutlet    NSTextField         *statusMessage;
+@property (nullable)    IBOutlet    NSProgressIndicator *progress;
+
 @property               FilesCollectionViewController *viewController;
 
 @end
@@ -99,6 +103,8 @@ NS_ENUM(NSUInteger, FetchState)
     NSDictionary    *args = @{ @"presence" : @"0" };
     typeof(self)    weakSelf = self;
 
+    [self updateProgressInfo];
+
     [self.api callEndpoint:SlackEndpoints.usersList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
 
         if (YES == [result[@"ok"] boolValue])
@@ -128,6 +134,7 @@ NS_ENUM(NSUInteger, FetchState)
         self.fetchToDate = [File oldestTimestampForTeam:self.team];
 
         [self reportDateRange];
+        [self updateProgressInfo];
     }
 
     //  Figure out what to do after each phase of fetching completes
@@ -145,6 +152,7 @@ NS_ENUM(NSUInteger, FetchState)
             self.fetchToDate = [File oldesetTimestampInGapForTeam:self.team];
 
             [self reportDateRange];
+            [self updateProgressInfo];
         }
         else if (FetchStateGapMessages == self.fetchState)
         {
@@ -155,18 +163,24 @@ NS_ENUM(NSUInteger, FetchState)
             self.fetchToDate = [NSDate date];
 
             [self reportDateRange];
+            [self updateProgressInfo];
         }
         else if (FetchStateNewMessages == self.fetchState)
         {
             NSLog(@"Sync complete");
 
-            self.fetchState = FetchStateNone;
+            self.fetchState = FetchStateSyncComplete;
             self.fetchInProgress = NO;
 
             [self.team updateSyncBoundaryToDate:self.fetchToDate];
 
             self.fetchFromDate = nil;
             self.fetchToDate = nil;
+
+            [self reportDateRange];
+
+            [self updateProgressInfo];
+            [self.syncUIDelegate didFetchMoreFiles];
 
             return;
         }
@@ -213,6 +227,8 @@ NS_ENUM(NSUInteger, FetchState)
             number = [paging[@"total"] unsignedIntegerValue];
             self.totalFiles = MAX(self.totalFiles, number);
 
+            [self updateProgressInfo];
+
             NSLog(@"[%@] page %ld of %ld", self.team.teamName, self.highestPage, self.numPages);
             [self processFileList:result[@"files"]];
 
@@ -239,6 +255,10 @@ NS_ENUM(NSUInteger, FetchState)
 
                     [self fetchNextPageOfFiles];
                 });
+            }
+            else
+            {
+                NSLog(@"oh shit");
             }
         }
     }];
@@ -279,10 +299,7 @@ NS_ENUM(NSUInteger, FetchState)
         self.totalNewFileCount = self.totalNewFileCount + newFileCount;
         NSLog(@"Total files added: %ld out of %ld", self.totalNewFileCount, self.totalFiles);
 
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//
-//            [self.syncUIDelegate didFetchMoreFiles];
-//        });
+        [self updateProgressInfo];
     }];
 }
 
@@ -338,15 +355,77 @@ NS_ENUM(NSUInteger, FetchState)
 
 - (void)switchToViewController:(FilesCollectionViewController *)viewController
 {
-    NSView  *parent = [self.window contentView];
+    NSView  *parent = self.browserContainer;
 
     [self.viewController.view removeFromSuperview];
     self.viewController = viewController;
     [parent addSubview:viewController.view];
 
-    viewController.view.frame = parent.frame;
+    viewController.view.frame = parent.bounds;
 
     self.syncUIDelegate = viewController;
+}
+
+- (void)updateProgressInfo
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        self.progress.minValue = 0;
+        self.progress.doubleValue = self.highestPage;
+        self.progress.maxValue = self.numPages;
+
+        if (self.numPages == 0)
+        {
+            self.progress.indeterminate = YES;
+            [self.progress startAnimation:nil];
+        }
+        else
+        {
+            self.progress.indeterminate = NO;
+            [self.progress stopAnimation:nil];
+        }
+
+        switch (self.fetchState)
+        {
+            case FetchStateNone:
+                self.statusMessage.stringValue = @"Fetching user list";
+                break;
+
+            case FetchStateOldMessages:
+                self.statusMessage.stringValue = @"Backfilling old messages";
+                break;
+
+            case FetchStateGapMessages:
+                self.statusMessage.stringValue = @"Fetching gap messages";
+                break;
+
+            case FetchStateNewMessages:
+                self.statusMessage.stringValue = @"Fetching new messages";
+                break;
+
+            case FetchStateSyncComplete:
+                [self.statusMessage.animator removeFromSuperview];
+                self.statusMessage = nil;
+
+                [self.progress.animator removeFromSuperview];
+                self.progress = nil;
+
+                [self.browserContainer.animator setFrame:[[self.window contentView] bounds]];
+
+                break;
+        }
+    });
+}
+
+- (void)updateBrowser
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        if (self.syncUIDelegate)
+        {
+            [self.syncUIDelegate didFetchMoreFiles];
+        }
+    });
 }
 
 #pragma mark - <NSWindowDelegate>
