@@ -492,7 +492,7 @@ NS_ENUM(NSUInteger, FetchState)
                 newChannelCount++;
             }
 
-            NSDictionary    *values = [Channel valuesFromNetworkResponse:c];
+            NSDictionary    *values = [IM valuesFromNetworkResponse:c];
 
             channel = [IM createOrUpdateInRealm:realm withValue:values];
             channel.team = team;
