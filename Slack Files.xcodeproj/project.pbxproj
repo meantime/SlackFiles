@@ -10,6 +10,10 @@
 		833230FA1D02690000933E7E /* SlackAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 833230F91D02690000933E7E /* SlackAPI.m */; };
 		833230FD1D02769A00933E7E /* Team.m in Sources */ = {isa = PBXBuildFile; fileRef = 833230FC1D02769A00933E7E /* Team.m */; };
 		833620F41D0C848E00589089 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620F31D0C848E00589089 /* User.m */; };
+		833620FA1D0CB53400589089 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620F91D0CB53400589089 /* Group.m */; };
+		833620FD1D0CB59100589089 /* SlackModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620FC1D0CB59100589089 /* SlackModelObject.m */; };
+		833621001D0CB8F700589089 /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620FF1D0CB8F700589089 /* Channel.m */; };
+		833621031D0CBA4A00589089 /* IM.m in Sources */ = {isa = PBXBuildFile; fileRef = 833621021D0CBA4A00589089 /* IM.m */; };
 		8337E71A1D06A3A600051C17 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337E7191D06A3A600051C17 /* WindowController.m */; };
 		8337E71E1D06B8B600051C17 /* ImageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337E71C1D06B8B600051C17 /* ImageWindowController.m */; };
 		8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8337E71D1D06B8B600051C17 /* ImageWindowController.xib */; };
@@ -68,6 +72,14 @@
 		833230FE1D028C3300933E7E /* Credentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Credentials.h; sourceTree = "<group>"; };
 		833620F21D0C848E00589089 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		833620F31D0C848E00589089 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		833620F81D0CB53400589089 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		833620F91D0CB53400589089 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		833620FB1D0CB59100589089 /* SlackModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlackModelObject.h; sourceTree = "<group>"; };
+		833620FC1D0CB59100589089 /* SlackModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlackModelObject.m; sourceTree = "<group>"; };
+		833620FE1D0CB8F700589089 /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
+		833620FF1D0CB8F700589089 /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
+		833621011D0CBA4A00589089 /* IM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IM.h; sourceTree = "<group>"; };
+		833621021D0CBA4A00589089 /* IM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IM.m; sourceTree = "<group>"; };
 		8337E7181D06A3A600051C17 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		8337E7191D06A3A600051C17 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		8337E71B1D06B8B600051C17 /* ImageWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageWindowController.h; sourceTree = "<group>"; };
@@ -250,8 +262,16 @@
 		83B262091D05399D00737310 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				833620FE1D0CB8F700589089 /* Channel.h */,
+				833620FF1D0CB8F700589089 /* Channel.m */,
 				834359741D0386D200F309B9 /* File.h */,
 				834359751D0386D200F309B9 /* File.m */,
+				833620F81D0CB53400589089 /* Group.h */,
+				833620F91D0CB53400589089 /* Group.m */,
+				833621011D0CBA4A00589089 /* IM.h */,
+				833621021D0CBA4A00589089 /* IM.m */,
+				833620FB1D0CB59100589089 /* SlackModelObject.h */,
+				833620FC1D0CB59100589089 /* SlackModelObject.m */,
 				833230FB1D02769A00933E7E /* Team.h */,
 				833230FC1D02769A00933E7E /* Team.m */,
 				833620F21D0C848E00589089 /* User.h */,
@@ -388,8 +408,11 @@
 				8337E71A1D06A3A600051C17 /* WindowController.m in Sources */,
 				834359761D0386D200F309B9 /* File.m in Sources */,
 				833620F41D0C848E00589089 /* User.m in Sources */,
+				833620FD1D0CB59100589089 /* SlackModelObject.m in Sources */,
 				83B2622A1D056B5300737310 /* PDFWindowController.m in Sources */,
 				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
+				833620FA1D0CB53400589089 /* Group.m in Sources */,
+				833621001D0CB8F700589089 /* Channel.m in Sources */,
 				83B262161D05503B00737310 /* VideoWindowController.m in Sources */,
 				837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */,
 				8337E71E1D06B8B600051C17 /* ImageWindowController.m in Sources */,
@@ -397,6 +420,7 @@
 				83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */,
 				83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */,
 				83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */,
+				833621031D0CBA4A00589089 /* IM.m in Sources */,
 				833230FD1D02769A00933E7E /* Team.m in Sources */,
 				83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */,
 				83B262201D055FC800737310 /* TextWindowController.m in Sources */,

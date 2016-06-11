@@ -17,15 +17,17 @@
 
 + (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response
 {
+    NSDictionary        *base = [[self superclass] valuesFromNetworkResponse:response];
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
     NSDictionary        *profile = response[@"profile"];
+
+    [values addEntriesFromDictionary:base];
 
     values[@"userId"] = response[@"id"];
     values[@"username"] = response[@"name"];
     values[@"realName"] = profile[@"real_name"];
     values[@"title"] = profile[@"title"];
     values[@"profileImageURL"] = [User bestImageURLFromProfileInfo:profile];
-    values[@"jsonBlob"] = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
 
     return [NSDictionary dictionaryWithDictionary:values];
 

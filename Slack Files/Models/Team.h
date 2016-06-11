@@ -6,7 +6,6 @@
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
-@import Foundation;
 @import Realm;
 
 @interface Team : RLMObject

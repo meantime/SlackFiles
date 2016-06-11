@@ -6,15 +6,12 @@
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
-@import Realm;
-
-#import "Team.h"
+#import "SlackModelObject.h"
 #import "User.h"
 
-@interface File : RLMObject
+@interface File : SlackModelObject
 
 @property   NSString            *fileId;
-@property   Team                *team;
 @property   User                *creator;
 @property   NSString            *filename;
 @property   NSString            *title;
@@ -24,9 +21,6 @@
 @property   NSDate              *timestamp;
 @property   NSNumber<RLMInt>    *filesize;
 @property   NSString            *thumbnailURL;
-@property   NSData              *jsonBlob;
-
-+ (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response;
 
 + (void)fixBadTimestamps;
 

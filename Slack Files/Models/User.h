@@ -6,23 +6,18 @@
 //  Copyright © 2016 Chris DeSalvo. All rights reserved.
 //
 
-@import Realm;
-
-#import "Team.h"
+#import "SlackModelObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface User : RLMObject
+@interface User : SlackModelObject
 
 @property NSString  *userId;
-@property Team      *team;
 @property NSString  *username;
 @property NSString  *realName;
 @property NSString  *title;
 @property NSString  *profileImageURL;
-@property NSData    *jsonBlob;
 
-+ (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response;
 + (NSString *)bestImageURLFromProfileInfo:(NSDictionary *)profile;
 
 @end

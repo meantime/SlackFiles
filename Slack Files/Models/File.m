@@ -21,9 +21,17 @@ static NSCache  *gExtensionIconCache;
     gExtensionIconCache = [NSCache new];
 }
 
++ (NSString *)primaryKey
+{
+    return @"fileId";
+}
+
 + (NSDictionary *)valuesFromNetworkResponse:(NSDictionary *)response
 {
+    NSDictionary        *base = [[self superclass] valuesFromNetworkResponse:response];
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
+
+    [values addEntriesFromDictionary:base];
 
     values[@"fileId"] = response[@"id"];
     values[@"filename"] = response[@"name"];
@@ -41,7 +49,6 @@ static NSCache  *gExtensionIconCache;
     values[@"filesize"] = [NSNumber numberWithUnsignedInteger:number];
 
     values[@"thumbnailURL"] = [File bestThumbnailImageURLFromFileInfo:response];
-    values[@"jsonBlob"] = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
 
     return [NSDictionary dictionaryWithDictionary:values];
 }
@@ -69,11 +76,6 @@ static NSCache  *gExtensionIconCache;
 #undef TryIconNamed
 
     return @"";
-}
-
-+ (NSString *)primaryKey
-{
-    return @"fileId";
 }
 
 + (void)fixBadTimestamps
