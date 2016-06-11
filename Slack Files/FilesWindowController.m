@@ -414,6 +414,20 @@ NS_ENUM(NSUInteger, FetchState)
 
                 break;
         }
+
+        if (self.statusMessage)
+        {
+            [self.statusMessage sizeToFit];
+
+            CGRect  statusFrame = self.statusMessage.frame;
+            CGRect  progressFrame = self.progress.frame;
+            CGFloat progressRight = NSMaxX(progressFrame);
+
+            progressFrame.origin.x = NSMaxX(statusFrame) + 5;
+            progressFrame.size.width = progressRight - progressFrame.origin.x;
+
+            self.progress.frame = progressFrame;
+        }
     });
 }
 

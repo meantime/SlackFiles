@@ -37,8 +37,8 @@
                         </textFieldCell>
                     </textField>
                     <progressIndicator wantsLayer="YES" maxValue="100" style="bar" id="cAk-vG-NZD">
-                        <rect key="frame" x="227" y="18" width="304" height="20"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="227" y="17" width="304" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     </progressIndicator>
                 </subviews>
             </view>
