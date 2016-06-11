@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Group : SlackModelObject
 
-@property   NSString    *groupId;
-@property   NSString    *name;
+@property                       NSString            *groupId;
+@property                       NSString            *name;
+@property (getter=isArchived)   NSNumber<RLMBool>   *archived;
 
 @end
 

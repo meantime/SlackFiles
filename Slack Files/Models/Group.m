@@ -25,6 +25,11 @@
     values[@"groupId"] = response[@"id"];
     values[@"name"] = response[@"name"];
 
+    NSUInteger  number;
+
+    number = [response[@"is_archived"] unsignedIntegerValue];
+    values[@"archived"] = [NSNumber numberWithBool:number ? YES : NO];
+
     return [NSDictionary dictionaryWithDictionary:values];
 }
 

@@ -27,6 +27,12 @@
     values[@"username"] = response[@"name"];
     values[@"realName"] = profile[@"real_name"];
     values[@"title"] = profile[@"title"];
+
+    NSUInteger  number;
+
+    number = [response[@"deleted"] unsignedIntegerValue];
+    values[@"deleted"] = [NSNumber numberWithBool:number ? YES : NO];
+
     values[@"profileImageURL"] = [User bestImageURLFromProfileInfo:profile];
 
     return [NSDictionary dictionaryWithDictionary:values];

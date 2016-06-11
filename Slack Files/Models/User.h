@@ -12,11 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface User : SlackModelObject
 
-@property NSString  *userId;
-@property NSString  *username;
-@property NSString  *realName;
-@property NSString  *title;
-@property NSString  *profileImageURL;
+@property                       NSString            *userId;
+@property                       NSString            *username;
+@property                       NSString            *realName;
+@property                       NSString            *title;
+@property                       NSString            *profileImageURL;
+@property (getter=isDeleted)    NSNumber<RLMBool>   *deleted;
 
 + (NSString *)bestImageURLFromProfileInfo:(NSDictionary *)profile;
 

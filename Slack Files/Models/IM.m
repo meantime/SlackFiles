@@ -25,6 +25,15 @@
     values[@"imId"] = response[@"id"];
     values[@"name"] = response[@"name"];
 
+    NSString    *otherUserId = response[@"user"];
+
+    values[@"user"] = [User objectForPrimaryKey:otherUserId];
+
+    NSUInteger  number;
+
+    number = [response[@"is_user_deleted"] unsignedIntegerValue];
+    values[@"deleted"] = [NSNumber numberWithBool:number ? YES : NO];
+
     return [NSDictionary dictionaryWithDictionary:values];
 }
 

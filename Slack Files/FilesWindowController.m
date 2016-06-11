@@ -8,7 +8,10 @@
 
 #import "FilesWindowController.h"
 
+#import "Channel.h"
 #import "File.h"
+#import "Group.h"
+#import "IM.h"
 #import "FilesCollectionViewController.h"
 #import "SlackAPI.h"
 #import "Team.h"
@@ -21,6 +24,10 @@ NSString * const FilesWindowWillCloseNotification = @"FilesWindowWillCloseNotifi
 NS_ENUM(NSUInteger, FetchState)
 {
     FetchStateNone,
+    FetchStateUserList,
+    FetchStateChannelList,
+    FetchStateGroupList,
+    FetchStateIMList,
     FetchStateOldMessages,
     FetchStateGapMessages,
     FetchStateNewMessages,
@@ -103,6 +110,7 @@ NS_ENUM(NSUInteger, FetchState)
     NSDictionary    *args = @{ @"presence" : @"0" };
     typeof(self)    weakSelf = self;
 
+    self.fetchState = FetchStateUserList;
     [self updateProgressInfo];
 
     [self.api callEndpoint:SlackEndpoints.usersList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
@@ -116,6 +124,77 @@ NS_ENUM(NSUInteger, FetchState)
 
         dispatch_async(dispatch_get_main_queue(), ^{
 
+            [weakSelf fetchChannelList];
+        });
+    }];
+}
+
+- (void)fetchChannelList
+{
+    NSDictionary    *args = @{ @"exclude_archived" : @"0" };
+    typeof(self)    weakSelf = self;
+
+    self.fetchState = FetchStateChannelList;
+    [self updateProgressInfo];
+
+    [self.api callEndpoint:SlackEndpoints.channelsList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        if (YES == [result[@"ok"] boolValue])
+        {
+            NSArray *channelList = result[@"channels"];
+
+            [weakSelf processChannelList:channelList];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [weakSelf fetchGroupList];
+        });
+    }];
+}
+
+- (void)fetchGroupList
+{
+    NSDictionary    *args = @{ @"exclude_archived" : @"0" };
+    typeof(self)    weakSelf = self;
+
+    self.fetchState = FetchStateGroupList;
+    [self updateProgressInfo];
+
+    [self.api callEndpoint:SlackEndpoints.groupsList withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        if (YES == [result[@"ok"] boolValue])
+        {
+            NSArray *groupList = result[@"groups"];
+
+            [weakSelf processGroupList:groupList];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [weakSelf fetchIMList];
+        });
+    }];
+}
+
+- (void)fetchIMList
+{
+    typeof(self)    weakSelf = self;
+
+    self.fetchState = FetchStateIMList;
+    [self updateProgressInfo];
+
+    [self.api callEndpoint:SlackEndpoints.imList withArguments:nil completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        if (YES == [result[@"ok"] boolValue])
+        {
+            NSArray *imList = result[@"ims"];
+
+            [weakSelf processIMList:imList];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
             [weakSelf fetchNextPageOfFiles];
         });
     }];
@@ -123,7 +202,7 @@ NS_ENUM(NSUInteger, FetchState)
 
 - (void)fetchNextPageOfFiles
 {
-    if (FetchStateNone == self.fetchState)
+    if (FetchStateIMList == self.fetchState)
     {
         NSLog(@"Kicking off new sync with old message backfill");
 
@@ -305,7 +384,7 @@ NS_ENUM(NSUInteger, FetchState)
 
 - (void)processUserList:(NSArray *)users
 {
-    NSLog(@"Processling %ld users", users.count);
+    NSLog(@"Processing %ld users", users.count);
 
     RLMRealm    *realm = [RLMRealm defaultRealm];
     Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
@@ -330,6 +409,96 @@ NS_ENUM(NSUInteger, FetchState)
         }
 
         NSLog(@"New users added: %ld", newUserCount);
+    }];
+}
+
+- (void)processChannelList:(NSArray *)channels
+{
+    NSLog(@"Processing %ld channels", channels.count);
+
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
+
+    [realm transactionWithBlock:^{
+
+        NSUInteger  newChannelCount = 0;
+
+        for (NSDictionary *c in channels)
+        {
+            Channel *channel = [Channel objectInRealm:realm forPrimaryKey:c[@"id"]];
+
+            if (nil == channel)
+            {
+                newChannelCount++;
+            }
+
+            NSDictionary    *values = [Channel valuesFromNetworkResponse:c];
+
+            channel = [Channel createOrUpdateInRealm:realm withValue:values];
+            channel.team = team;
+        }
+
+        NSLog(@"New channels added: %ld", newChannelCount);
+    }];
+}
+
+- (void)processGroupList:(NSArray *)channels
+{
+    NSLog(@"Processing %ld private channels", channels.count);
+
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
+
+    [realm transactionWithBlock:^{
+
+        NSUInteger  newChannelCount = 0;
+
+        for (NSDictionary *c in channels)
+        {
+            Group   *channel = [Group objectInRealm:realm forPrimaryKey:c[@"id"]];
+
+            if (nil == channel)
+            {
+                newChannelCount++;
+            }
+
+            NSDictionary    *values = [Group valuesFromNetworkResponse:c];
+
+            channel = [Group createOrUpdateInRealm:realm withValue:values];
+            channel.team = team;
+        }
+
+        NSLog(@"New private channels added: %ld", newChannelCount);
+    }];
+}
+
+- (void)processIMList:(NSArray *)channels
+{
+    NSLog(@"Processing %ld direct message channels", channels.count);
+
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
+
+    [realm transactionWithBlock:^{
+
+        NSUInteger  newChannelCount = 0;
+
+        for (NSDictionary *c in channels)
+        {
+            IM  *channel = [IM objectInRealm:realm forPrimaryKey:c[@"id"]];
+
+            if (nil == channel)
+            {
+                newChannelCount++;
+            }
+
+            NSDictionary    *values = [Channel valuesFromNetworkResponse:c];
+
+            channel = [IM createOrUpdateInRealm:realm withValue:values];
+            channel.team = team;
+        }
+
+        NSLog(@"New direct message channels added: %ld", newChannelCount);
     }];
 }
 
@@ -388,7 +557,23 @@ NS_ENUM(NSUInteger, FetchState)
         switch (self.fetchState)
         {
             case FetchStateNone:
+                self.statusMessage.stringValue = @"Preparing";
+                break;
+
+            case FetchStateUserList:
                 self.statusMessage.stringValue = @"Fetching user list";
+                break;
+
+            case FetchStateChannelList:
+                self.statusMessage.stringValue = @"Fetching channel list";
+                break;
+
+            case FetchStateGroupList:
+                self.statusMessage.stringValue = @"Fetching private channel list";
+                break;
+
+            case FetchStateIMList:
+                self.statusMessage.stringValue = @"Fetching direct message list";
                 break;
 
             case FetchStateOldMessages:

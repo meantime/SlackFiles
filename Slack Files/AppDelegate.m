@@ -19,6 +19,7 @@
 #import "PDFWindowController.h"
 #import "SlackAuth.h"
 #import "Team.h"
+#import "User.h"
 #import "TextWindowController.h"
 #import "VideoWindowController.h"
 
@@ -111,7 +112,23 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
     RLMRealmConfiguration   *config = [RLMRealmConfiguration defaultConfiguration];
 
+    config.schemaVersion = 1;
     config.encryptionKey = realmKey;
+    config.migrationBlock = ^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+
+        if (oldSchemaVersion < 1)
+        {
+            [migration enumerateObjects:[User className] block:^(RLMObject * _Nullable oldObject, RLMObject * _Nullable newObject) {
+
+                User            *oldUser = (User *) oldObject;
+                User            *newUser = (User *) newObject;
+                NSDictionary    *fullData = [NSJSONSerialization JSONObjectWithData:oldUser.jsonBlob options:0 error:nil];
+                NSUInteger      number = [fullData[@"deleted"] unsignedIntegerValue];
+
+                newUser[@"deleted"] = [NSNumber numberWithBool:number ? YES : NO];
+            }];
+        }
+    };
 
     [RLMRealmConfiguration setDefaultConfiguration:config];
 }
