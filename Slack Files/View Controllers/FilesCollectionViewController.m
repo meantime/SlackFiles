@@ -113,14 +113,68 @@
 
 #pragma mark - NSResponder Actions
 
+- (BOOL)resignFirstResponder
+{
+    return NO;
+}
+
+- (BOOL)becomeFirstResponder
+{
+    return YES;
+}
+
 - (void)scrollPageDown:(id)sender
 {
-    NSLog(@"scrollPageDown: mother fucker!!!!");
+    NSInteger   highestIndex = -1;
+    NSSet       *indexPaths = self.collectionView.indexPathsForVisibleItems;
+    NSRect      visibleRect = self.collectionView.visibleRect;
+
+    for (NSIndexPath *path in indexPaths)
+    {
+        NSCollectionViewItem    *item = [self.collectionView itemAtIndexPath:path];
+
+        if (NSContainsRect(visibleRect, item.view.frame))
+        {
+            highestIndex = MAX(highestIndex, path.item);
+        }
+    }
+
+    NSInteger   nextIndex = highestIndex + 1;
+
+    if (nextIndex < self.sortedFiles.count)
+    {
+        NSIndexPath *path = [NSIndexPath indexPathForItem:nextIndex inSection:0];
+        NSSet       *item = [NSSet setWithObject:path];
+
+        [self.collectionView.animator scrollToItemsAtIndexPaths:item scrollPosition:NSCollectionViewScrollPositionTop];
+    }
 }
 
 - (void)scrollPageUp:(id)sender
 {
+    NSInteger   lowestIndex = NSNotFound;
+    NSSet       *indexPaths = self.collectionView.indexPathsForVisibleItems;
+    NSRect      visibleRect = self.collectionView.visibleRect;
 
+    for (NSIndexPath *path in indexPaths)
+    {
+        NSCollectionViewItem    *item = [self.collectionView itemAtIndexPath:path];
+
+        if (NSContainsRect(visibleRect, item.view.frame))
+        {
+            lowestIndex = MIN(lowestIndex, path.item);
+        }
+    }
+
+    NSInteger   nextIndex = lowestIndex - 1;
+
+    if ((nextIndex < self.sortedFiles.count) && (nextIndex >= 0))
+    {
+        NSIndexPath *path = [NSIndexPath indexPathForItem:nextIndex inSection:0];
+        NSSet       *item = [NSSet setWithObject:path];
+
+        [self.collectionView.animator scrollToItemsAtIndexPaths:item scrollPosition:NSCollectionViewScrollPositionBottom];
+    }
 }
 
 - (void)scrollToBeginningOfDocument:(id)sender
@@ -161,10 +215,20 @@
     }
 }
 
+- (void)selectAll:(id)sender
+{
+    //  Since there are potentially thousands of items that could be selected this would just
+    //  be horrible. Do not ever do anything here.
+}
+
 - (void)doCommandBySelector:(SEL)aSelector
 {
-    NSLog(@"Asked to: %@", NSStringFromSelector(aSelector));
-
+    if (NO == [self respondsToSelector:aSelector])
+    {
+        NSLog(@"FilesCollectionViewController was asked to: %@", NSStringFromSelector(aSelector));
+        return;
+    }
+    
     [super doCommandBySelector:aSelector];
 }
 
