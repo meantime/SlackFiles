@@ -61,7 +61,10 @@ static NSCache  *gExtensionIconCache;
     {
         Channel *channel = [Channel objectForPrimaryKey:channelId];
 
-        [channels addObject:channel];
+        if (channel)
+        {
+            [channels addObject:channel];
+        }
     }
 
     values[@"channels"] = channels;
@@ -75,7 +78,10 @@ static NSCache  *gExtensionIconCache;
     {
         Group   *group = [Group objectForPrimaryKey:groupId];
 
-        [groups addObject:group];
+        if (group)
+        {
+            [groups addObject:group];
+        }
     }
 
     values[@"groups"] = groups;
@@ -89,7 +95,10 @@ static NSCache  *gExtensionIconCache;
     {
         IM  *im = [IM objectForPrimaryKey:imId];
 
-        [ims addObject:im];
+        if (im)
+        {
+            [ims addObject:im];
+        }
     }
 
     values[@"ims"] = ims;

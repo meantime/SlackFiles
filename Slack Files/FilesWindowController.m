@@ -324,7 +324,7 @@ NS_ENUM(NSUInteger, FetchState)
             {
                 self.fetchState = self.fetchState - 1;
 
-                if (FetchStateNone == self.fetchState)
+                if (FetchStateIMList == self.fetchState)
                 {
                     self.fetchInProgress = NO;
                 }
@@ -370,9 +370,11 @@ NS_ENUM(NSUInteger, FetchState)
             }
 
             NSDictionary    *values = [File valuesFromNetworkResponse:f];
-            User            *creator = [User objectInRealm:realm forPrimaryKey:f[@"user"]];
 
             file = [File createOrUpdateInRealm:realm withValue:values];
+
+            User    *creator = [User objectInRealm:realm forPrimaryKey:f[@"user"]];
+
             file.team = self.team;
             file.creator = creator;
         }
