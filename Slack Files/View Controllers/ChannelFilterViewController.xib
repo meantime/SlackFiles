@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ChannelFilterViewController">
             <connections>
                 <outlet property="filterSelector" destination="zmG-7p-uj4" id="OX3-UE-TzI"/>
+                <outlet property="includeArchivedDeleted" destination="bV8-5z-eih" id="HEA-h7-hYM"/>
                 <outlet property="tableView" destination="Gxf-pc-LhH" id="1BR-Oa-ruF"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -35,10 +36,10 @@
                     </connections>
                 </segmentedControl>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" id="5uo-Ct-ZGB">
-                    <rect key="frame" x="20" y="20" width="209" height="572"/>
+                    <rect key="frame" x="20" y="20" width="209" height="553"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <clipView key="contentView" id="ckW-JI-jPj">
-                        <rect key="frame" x="1" y="1" width="207" height="570"/>
+                        <rect key="frame" x="1" y="1" width="207" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="Gxf-pc-LhH">
@@ -95,6 +96,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <button id="bV8-5z-eih">
+                    <rect key="frame" x="18" y="579" width="213" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
+                    <buttonCell key="cell" type="check" title="Include archived/deleted" bezelStyle="regularSquare" imagePosition="left" refusesFirstResponder="YES" inset="2" id="4Jm-s1-dgc">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleArchiveDeleted:" target="-2" id="4hB-1U-e8Z"/>
+                    </connections>
+                </button>
             </subviews>
             <point key="canvasLocation" x="244" y="473"/>
         </customView>

@@ -26,6 +26,7 @@ NS_ENUM(NSUInteger, FilterType)
 
 @property   IBOutlet    NSTableView         *tableView;
 @property   IBOutlet    NSSegmentedControl  *filterSelector;
+@property   IBOutlet    NSButton            *includeArchivedDeleted;
 
 @property               Team                *team;
 @property               enum FilterType     filterType;
@@ -71,6 +72,7 @@ NS_ENUM(NSUInteger, FilterType)
 
     self.filterSelector.integerValue = self.filterType;
 
+    BOOL        includeDeleted = self.includeArchivedDeleted.integerValue;
     RLMResults  *unsortedList;
 
     switch (self.filterType)
@@ -78,25 +80,60 @@ NS_ENUM(NSUInteger, FilterType)
         case FilterTypeUser:
             self.nameProperty = self.useFullName ? @"realName" : @"username";
             self.deletedProperty = @"deleted";
-            unsortedList = [User objectsWhere:@"team = %@", self.team];
+
+            if (includeDeleted)
+            {
+                unsortedList = [User objectsWhere:@"team = %@", self.team];
+            }
+            else
+            {
+                unsortedList = [User objectsWhere:@"team = %@ AND deleted = false", self.team];
+            }
             break;
 
         case FilterTypeChannel:
             self.nameProperty = @"name";
             self.deletedProperty = @"archived";
-            unsortedList = [Channel objectsWhere:@"team = %@", self.team];
+
+            if (includeDeleted)
+            {
+                unsortedList = [Channel objectsWhere:@"team = %@", self.team];
+            }
+            else
+            {
+                unsortedList = [Channel objectsWhere:@"team = %@ AND archived = false", self.team];
+            }
+
             break;
 
         case FilterTypeGroup:
             self.nameProperty = @"name";
             self.deletedProperty = @"archived";
-            unsortedList = [Group objectsWhere:@"team = %@", self.team];
+
+            if (includeDeleted)
+            {
+                unsortedList = [Group objectsWhere:@"team = %@", self.team];
+            }
+            else
+            {
+                unsortedList = [Group objectsWhere:@"team = %@ AND archived = false", self.team];
+            }
+
             break;
 
         case FilterTypeIM:
             self.nameProperty = @"name";
             self.deletedProperty = @"deleted";
-            unsortedList = [IM objectsWhere:@"team = %@", self.team];
+
+            if (includeDeleted)
+            {
+                unsortedList = [IM objectsWhere:@"team = %@", self.team];
+            }
+            else
+            {
+                unsortedList = [IM objectsWhere:@"team = %@ AND deleted = false", self.team];
+            }
+
             break;
     }
 
@@ -112,6 +149,11 @@ NS_ENUM(NSUInteger, FilterType)
 {
     self.filterType = selector.integerValue;
 
+    [self resetFilter];
+}
+
+- (IBAction)toggleArchiveDeleted:(id)sender
+{
     [self resetFilter];
 }
 
