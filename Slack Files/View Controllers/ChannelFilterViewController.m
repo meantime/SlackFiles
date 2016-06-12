@@ -30,6 +30,7 @@ NS_ENUM(NSUInteger, FilterType)
 @property               Team                *team;
 @property               enum FilterType     filterType;
 @property               NSString            *nameProperty;
+@property               NSString            *deletedProperty;
 @property               BOOL                useFullName;
 
 @property               RLMResults          *channelList;
@@ -76,21 +77,25 @@ NS_ENUM(NSUInteger, FilterType)
     {
         case FilterTypeUser:
             self.nameProperty = self.useFullName ? @"realName" : @"username";
+            self.deletedProperty = @"deleted";
             unsortedList = [User objectsWhere:@"team = %@", self.team];
             break;
 
         case FilterTypeChannel:
             self.nameProperty = @"name";
+            self.deletedProperty = @"archived";
             unsortedList = [Channel objectsWhere:@"team = %@", self.team];
             break;
 
         case FilterTypeGroup:
             self.nameProperty = @"name";
+            self.deletedProperty = @"archived";
             unsortedList = [Group objectsWhere:@"team = %@", self.team];
             break;
 
         case FilterTypeIM:
             self.nameProperty = @"name";
+            self.deletedProperty = @"deleted";
             unsortedList = [IM objectsWhere:@"team = %@", self.team];
             break;
     }
@@ -139,8 +144,17 @@ NS_ENUM(NSUInteger, FilterType)
 {
     NSTableCellView *view = [tableView makeViewWithIdentifier:@"FilterListRow" owner:nil];
     RLMObject       *modelObject = self.channelList[row];
+    NSNumber        *deleted = modelObject[self.deletedProperty];
+    NSMutableAttributedString   *title = [[NSMutableAttributedString alloc] initWithString:modelObject[self.nameProperty]];
 
-    view.textField.stringValue = modelObject[self.nameProperty];
+    if ([deleted boolValue])
+    {
+        [title addAttribute:NSStrikethroughStyleAttributeName
+                      value:deleted
+                      range:NSMakeRange(0, title.length)];
+    }
+
+    view.textField.attributedStringValue = title;
 
     return view;
 }
