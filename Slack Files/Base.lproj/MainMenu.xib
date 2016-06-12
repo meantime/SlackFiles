@@ -158,6 +158,11 @@
                                     <action selector="selectAll:" target="-1" id="VNm-Mi-diN"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Deselect All" keyEquivalent="d" id="R9t-da-cBB">
+                                <connections>
+                                    <action selector="deselectAll:" target="-1" id="lvi-Wl-CxL"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>
                             <menuItem title="Find" id="4EN-yA-p0u">
                                 <modifierMask key="keyEquivalentModifierMask"/>

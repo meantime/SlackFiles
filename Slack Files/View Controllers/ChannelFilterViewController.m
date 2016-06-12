@@ -82,6 +82,11 @@ NS_ENUM(NSInteger, MediaType)
     [self resetFilter];
 }
 
+- (IBAction)deselectAll:(id)sender
+{
+    [self.tableView deselectAll:sender];
+}
+
 - (void)resetFilter
 {
     self.tableView.delegate = nil;
