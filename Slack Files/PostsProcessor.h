@@ -61,6 +61,9 @@
 @property               unichar         listBullet;
 @property               CGFloat         listIndent;
 
+@property               CGFloat         strikethroughWeight;
+@property               CGFloat         underlineWeight;
+
 @property (nullable)    NSFont          *checklistUncheckedFont;
 @property (nullable)    NSFont          *checklistCheckedFont;
 @property (nullable)    NSColor         *checklistCheckedTextColor;

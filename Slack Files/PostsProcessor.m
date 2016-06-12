@@ -71,8 +71,6 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
         NSString            *type = paragraph[@"type"];
         NSAttributedString  *formattedText = [self processParagraph:paragraph];
 
-        NSLog(@"%@", formattedText);
-
         [result appendAttributedString:formattedText];
         [result appendAttributedString:lineBreak];
 
@@ -101,50 +99,56 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
     if ([@"p" isEqualToString:type])
     {
-        NSLog(@"p");
         return [self processBodyText:paragraph];
     }
     else if ([@"h1" isEqualToString:type])
     {
-        NSLog(@"h1");
         [result appendAttributedString:[[NSAttributedString alloc] initWithString:text]];
-        [result addAttributes:@{ NSFontAttributeName : self.computedTheme.h1Font } range:NSMakeRange(0, text.length)];
+
+        NSDictionary    *attributes = @{ NSFontAttributeName : self.computedTheme.h1Font,
+                                         NSParagraphStyleAttributeName  : [self h1ParagraphStyle] };
+
+        [result addAttributes:attributes
+                        range:NSMakeRange(0, text.length)];
     }
     else if ([@"h2" isEqualToString:type])
     {
-        NSLog(@"h2");
         [result appendAttributedString:[[NSAttributedString alloc] initWithString:text]];
-        [result addAttributes:@{ NSFontAttributeName : self.computedTheme.h2Font } range:NSMakeRange(0, text.length)];
+
+        NSDictionary    *attributes = @{ NSFontAttributeName : self.computedTheme.h2Font,
+                                         NSParagraphStyleAttributeName  : [self h2ParagraphStyle] };
+
+        [result addAttributes:attributes
+                        range:NSMakeRange(0, text.length)];
     }
     else if ([@"h3" isEqualToString:type])
     {
-        NSLog(@"h3");
         [result appendAttributedString:[[NSAttributedString alloc] initWithString:text]];
-        [result addAttributes:@{ NSFontAttributeName : self.computedTheme.h3Font } range:NSMakeRange(0, text.length)];
+
+        NSDictionary    *attributes = @{ NSFontAttributeName : self.computedTheme.h3Font,
+                                         NSParagraphStyleAttributeName  : [self h3ParagraphStyle] };
+
+        [result addAttributes:attributes
+                        range:NSMakeRange(0, text.length)];
     }
     else if ([@"ol" isEqualToString:type])
     {
-        NSLog(@"ol");
         return [self processOLText:paragraph];
     }
     else if ([@"ul" isEqualToString:type])
     {
-        NSLog(@"ul");
         return [self processULText:paragraph];
     }
     else if ([@"cl" isEqualToString:type])
     {
-        NSLog(@"cl");
         return [self processCLText:paragraph];
     }
     else if ([@"pre" isEqualToString:type])
     {
-        NSLog(@"pre");
         return [self processPreText:paragraph];
     }
     else
     {
-        NSLog(@"%@", type);
         NSString    *error = [NSString stringWithFormat:@"Unhandled paragraph type '%@'", type];
 
         result = [[NSMutableAttributedString alloc] initWithString:error
@@ -153,6 +157,33 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     }
 
     return result;
+}
+
+- (nonnull NSMutableParagraphStyle *)h1ParagraphStyle
+{
+    NSMutableParagraphStyle *h1Paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+
+    h1Paragraph.alignment = self.computedTheme.h1Alignment;
+
+    return h1Paragraph;
+}
+
+- (nonnull NSMutableParagraphStyle *)h2ParagraphStyle
+{
+    NSMutableParagraphStyle *h2Paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+
+    h2Paragraph.alignment = self.computedTheme.h2Alignment;
+
+    return h2Paragraph;
+}
+
+- (nonnull NSMutableParagraphStyle *)h3ParagraphStyle
+{
+    NSMutableParagraphStyle *h3Paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+
+    h3Paragraph.alignment = self.computedTheme.h3Alignment;
+
+    return h3Paragraph;
 }
 
 - (nonnull NSAttributedString *)processBodyText:(nonnull NSDictionary *)paragraph
@@ -168,6 +199,12 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:result];
     [self applyLinks:paragraph[@"links"] toAttributedString:result];
+
+    NSMutableParagraphStyle *pParagraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+
+    pParagraph.alignment = self.computedTheme.paragraphAlignment;
+
+    [result addAttribute:NSParagraphStyleAttributeName value:pParagraph range:NSMakeRange(0, result.length)];
 
     return result;
 }
@@ -189,6 +226,23 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     return result;
 }
 
+- (nonnull NSMutableParagraphStyle *)defaultListParagraphStyle
+{
+    NSMutableParagraphStyle *listParagraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+
+    listParagraph.headIndent = floor(self.currentBaseFont.pointSize * 2.5);
+    listParagraph.firstLineHeadIndent = floor(self.currentBaseFont.pointSize * 0.5);
+
+    NSTextTab   *listTab = [[NSTextTab alloc] initWithTextAlignment:NSTextAlignmentNatural
+                                                           location:floor(self.currentBaseFont.pointSize * 2.5)
+                                                            options:@{ }];
+
+    listParagraph.tabStops = @[ listTab ];
+    listParagraph.lineHeightMultiple = 1.2;
+
+    return listParagraph;
+}
+
 - (nonnull NSAttributedString *)processOLText:(nonnull NSDictionary *)paragraph
 {
     NSString                    *text = paragraph[@"text"];
@@ -203,9 +257,14 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:formattedText];
     [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
-    NSString                    *number = [NSString stringWithFormat:@"%ld. ", self.nextOLNumber];
+    NSString                    *number = [NSString stringWithFormat:@"%ld.\t", self.nextOLNumber];
+    NSMutableParagraphStyle     *olParagraph = [self defaultListParagraphStyle];
+
+    NSDictionary                *attributes = @{ NSFontAttributeName              : self.currentBaseFont,
+                                                 NSParagraphStyleAttributeName    : olParagraph };
+
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:number
-                                                                                 attributes:@{ NSFontAttributeName : self.currentBaseFont }];
+                                                                                 attributes:attributes];
 
     [result appendAttributedString:formattedText];
 
@@ -226,9 +285,14 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:formattedText];
     [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
-    NSString                    *bullet = [NSString stringWithFormat:@"%C ", self.computedTheme.listBullet];
+    NSString                    *bullet = [NSString stringWithFormat:@"%C\t", self.computedTheme.listBullet];
+    NSMutableParagraphStyle     *ulParagraph = [self defaultListParagraphStyle];
+
+    NSDictionary                *attributes = @{ NSFontAttributeName              : self.currentBaseFont,
+                                                 NSParagraphStyleAttributeName    : ulParagraph };
+
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:bullet
-                                                                                 attributes:@{ NSFontAttributeName : self.currentBaseFont }];
+                                                                                 attributes:attributes];
 
     [result appendAttributedString:formattedText];
 
@@ -248,6 +312,14 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
         self.currentBaseFont = self.computedTheme.checklistCheckedFont;
         self.currentTextColor = self.computedTheme.checklistCheckedTextColor;
+
+        [formattedText addAttribute:NSStrikethroughStyleAttributeName
+                              value:@(self.computedTheme.strikethroughWeight)
+                              range:NSMakeRange(0, formattedText.length)];
+
+        [formattedText addAttribute:NSStrikethroughColorAttributeName
+                              value:self.currentTextColor
+                              range:NSMakeRange(0, formattedText.length)];
     }
     else
     {
@@ -264,10 +336,15 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     [self applyCharacterStyling:paragraph[@"formats"] toAttributedString:formattedText];
     [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
-    NSString                    *markString = [NSString stringWithFormat:@"%C ", mark];
+    NSString                    *markString = [NSString stringWithFormat:@"%C\t", mark];
+    NSMutableParagraphStyle     *clParagraph = [self defaultListParagraphStyle];
+
+    NSDictionary                *attributes = @{ NSFontAttributeName              : self.currentBaseFont,
+                                                 NSForegroundColorAttributeName   : self.currentTextColor,
+                                                 NSParagraphStyleAttributeName    : clParagraph };
+
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:markString
-                                                                                 attributes:@{ NSFontAttributeName              : self.currentBaseFont,
-                                                                                               NSForegroundColorAttributeName   : self.currentTextColor }];
+                                                                                 attributes:attributes];
 
     [result appendAttributedString:formattedText];
 
@@ -302,7 +379,7 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
     if (self.computedTheme.underlineLinks)
     {
-        attributes[NSUnderlineStyleAttributeName] = @(1);
+        attributes[NSUnderlineStyleAttributeName] = @(self.computedTheme.underlineWeight);
         attributes[NSUnderlineColorAttributeName] = self.computedTheme.linkColor;
     }
 
@@ -403,12 +480,12 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
     [underlines enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
 
-        [text addAttributes:@{ NSUnderlineStyleAttributeName : @(1) } range:range];
+        [text addAttributes:@{ NSUnderlineStyleAttributeName : @(self.computedTheme.underlineWeight) } range:range];
     }];
 
     [strikeThroughs enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
 
-        [text addAttributes:@{ NSStrikethroughStyleAttributeName : @(1.5) } range:range];
+        [text addAttributes:@{ NSStrikethroughStyleAttributeName : @(self.computedTheme.strikethroughWeight) } range:range];
     }];
 
     [codes enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
@@ -452,18 +529,18 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
         self.textColor                  = [NSColor blackColor];
         self.backgroundColor            = [NSColor whiteColor];
 
-        self.h1Alignment                = NSTextAlignmentLeft;
-        self.h2Alignment                = NSTextAlignmentLeft;
-        self.h3Alignment                = NSTextAlignmentLeft;
-        self.h1Font                     = [NSFont boldSystemFontOfSize:kDefaultFontSize];
-        self.h2Font                     = [NSFont boldSystemFontOfSize:kDefaultFontSize];
-        self.h3Font                     = [NSFont boldSystemFontOfSize:kDefaultFontSize];
-
         self.paragraphAlignment         = NSTextAlignmentJustified;
         self.baseFont                   = [NSFont systemFontOfSize:kDefaultFontSize];
         self.boldFont                   = [fontManager fontWithFamily:self.baseFont.familyName traits:NSBoldFontMask weight:0 size:kDefaultFontSize];
         self.italicFont                 = [fontManager fontWithFamily:self.baseFont.familyName traits:NSItalicFontMask weight:0 size:kDefaultFontSize];
         self.boldItalicFont             = [fontManager fontWithFamily:self.baseFont.familyName traits:(NSBoldFontMask | NSItalicFontMask) weight:0 size:kDefaultFontSize];
+
+        self.h1Alignment                = NSTextAlignmentCenter;
+        self.h2Alignment                = NSTextAlignmentLeft;
+        self.h3Alignment                = NSTextAlignmentLeft;
+        self.h1Font                     = [NSFont boldSystemFontOfSize:kDefaultFontSize * 1.75];
+        self.h2Font                     = [NSFont boldSystemFontOfSize:kDefaultFontSize * 1.5];
+        self.h3Font                     = [fontManager fontWithFamily:self.boldFont.familyName traits:NSBoldFontMask | NSSmallCapsFontMask weight:0 size:kDefaultFontSize * 1.2];
 
         self.monospaceFont              = [NSFont userFixedPitchFontOfSize:kDefaultFontSize];
         self.monospaceBoldFont          = self.monospaceFont;
@@ -487,6 +564,9 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
         self.listBullet                 = 0x2022;
         self.listIndent                 = kDefaultBulletIndent;
+
+        self.strikethroughWeight        = 1.0;
+        self.underlineWeight            = 1.0;
 
         self.checklistUncheckedFont     = [NSFont systemFontOfSize:kDefaultFontSize];
         self.checklistCheckedFont       = [fontManager fontWithFamily:self.checklistUncheckedFont.familyName traits:NSItalicFontMask weight:0 size:kDefaultFontSize];
