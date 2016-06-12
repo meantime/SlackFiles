@@ -39,8 +39,12 @@ NS_ENUM(NSUInteger, FetchState)
 
 @property (readwrite)               Team                *team;
 @property                           SlackAPI            *api;
+
 @property                           NSUInteger          highestPage;
 @property                           NSUInteger          numPages;
+@property                           NSUInteger          phasePageNum;
+@property                           NSUInteger          phaseNumPages;
+
 @property                           BOOL                fetchInProgress;
 @property                           enum FetchState     fetchState;
 @property (nullable)                NSDate              *fetchFromDate;
@@ -216,6 +220,7 @@ NS_ENUM(NSUInteger, FetchState)
 
         [self reportDateRange];
         [self updateProgressInfo];
+        [self updateBrowser];
     }
 
     //  Figure out what to do after each phase of fetching completes
@@ -234,6 +239,7 @@ NS_ENUM(NSUInteger, FetchState)
 
             [self reportDateRange];
             [self updateProgressInfo];
+            [self updateBrowser];
         }
         else if (FetchStateGapMessages == self.fetchState)
         {
@@ -245,6 +251,7 @@ NS_ENUM(NSUInteger, FetchState)
 
             [self reportDateRange];
             [self updateProgressInfo];
+            [self updateBrowser];
         }
         else if (FetchStateNewMessages == self.fetchState)
         {
@@ -261,7 +268,7 @@ NS_ENUM(NSUInteger, FetchState)
             [self reportDateRange];
 
             [self updateProgressInfo];
-            [self.syncUIDelegate didFetchMoreFiles];
+            [self updateBrowser];
 
             return;
         }
@@ -301,6 +308,7 @@ NS_ENUM(NSUInteger, FetchState)
             //  If there are no files found the Slack API says that it is returning page 1 of 0.
             number = MAX(number, 1);
             self.numPages = MAX(self.numPages, number);
+            self.phaseNumPages = MAX(self.phaseNumPages, number);
 
             number = [paging[@"page"] unsignedIntegerValue];
             self.highestPage = MAX(self.highestPage, number);
@@ -308,6 +316,7 @@ NS_ENUM(NSUInteger, FetchState)
             number = [paging[@"total"] unsignedIntegerValue];
             self.totalFiles = MAX(self.totalFiles, number);
 
+            self.phasePageNum = self.phasePageNum + 1;
             [self updateProgressInfo];
 
             NSLog(@"[%@] page %ld of %ld", self.team.teamName, self.highestPage, self.numPages);
@@ -544,8 +553,8 @@ NS_ENUM(NSUInteger, FetchState)
     dispatch_async(dispatch_get_main_queue(), ^{
 
         self.progress.minValue = 0;
-        self.progress.doubleValue = self.highestPage;
-        self.progress.maxValue = self.numPages;
+        self.progress.doubleValue = self.phasePageNum;
+        self.progress.maxValue = self.phaseNumPages;
 
         if (self.numPages == 0)
         {
