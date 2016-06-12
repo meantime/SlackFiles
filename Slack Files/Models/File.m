@@ -33,6 +33,8 @@ static NSCache  *gExtensionIconCache;
 
     [values addEntriesFromDictionary:base];
 
+    //  -------------    Base metadata
+
     values[@"fileId"] = response[@"id"];
     values[@"filename"] = response[@"name"];
     values[@"title"] = response[@"title"];
@@ -49,6 +51,48 @@ static NSCache  *gExtensionIconCache;
     values[@"filesize"] = [NSNumber numberWithUnsignedInteger:number];
 
     values[@"thumbnailURL"] = [File bestThumbnailImageURLFromFileInfo:response];
+
+    //  -------------    Channel shares
+
+    NSArray         *channelIds = response[@"channels"];
+    NSMutableArray  *channels = [NSMutableArray<Channel *> array];
+
+    for (NSString *channelId in channelIds)
+    {
+        Channel *channel = [Channel objectForPrimaryKey:channelId];
+
+        [channels addObject:channel];
+    }
+
+    values[@"channels"] = channels;
+
+    //  -------------    Group shares
+
+    NSArray         *groupIds = response[@"groups"];
+    NSMutableArray  *groups = [NSMutableArray<Group *> array];
+
+    for (NSString *groupId in groupIds)
+    {
+        Group   *group = [Group objectForPrimaryKey:groupId];
+
+        [groups addObject:group];
+    }
+
+    values[@"groups"] = groups;
+
+    //  -------------    IM shares
+
+    NSArray         *imIds = response[@"ims"];
+    NSMutableArray  *ims = [NSMutableArray<IM *> array];
+
+    for (NSString *imId in imIds)
+    {
+        IM  *im = [IM objectForPrimaryKey:imId];
+
+        [ims addObject:im];
+    }
+
+    values[@"ims"] = ims;
 
     return [NSDictionary dictionaryWithDictionary:values];
 }

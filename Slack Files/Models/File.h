@@ -7,6 +7,10 @@
 //
 
 #import "SlackModelObject.h"
+
+#import "Channel.h"
+#import "Group.h"
+#import "IM.h"
 #import "User.h"
 
 @interface File : SlackModelObject
@@ -21,6 +25,10 @@
 @property   NSDate              *timestamp;
 @property   NSNumber<RLMInt>    *filesize;
 @property   NSString            *thumbnailURL;
+
+@property   RLMArray<Channel *><Channel>    *channels;
+@property   RLMArray<Group *><Group>        *groups;
+@property   RLMArray<IM *><IM>              *ims;
 
 + (void)fixBadTimestamps;
 

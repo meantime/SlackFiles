@@ -113,33 +113,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
     RLMRealmConfiguration   *config = [RLMRealmConfiguration defaultConfiguration];
 
-    config.schemaVersion = 2;
     config.encryptionKey = realmKey;
-    config.migrationBlock = ^(RLMMigration *migration, uint64_t oldSchemaVersion) {
-
-        if (oldSchemaVersion < 1)
-        {
-            [migration enumerateObjects:[User className] block:^(RLMObject * _Nullable oldObject, RLMObject * _Nullable newObject) {
-
-                User            *oldUser = (User *) oldObject;
-                User            *newUser = (User *) newObject;
-                NSDictionary    *fullData = [NSJSONSerialization JSONObjectWithData:oldUser.jsonBlob options:0 error:nil];
-                NSUInteger      number = [fullData[@"deleted"] unsignedIntegerValue];
-
-                newUser[@"deleted"] = [NSNumber numberWithBool:number ? YES : NO];
-            }];
-        }
-        else if (config.schemaVersion < 2)
-        {
-            [migration enumerateObjects:[IM className] block:^(RLMObject * _Nullable oldObject, RLMObject * _Nullable newObject) {
-
-                IM  *oldIM = (IM *) oldObject;
-                IM  *newIM = (IM *) newObject;
-
-                newIM[@"realName"] = oldIM.user.realName;
-            }];
-        }
-    };
 
     [RLMRealmConfiguration setDefaultConfiguration:config];
 }
