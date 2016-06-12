@@ -15,11 +15,11 @@
 
 @interface FilesCollectionViewController () <NSCollectionViewDelegate, NSCollectionViewDataSource>
 
-@property                           Team                    *team;
+@property               Team                    *team;
 
-@property (nullable)                RLMResults              *baseFiles;
-@property (nullable)                RLMResults              *sortedFiles;
-@property (nullable)                RLMNotificationToken    *filesNotificationToken;
+@property (nullable)    RLMResults              *baseFiles;
+@property (nullable)    RLMResults              *sortedFiles;
+@property (nullable)    RLMNotificationToken    *filesNotificationToken;
 
 @end
 
@@ -274,29 +274,53 @@
 
 #pragma mark - <ChannelFilterDelegate>
 
+- (void)resetWithFileList:(RLMResults *)list
+{
+    self.collectionView.delegate = nil;
+    self.collectionView.dataSource = nil;
+
+    self.baseFiles = list;
+    self.sortedFiles = [self.baseFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
+
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+
+    [self.collectionView reloadData];
+}
+
 - (void)clearFilter
 {
-    NSLog(@"clear filter");
+    RLMResults  *list = [File objectsWhere:@"team = %@", self.team];
+
+    [self resetWithFileList:list];
 }
 
 - (void)filterWithChannel:(Channel *)channel
 {
-    NSLog(@"channel filter %@", channel);
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY channels.channelId = %@", self.team, channel.channelId];
+
+    [self resetWithFileList:list];
 }
 
 - (void)filterWithGroup:(Group *)group
 {
-    NSLog(@"group filter %@", group);
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY groups.groupId = %@", self.team, group.groupId];
+
+    [self resetWithFileList:list];
 }
 
 - (void)filterWithIM:(IM *)im
 {
-    NSLog(@"im filter %@", im);
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY ims.imId = %@", self.team, im.imId];
+
+    [self resetWithFileList:list];
 }
 
 - (void)filterWithUser:(User *)user
 {
-    NSLog(@"user filter %@", user);
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND creator = %@", self.team, user];
+
+    [self resetWithFileList:list];
 }
 
 @end
