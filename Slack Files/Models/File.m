@@ -38,6 +38,7 @@ static NSCache  *gExtensionIconCache;
     values[@"fileId"] = response[@"id"];
     values[@"filename"] = response[@"name"];
     values[@"title"] = response[@"title"];
+    values[@"type"] = response[@"filetype"];
     values[@"mimeType"] = response[@"mimetype"];
     values[@"prettyType"] = response[@"pretty_type"];
     values[@"creatorUserId"] = response[@"user"];

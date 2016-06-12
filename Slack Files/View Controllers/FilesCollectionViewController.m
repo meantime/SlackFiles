@@ -18,9 +18,11 @@
 @property               Team                    *team;
 
 @property (nullable)    RLMResults              *baseFiles;
+@property (nullable)    RLMResults              *mediaFilteredFiles;
 @property (nullable)    RLMResults              *sortedFiles;
 @property (nullable)    RLMNotificationToken    *filesNotificationToken;
 @property (nullable)    NSString                *filterName;
+@property (nullable)    NSString                *mediaFilter;
 
 @end
 
@@ -52,7 +54,8 @@
 - (void)loadFilesData
 {
     self.baseFiles = [File objectsWhere:@"team = %@", self.team];
-    self.sortedFiles = [self.baseFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
+    self.mediaFilteredFiles = self.baseFiles;
+    self.sortedFiles = [self.mediaFilteredFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
 
     [self.collectionView reloadData];
 //    [self subscribeToCollectionNotifications];
@@ -123,7 +126,7 @@
 
     NSString    *fileCount;
 
-    if (self.baseFiles.count)
+    if (self.mediaFilteredFiles.count)
     {
         fileCount = [formatter stringFromNumber:@(self.baseFiles.count)];
     }
@@ -315,7 +318,17 @@
     self.collectionView.dataSource = nil;
 
     self.baseFiles = list;
-    self.sortedFiles = [self.baseFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
+
+    if (IsStringWithContents(self.mediaFilter))
+    {
+        self.mediaFilteredFiles = [self.baseFiles objectsWhere:self.mediaFilter];
+    }
+    else
+    {
+        self.mediaFilteredFiles = self.baseFiles;
+    }
+
+    self.sortedFiles = [self.mediaFilteredFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
 
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -333,9 +346,16 @@
     [self resetWithFileList:list];
 }
 
+- (void)setMediaTypeFilter:(NSString *)filter
+{
+    self.mediaFilter = filter;
+
+    [self resetWithFileList:self.baseFiles];
+}
+
 - (void)filterWithChannel:(Channel *)channel
 {
-    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY channels.channelId = %@", self.team, channel.channelId];
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY channels = %@", self.team, channel];
 
     self.filterName = channel.name;
     [self resetWithFileList:list];
@@ -343,7 +363,7 @@
 
 - (void)filterWithGroup:(Group *)group
 {
-    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY groups.groupId = %@", self.team, group.groupId];
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY groups = %@", self.team, group];
 
     self.filterName = group.name;
     [self resetWithFileList:list];
@@ -351,7 +371,7 @@
 
 - (void)filterWithIM:(IM *)im
 {
-    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY ims.imId = %@", self.team, im.imId];
+    RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY ims = %@", self.team, im];
 
     self.filterName = [NSString stringWithFormat:@"%@ DM", im.realName];
     [self resetWithFileList:list];

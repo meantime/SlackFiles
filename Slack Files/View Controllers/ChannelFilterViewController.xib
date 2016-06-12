@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="filterSelector" destination="zmG-7p-uj4" id="OX3-UE-TzI"/>
                 <outlet property="includeArchivedDeleted" destination="bV8-5z-eih" id="HEA-h7-hYM"/>
+                <outlet property="mediaTypeFilter" destination="fc1-aU-RMX" id="IlQ-VY-XuX"/>
                 <outlet property="tableView" destination="Gxf-pc-LhH" id="1BR-Oa-ruF"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -36,10 +37,10 @@
                     </connections>
                 </segmentedControl>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" id="5uo-Ct-ZGB">
-                    <rect key="frame" x="20" y="20" width="209" height="553"/>
+                    <rect key="frame" x="20" y="42" width="209" height="523"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <clipView key="contentView" id="ckW-JI-jPj">
-                        <rect key="frame" x="1" y="1" width="207" height="551"/>
+                        <rect key="frame" x="1" y="1" width="207" height="521"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="Gxf-pc-LhH">
@@ -97,8 +98,8 @@
                     </scroller>
                 </scrollView>
                 <button id="bV8-5z-eih">
-                    <rect key="frame" x="18" y="579" width="213" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
+                    <rect key="frame" x="18" y="18" width="213" height="18"/>
+                    <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="check" title="Include archived/deleted" bezelStyle="regularSquare" imagePosition="left" refusesFirstResponder="YES" inset="2" id="4Jm-s1-dgc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -107,6 +108,52 @@
                         <action selector="toggleArchiveDeleted:" target="-2" id="4hB-1U-e8Z"/>
                     </connections>
                 </button>
+                <popUpButton verticalHuggingPriority="750" id="fc1-aU-RMX">
+                    <rect key="frame" x="18" y="571" width="214" height="26"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="All Media Types" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="wNP-iI-dhY" id="5hj-p1-rvD">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="gHX-JB-cWl">
+                            <items>
+                                <menuItem title="All Media Types" id="wNP-iI-dhY"/>
+                                <menuItem isSeparatorItem="YES" id="HvU-aX-0PS"/>
+                                <menuItem title="Images" tag="1" id="PYP-wt-u2a"/>
+                                <menuItem title="Videos" tag="2" id="ute-qP-vhW"/>
+                                <menuItem title="Audio" tag="3" id="gko-oN-XtR">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem isSeparatorItem="YES" id="cRf-0r-RMm"/>
+                                <menuItem title="Posts" tag="4" id="EcU-0E-Mwd">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="HTML" tag="5" id="zGa-7D-dV8">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="Email" tag="10" id="JIV-rP-Dgi">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="Plain Text" tag="6" id="FbV-a8-Esi">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem isSeparatorItem="YES" id="cJg-ec-scu"/>
+                                <menuItem title="PDF" tag="7" id="Hc5-HB-2ad">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem isSeparatorItem="YES" id="tZu-0T-cfo"/>
+                                <menuItem title="Google Docs" tag="8" id="QMc-Pb-fe6">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="Zip Files" tag="9" id="OcA-Ci-3nG">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeMediaType:" target="-2" id="94h-sE-cKo"/>
+                    </connections>
+                </popUpButton>
             </subviews>
             <point key="canvasLocation" x="244" y="473"/>
         </customView>

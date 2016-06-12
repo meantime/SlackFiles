@@ -53,7 +53,6 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 {
     [super setHighlightState:newHighlightState];
 
-    // Relay the newHighlightState to our AAPLSlideCarrierView.
     [(FileCollectionViewItemView *) [self view] setHighlightState:newHighlightState];
 }
 

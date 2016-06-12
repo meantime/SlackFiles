@@ -194,22 +194,6 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     [self.auth run];
 }
 
-- (IBAction)removeAllData:(id)sender
-{
-    for (FilesWindowController *wc in self.filesWindowControllers)
-    {
-        [wc close];
-        [self.filesWindowControllers removeObject:wc];
-    }
-
-    RLMRealm    *realm = [RLMRealm defaultRealm];
-
-    [realm transactionWithBlock:^{
-
-        [realm deleteAllObjects];
-    }];
-}
-
 - (IBAction)logRealmKey:(id)sender
 {
     NSData  *realmKey = [KeychainAccess readDataWithServiceName:@"Slack Files Realm key" error:nil];
@@ -231,6 +215,45 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
         NSLog(@"Realm key: %@", hex);
     }
+}
+
+- (IBAction)dumpAllTypes:(id)sender
+{
+    NSMutableSet    *types = [NSMutableSet set];
+    RLMResults      *files = [File allObjects];
+
+    for (File *file in files)
+    {
+        [types addObject:file.type];
+    }
+
+    NSLog(@"%@", types);
+}
+
+- (IBAction)dumpAllPrettyTypes:(id)sender
+{
+    NSMutableSet    *prettyTypes = [NSMutableSet set];
+    RLMResults      *files = [File allObjects];
+
+    for (File *file in files)
+    {
+        [prettyTypes addObject:file.prettyType];
+    }
+
+    NSLog(@"%@", prettyTypes);
+}
+
+- (IBAction)dumpAllMIMETypes:(id)sender
+{
+    NSMutableSet    *mimeTypes = [NSMutableSet set];
+    RLMResults      *files = [File allObjects];
+
+    for (File *file in files)
+    {
+        [mimeTypes addObject:file.mimeType];
+    }
+
+    NSLog(@"%@", mimeTypes);
 }
 
 - (void)removeDataForTeam:(Team *)team

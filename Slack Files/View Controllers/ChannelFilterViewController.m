@@ -22,14 +22,31 @@ NS_ENUM(NSUInteger, FilterType)
     FilterTypeIM
 };
 
+NS_ENUM(NSInteger, MediaType)
+{
+    MediaTypeAll,
+    MediaTypeImage,
+    MediaTypeVideo,
+    MediaTypeAudio,
+    MediaTypePost,
+    MediaTypeHTML,
+    MediaTypePlainText,
+    MediaTypePDF,
+    MediaTypeGoogleDoc,
+    MediaTypeZipFile,
+    MediaTypeEmail
+};
+
 @interface ChannelFilterViewController () <NSTableViewDelegate, NSTableViewDataSource>
 
 @property   IBOutlet    NSTableView         *tableView;
 @property   IBOutlet    NSSegmentedControl  *filterSelector;
 @property   IBOutlet    NSButton            *includeArchivedDeleted;
+@property   IBOutlet    NSPopUpButton       *mediaTypeFilter;
 
 @property               Team                *team;
 @property               enum FilterType     filterType;
+@property               enum MediaType      mediaType;
 @property               NSString            *nameProperty;
 @property               NSString            *deletedProperty;
 @property               BOOL                useFullName;
@@ -97,7 +114,7 @@ NS_ENUM(NSUInteger, FilterType)
 
             if (includeDeleted)
             {
-                unsortedList = [Channel objectsWhere:@"team = %@", self.team];
+                unsortedList = [Channel objectsWhere:@"team = %@", self.team.teamId];
             }
             else
             {
@@ -150,6 +167,70 @@ NS_ENUM(NSUInteger, FilterType)
     self.filterType = selector.integerValue;
 
     [self resetFilter];
+}
+
+- (IBAction)changeMediaType:(NSPopUpButton *)sender
+{
+    NSMenuItem      *item = sender.selectedItem;
+    enum MediaType  mediaType = item.tag;
+
+    if (self.mediaType == mediaType)
+    {
+        return;
+    }
+
+    self.mediaType = mediaType;
+
+    NSString    *mediaFilterString = @"";
+
+    switch (mediaType)
+    {
+        case MediaTypeAll:
+            mediaFilterString = @"";
+            break;
+
+        case MediaTypeImage:
+            mediaFilterString = @"mimeType BEGINSWITH 'image/'";
+            break;
+
+        case MediaTypeVideo:
+            mediaFilterString = @"mimeType BEGINSWITH 'video/'";
+            break;
+
+        case MediaTypeAudio:
+            mediaFilterString = @"mimeType BEGINSWITH 'audio/'";
+            break;
+
+        case MediaTypePost:
+            mediaFilterString = @"prettyType = 'Post'";
+            break;
+
+        case MediaTypeHTML:
+            mediaFilterString = @"mimeType = 'text/html'";
+            break;
+
+        case MediaTypePlainText:
+            mediaFilterString = @"mimeType != 'text/html' AND mimeType BEGINSWITH 'text/' AND type != 'space' AND type != 'post'";
+            break;
+
+        case MediaTypePDF:
+            mediaFilterString = @"prettyType = 'PDF'";
+            break;
+
+        case MediaTypeGoogleDoc:
+            mediaFilterString = @"prettyType BEGINSWITH 'GDocs'";
+            break;
+
+        case MediaTypeZipFile:
+            mediaFilterString = @"type IN { 'zip', 'gzip' }";
+            break;
+
+        case MediaTypeEmail:
+            mediaFilterString = @"prettyType = 'Email'";
+            break;
+    }
+
+    [self.filterDelegate setMediaTypeFilter:mediaFilterString];
 }
 
 - (IBAction)toggleArchiveDeleted:(id)sender

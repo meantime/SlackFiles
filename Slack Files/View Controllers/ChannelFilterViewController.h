@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ChannelFilterDelegate <NSObject>
 
 - (void)clearFilter;
+- (void)setMediaTypeFilter:(NSString *)filter;
 - (void)filterWithChannel:(Channel *)channel;
 - (void)filterWithGroup:(Group *)group;
 - (void)filterWithIM:(IM *)im;

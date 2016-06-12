@@ -389,16 +389,29 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Debug" id="pD1-sy-8WE">
                         <items>
-                            <menuItem title="Remove All Data" id="low-UJ-ItR">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="removeAllData:" target="Voe-Tx-rLC" id="l0E-6a-0Z5"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Log Realm Key" id="8Ap-E4-7L4">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="logRealmKey:" target="Voe-Tx-rLC" id="iVP-bC-jzJ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Ere-Vh-paz"/>
+                            <menuItem title="Dump All Types" id="kud-5k-VPl">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="dumpAllTypes:" target="Voe-Tx-rLC" id="RQE-Mn-MzQ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump All Pretty Types" id="Rgs-xV-a1g">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="dumpAllPrettyTypes:" target="Voe-Tx-rLC" id="bgt-t7-AmI"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump All MIME Types" id="ZcE-Mg-FhK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="dumpAllMIMETypes:" target="Voe-Tx-rLC" id="Aqh-dq-9sJ"/>
                                 </connections>
                             </menuItem>
                         </items>
