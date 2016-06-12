@@ -640,6 +640,7 @@ NS_ENUM(NSUInteger, FetchState)
 
     if (self.filterController)
     {
+        self.filterController.filterDelegate = nil;
         [self.filterController.view removeFromSuperview];
         self.filterController = nil;
 
@@ -662,6 +663,8 @@ NS_ENUM(NSUInteger, FetchState)
 
         [[self.window contentView] addSubview:self.filterController.view];
         self.filterController.view.frame = filterViewRect;
+
+        self.filterController.filterDelegate = self.viewController;
     }
 }
 

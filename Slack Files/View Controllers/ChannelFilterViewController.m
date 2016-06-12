@@ -203,8 +203,49 @@ NS_ENUM(NSUInteger, FilterType)
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
-    NSLog(@"selected row indexes %@", self.tableView.selectedRowIndexes);
-    NSLog(@"selected row %ld", self.tableView.selectedRow);
+    NSInteger   row = self.tableView.selectedRow;
+
+    if (row < 0)
+    {
+        [self.filterDelegate clearFilter];
+    }
+    else
+    {
+        switch (self.filterType)
+        {
+            case FilterTypeUser:
+            {
+                User    *user = (User *) self.channelList[row];
+
+                [self.filterDelegate filterWithUser:user];
+                break;
+            }
+
+            case FilterTypeChannel:
+            {
+                Channel *channel = (Channel *) self.channelList[row];
+
+                [self.filterDelegate filterWithChannel:channel];
+                break;
+            }
+
+            case FilterTypeGroup:
+            {
+                Group   *group = (Group *) self.channelList[row];
+
+                [self.filterDelegate filterWithGroup:group];
+                break;
+            }
+
+            case FilterTypeIM:
+            {
+                IM  *im = (IM *) self.channelList[row];
+
+                [self.filterDelegate filterWithIM:im];
+                break;
+            }
+        }
+    }
 }
 
 #pragma mark - <NSTableViewDataSource>
