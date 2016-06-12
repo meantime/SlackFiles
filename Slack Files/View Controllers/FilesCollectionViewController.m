@@ -20,6 +20,7 @@
 @property (nullable)    RLMResults              *baseFiles;
 @property (nullable)    RLMResults              *sortedFiles;
 @property (nullable)    RLMNotificationToken    *filesNotificationToken;
+@property (nullable)    NSString                *filterName;
 
 @end
 
@@ -55,6 +56,9 @@
 
     [self.collectionView reloadData];
 //    [self subscribeToCollectionNotifications];
+
+    self.filterName = @"All Files";
+    [self updateWindowTitle];
 }
 
 - (void)subscribeToCollectionNotifications
@@ -109,6 +113,37 @@
     }
 
     return [NSSet<NSIndexPath *> setWithSet:result];
+}
+
+- (void)updateWindowTitle
+{
+    NSNumberFormatter   *formatter = [NSNumberFormatter new];
+
+    formatter.usesGroupingSeparator = YES;
+
+    NSString    *fileCount;
+
+    if (self.baseFiles.count)
+    {
+        fileCount = [formatter stringFromNumber:@(self.baseFiles.count)];
+    }
+    else
+    {
+        fileCount = @"no files";
+    }
+
+    NSString    *title;
+
+    if (self.filterName)
+    {
+        title = [NSString stringWithFormat:@"%@ • %@ (%@)", self.team.teamName, self.filterName, fileCount];
+    }
+    else
+    {
+        title = [NSString stringWithFormat:@"%@ (%@)", self.team.teamName, fileCount];
+    }
+
+    self.view.window.title = title;
 }
 
 #pragma mark - NSResponder Actions
@@ -286,12 +321,15 @@
     self.collectionView.dataSource = self;
 
     [self.collectionView reloadData];
+
+    [self updateWindowTitle];
 }
 
 - (void)clearFilter
 {
     RLMResults  *list = [File objectsWhere:@"team = %@", self.team];
 
+    self.filterName = @"All Files";
     [self resetWithFileList:list];
 }
 
@@ -299,6 +337,7 @@
 {
     RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY channels.channelId = %@", self.team, channel.channelId];
 
+    self.filterName = channel.name;
     [self resetWithFileList:list];
 }
 
@@ -306,6 +345,7 @@
 {
     RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY groups.groupId = %@", self.team, group.groupId];
 
+    self.filterName = group.name;
     [self resetWithFileList:list];
 }
 
@@ -313,6 +353,7 @@
 {
     RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY ims.imId = %@", self.team, im.imId];
 
+    self.filterName = [NSString stringWithFormat:@"%@ DM", im.realName];
     [self resetWithFileList:list];
 }
 
@@ -320,6 +361,7 @@
 {
     RLMResults  *list = [File objectsWhere:@"team = %@ AND creator = %@", self.team, user];
 
+    self.filterName = user.realName;
     [self resetWithFileList:list];
 }
 
