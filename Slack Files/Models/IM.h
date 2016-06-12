@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property                       NSString            *imId;
 @property                       NSString            *name;
+@property                       NSString            *realName;
 @property                       User                *user;
 @property (getter=isDeleted)    NSNumber<RLMBool>   *deleted;
 

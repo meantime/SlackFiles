@@ -9,10 +9,11 @@
 @import Cocoa;
 
 #import "FilesWindowController.h"
+#import "ChannelFilterViewController.h"
 
 @class Team;
 
-@interface FilesCollectionViewController : NSViewController<SyncUIDelegate>
+@interface FilesCollectionViewController : NSViewController<ChannelFilterDelegate, SyncUIDelegate>
 
 @property   IBOutlet    NSCollectionView        *collectionView;
 

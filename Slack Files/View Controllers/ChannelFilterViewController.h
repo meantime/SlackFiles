@@ -8,13 +8,26 @@
 
 @import Cocoa;
 
-@class Team;
+@class Channel, Group, IM, Team, User;
+@protocol ChannelFilterDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ChannelFilterViewController : NSViewController
 
+@property (weak)    id<ChannelFilterDelegate>   filterDelegate;
+
 + (instancetype)viewControllerForTeam:(Team *)team;
+
+@end
+
+@protocol ChannelFilterDelegate <NSObject>
+
+- (void)clearFilter;
+- (void)filterWithChannel:(Channel *)channel;
+- (void)filterWithGroup:(Group *)group;
+- (void)filterWithIM:(IM *)im;
+- (void)filterWithUser:(User *)user;
 
 @end
 

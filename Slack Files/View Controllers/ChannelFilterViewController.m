@@ -30,6 +30,8 @@ NS_ENUM(NSUInteger, FilterType)
 @property               Team                *team;
 @property               enum FilterType     filterType;
 @property               NSString            *nameProperty;
+@property               BOOL                useFullName;
+
 @property               RLMResults          *channelList;
 
 @end
@@ -44,6 +46,12 @@ NS_ENUM(NSUInteger, FilterType)
 
     return result;
 
+}
+
+- (void)dealloc
+{
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
 }
 
 - (void)viewDidLoad
@@ -67,7 +75,7 @@ NS_ENUM(NSUInteger, FilterType)
     switch (self.filterType)
     {
         case FilterTypeUser:
-            self.nameProperty = @"username";
+            self.nameProperty = self.useFullName ? @"realName" : @"username";
             unsortedList = [User objectsWhere:@"team = %@", self.team];
             break;
 
@@ -102,6 +110,29 @@ NS_ENUM(NSUInteger, FilterType)
     [self resetFilter];
 }
 
+- (IBAction)toggleFullName:(id)sender
+{
+    self.useFullName = self.useFullName ^ 1;
+
+    if ((FilterTypeUser == self.filterType) || (FilterTypeIM == self.filterType))
+    {
+        NSRange     visibleRows = [self.tableView rowsInRect:self.tableView.frame];
+        NSIndexSet  *rows = [NSIndexSet indexSetWithIndexesInRange:visibleRows];
+        NSIndexSet  *columns = [NSIndexSet indexSetWithIndex:0];
+
+        if (FilterTypeUser == self.filterType)
+        {
+            self.nameProperty = self.useFullName ? @"realName" : @"username";
+        }
+        else if (FilterTypeIM == self.filterType)
+        {
+            self.nameProperty = self.useFullName ? @"realName" : @"name";
+        }
+
+        [self.tableView reloadDataForRowIndexes:rows columnIndexes:columns];
+    }
+}
+
 #pragma mark - <NSTableViewDelegate>
 
 - (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row
@@ -112,6 +143,12 @@ NS_ENUM(NSUInteger, FilterType)
     view.textField.stringValue = modelObject[self.nameProperty];
 
     return view;
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+    NSLog(@"selected row indexes %@", self.tableView.selectedRowIndexes);
+    NSLog(@"selected row %ld", self.tableView.selectedRow);
 }
 
 #pragma mark - <NSTableViewDataSource>

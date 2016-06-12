@@ -30,6 +30,7 @@
 
     values[@"user"] = user;
     values[@"name"] = user.username;
+    values[@"realName"] = user.realName;
 
     NSUInteger  number;
 

@@ -272,4 +272,31 @@
     [self loadFilesData];
 }
 
+#pragma mark - <ChannelFilterDelegate>
+
+- (void)clearFilter
+{
+    NSLog(@"clear filter");
+}
+
+- (void)filterWithChannel:(Channel *)channel
+{
+    NSLog(@"channel filter %@", channel);
+}
+
+- (void)filterWithGroup:(Group *)group
+{
+    NSLog(@"group filter %@", group);
+}
+
+- (void)filterWithIM:(IM *)im
+{
+    NSLog(@"im filter %@", im);
+}
+
+- (void)filterWithUser:(User *)user
+{
+    NSLog(@"user filter %@", user);
+}
+
 @end

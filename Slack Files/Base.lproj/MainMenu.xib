@@ -339,6 +339,12 @@
                                     <action selector="toggleFilterView:" target="-1" id="VdV-4R-sOj"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Toggle Full Name" id="Sr7-4v-YbZ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleFullName:" target="-1" id="nP1-wq-ZQI"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

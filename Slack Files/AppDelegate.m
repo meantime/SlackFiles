@@ -13,6 +13,7 @@
 #import "File.h"
 #import "FilesWindowController.h"
 #import "HTMLWindowController.h"
+#import "IM.h"
 #import "ImageWindowController.h"
 #import "KeychainAccess.h"
 #import "NSURL+QueryArgs.h"
@@ -112,7 +113,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
     RLMRealmConfiguration   *config = [RLMRealmConfiguration defaultConfiguration];
 
-    config.schemaVersion = 1;
+    config.schemaVersion = 2;
     config.encryptionKey = realmKey;
     config.migrationBlock = ^(RLMMigration *migration, uint64_t oldSchemaVersion) {
 
@@ -126,6 +127,16 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
                 NSUInteger      number = [fullData[@"deleted"] unsignedIntegerValue];
 
                 newUser[@"deleted"] = [NSNumber numberWithBool:number ? YES : NO];
+            }];
+        }
+        else if (config.schemaVersion < 2)
+        {
+            [migration enumerateObjects:[IM className] block:^(RLMObject * _Nullable oldObject, RLMObject * _Nullable newObject) {
+
+                IM  *oldIM = (IM *) oldObject;
+                IM  *newIM = (IM *) newObject;
+
+                newIM[@"realName"] = oldIM.user.realName;
             }];
         }
     };
