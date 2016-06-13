@@ -21,6 +21,7 @@
 		8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8337E71D1D06B8B600051C17 /* ImageWindowController.xib */; };
 		834359761D0386D200F309B9 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 834359751D0386D200F309B9 /* File.m */; };
 		835ED2181D0E420400D91796 /* Email Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 835ED2171D0E420400D91796 /* Email Icon.png */; };
+		835ED21A1D0E443A00D91796 /* Post Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 835ED2191D0E443A00D91796 /* Post Icon.png */; };
 		837E36131D04DBB500483B61 /* FilesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E36111D04DBB500483B61 /* FilesCollectionViewController.m */; };
 		837E36141D04DBB500483B61 /* FilesCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */; };
 		837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */; };
@@ -94,6 +95,7 @@
 		834359741D0386D200F309B9 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		834359751D0386D200F309B9 /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
 		835ED2171D0E420400D91796 /* Email Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Icon.png"; sourceTree = "<group>"; };
+		835ED2191D0E443A00D91796 /* Post Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Post Icon.png"; sourceTree = "<group>"; };
 		837E36101D04DBB500483B61 /* FilesCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesCollectionViewController.h; sourceTree = "<group>"; };
 		837E36111D04DBB500483B61 /* FilesCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesCollectionViewController.m; sourceTree = "<group>"; };
 		837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesCollectionViewController.xib; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 		835ED2141D0E3B9600D91796 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				835ED2191D0E443A00D91796 /* Post Icon.png */,
 				835ED2171D0E420400D91796 /* Email Icon.png */,
 			);
 			path = Images;
@@ -434,6 +437,7 @@
 				8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */,
 				837E36191D04DD4D00483B61 /* FilesCollectionViewItem.xib in Resources */,
 				837E36141D04DBB500483B61 /* FilesCollectionViewController.xib in Resources */,
+				835ED21A1D0E443A00D91796 /* Post Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

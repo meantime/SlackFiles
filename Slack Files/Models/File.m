@@ -208,6 +208,10 @@ static NSCache  *gPrettyTypeIconCache;
         {
             iconImage = [NSImage imageNamed:@"Email Icon.png"];
         }
+        else if ([@"Post" isEqualToString:self.prettyType])
+        {
+            iconImage = [NSImage imageNamed:@"Post Icon.png"];
+        }
 
         if (iconImage)
         {
