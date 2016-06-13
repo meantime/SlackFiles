@@ -26,6 +26,8 @@
 		837E36141D04DBB500483B61 /* FilesCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */; };
 		837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */; };
 		837E36191D04DD4D00483B61 /* FilesCollectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E36171D04DD4D00483B61 /* FilesCollectionViewItem.xib */; };
+		838918B91D0E6C3400FCE97B /* PostsLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 838918B61D0E6C3400FCE97B /* PostsLayoutManager.m */; };
+		838918BA1D0E6C3400FCE97B /* PostsProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 838918B81D0E6C3400FCE97B /* PostsProcessor.m */; };
 		83A1AE961CFD3BD500A39387 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AE951CFD3BD500A39387 /* AppDelegate.m */; };
 		83A1AE991CFD3BD500A39387 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1AE981CFD3BD500A39387 /* main.m */; };
 		83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A1AE9A1CFD3BD500A39387 /* Assets.xcassets */; };
@@ -49,7 +51,6 @@
 		83B2622D1D056C2500737310 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B2622C1D056C2500737310 /* Quartz.framework */; };
 		83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */; };
 		83B4B3201D0AC0C400EC9912 /* HTMLWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */; };
-		83B886CF1D07D46E00C9F3F3 /* PostsProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
 /* End PBXBuildFile section */
@@ -102,6 +103,10 @@
 		837E36151D04DD4D00483B61 /* FilesCollectionViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesCollectionViewItem.h; sourceTree = "<group>"; };
 		837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesCollectionViewItem.m; sourceTree = "<group>"; };
 		837E36171D04DD4D00483B61 /* FilesCollectionViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesCollectionViewItem.xib; sourceTree = "<group>"; };
+		838918B51D0E6C3400FCE97B /* PostsLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsLayoutManager.h; sourceTree = "<group>"; };
+		838918B61D0E6C3400FCE97B /* PostsLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsLayoutManager.m; sourceTree = "<group>"; };
+		838918B71D0E6C3400FCE97B /* PostsProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsProcessor.h; sourceTree = "<group>"; };
+		838918B81D0E6C3400FCE97B /* PostsProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsProcessor.m; sourceTree = "<group>"; };
 		83A1AE911CFD3BD500A39387 /* Slack Files.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slack Files.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A1AE941CFD3BD500A39387 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		83A1AE951CFD3BD500A39387 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -138,8 +143,6 @@
 		83B4B31C1D0AC0C400EC9912 /* HTMLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLWindowController.h; sourceTree = "<group>"; };
 		83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLWindowController.m; sourceTree = "<group>"; };
 		83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTMLWindowController.xib; sourceTree = "<group>"; };
-		83B886CD1D07D46E00C9F3F3 /* PostsProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsProcessor.h; sourceTree = "<group>"; };
-		83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsProcessor.m; sourceTree = "<group>"; };
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
 		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
 		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
@@ -211,6 +214,17 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		838918B41D0E6C1800FCE97B /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				838918B51D0E6C3400FCE97B /* PostsLayoutManager.h */,
+				838918B61D0E6C3400FCE97B /* PostsLayoutManager.m */,
+				838918B71D0E6C3400FCE97B /* PostsProcessor.h */,
+				838918B81D0E6C3400FCE97B /* PostsProcessor.m */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
 		83A1AE881CFD3BD400A39387 = {
 			isa = PBXGroup;
 			children = (
@@ -246,8 +260,7 @@
 				83A1AE9C1CFD3BD600A39387 /* MainMenu.xib */,
 				83B262091D05399D00737310 /* Models */,
 				83A1AEA61CFD40E400A39387 /* OAuth2 */,
-				83B886CD1D07D46E00C9F3F3 /* PostsProcessor.h */,
-				83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */,
+				838918B41D0E6C1800FCE97B /* Posts */,
 				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
 				835ED2131D0E3B8000D91796 /* Resources */,
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
@@ -449,10 +462,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */,
+				838918BA1D0E6C3400FCE97B /* PostsProcessor.m in Sources */,
 				83A717C61D034DD500C4DE32 /* KeychainAccess.m in Sources */,
 				83A1AE991CFD3BD500A39387 /* main.m in Sources */,
 				83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */,
-				83B886CF1D07D46E00C9F3F3 /* PostsProcessor.m in Sources */,
 				833230FA1D02690000933E7E /* SlackAPI.m in Sources */,
 				8337E71A1D06A3A600051C17 /* WindowController.m in Sources */,
 				834359761D0386D200F309B9 /* File.m in Sources */,
@@ -468,6 +481,7 @@
 				8337E71E1D06B8B600051C17 /* ImageWindowController.m in Sources */,
 				837E36131D04DBB500483B61 /* FilesCollectionViewController.m in Sources */,
 				83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */,
+				838918B91D0E6C3400FCE97B /* PostsLayoutManager.m in Sources */,
 				83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */,
 				83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */,
 				833621031D0CBA4A00589089 /* IM.m in Sources */,

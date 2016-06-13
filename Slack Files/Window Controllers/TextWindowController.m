@@ -9,6 +9,7 @@
 #import "TextWindowController.h"
 
 #import "File.h"
+#import "PostsLayoutManager.h"
 #import "PostsProcessor.h"
 #import "Team.h"
 
@@ -41,7 +42,12 @@
                 NSDictionary        *post = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 PostsProcessor      *processor = [PostsProcessor new];
                 NSAttributedString  *text = [processor attributedStringFromPost:post];
+                PostsLayoutManager  *layoutManager = [PostsLayoutManager new];
 
+                layoutManager.theme = [PostsProcessor defaultTheme];
+
+                [self.textView.textContainer setLineFragmentPadding:0.0];
+                [self.textView.textContainer replaceLayoutManager:layoutManager];
                 [self.textView.textStorage appendAttributedString:text];
             }
             else

@@ -13,6 +13,9 @@ static CGFloat  kDefaultBorderWidth     = 1.0;
 static CGFloat  kDefaultBorderRadius    = 5.0;
 static CGFloat  kDefaultBulletIndent    = 5.0;
 
+NSString * const PostsPreAttributeName          = @"PostsPreAttributeName";
+NSString * const PostsChecklistAttributeName    = @"PostsChecklistAttributeName";
+
 @interface PostsProcessor ()
 
 @property (nonnull)     PostsTheme  *baseTheme;
@@ -60,6 +63,8 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     NSString                    *lastType = nil;
     NSUInteger                  paragraphCount = 0;
     NSUInteger const            maxParagraphs = 100;
+    NSRange                     preRange = NSMakeRange(NSNotFound, 0);
+    NSRange                     checklistRange = NSMakeRange(NSNotFound, 0);
 
     for (NSDictionary *paragraph in paragraphs)
     {
@@ -70,8 +75,48 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
         NSString            *type = paragraph[@"type"];
         NSAttributedString  *formattedText = [self processParagraph:paragraph];
+        NSInteger           location = result.length;
 
         [result appendAttributedString:formattedText];
+
+        if ([type isEqualToString:@"pre"])
+        {
+            if (preRange.location == NSNotFound)
+            {
+                preRange.location = location;
+            }
+        }
+        else
+        {
+            if (preRange.location != NSNotFound)
+            {
+                preRange.length = result.length - preRange.location;
+                [self applyPreParagraphStyleToText:result inRange:preRange];
+            }
+
+            preRange.location = NSNotFound;
+            preRange.length = 0;
+        }
+
+        if ([type isEqualToString:@"cl"])
+        {
+            if (checklistRange.location == NSNotFound)
+            {
+                checklistRange.location = location;
+            }
+        }
+        else
+        {
+            if (checklistRange.location != NSNotFound)
+            {
+                checklistRange.length = result.length - checklistRange.location;
+                [self applyChecklistParagraphStyleToText:result inRange:checklistRange];
+            }
+
+            checklistRange.location = NSNotFound;
+            checklistRange.length = 0;
+        }
+
         [result appendAttributedString:lineBreak];
 
         if (NO == [type isEqualToString:lastType])
@@ -226,6 +271,20 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     return result;
 }
 
+- (void)applyPreParagraphStyleToText:(NSMutableAttributedString *)text inRange:(NSRange)range
+{
+    NSMutableParagraphStyle *p = [NSMutableParagraphStyle new];
+
+    p.paragraphSpacingBefore = 7.0;
+    p.paragraphSpacing = 7.0;
+    p.firstLineHeadIndent = 7.0;
+    p.headIndent = 10.0;
+    p.tailIndent = -10.0;
+
+    [text addAttribute:PostsPreAttributeName value:@(1) range:range];
+    [text addAttribute:NSParagraphStyleAttributeName value:p range:range];
+}
+
 - (nonnull NSMutableParagraphStyle *)defaultListParagraphStyle
 {
     NSMutableParagraphStyle *listParagraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
@@ -337,11 +396,8 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     [self applyLinks:paragraph[@"links"] toAttributedString:formattedText];
 
     NSString                    *markString = [NSString stringWithFormat:@"%C\t", mark];
-    NSMutableParagraphStyle     *clParagraph = [self defaultListParagraphStyle];
-
     NSDictionary                *attributes = @{ NSFontAttributeName              : self.currentBaseFont,
-                                                 NSForegroundColorAttributeName   : self.currentTextColor,
-                                                 NSParagraphStyleAttributeName    : clParagraph };
+                                                 NSForegroundColorAttributeName   : self.currentTextColor };
 
     NSMutableAttributedString   *result = [[NSMutableAttributedString alloc] initWithString:markString
                                                                                  attributes:attributes];
@@ -349,6 +405,20 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
     [result appendAttributedString:formattedText];
 
     return result;
+}
+
+- (void)applyChecklistParagraphStyleToText:(NSMutableAttributedString *)text inRange:(NSRange)range
+{
+    NSMutableParagraphStyle *p = [self defaultListParagraphStyle];
+
+    p.paragraphSpacingBefore = 7.0;
+    p.paragraphSpacing = 7.0;
+    p.firstLineHeadIndent = 7.0;
+    p.headIndent = 10.0;
+    p.tailIndent = -10.0;
+
+    [text addAttribute:PostsChecklistAttributeName value:@(1) range:range];
+    [text addAttribute:NSParagraphStyleAttributeName value:p range:range];
 }
 
 - (void)applyLinks:(nullable NSDictionary *)links toAttributedString:(nonnull NSMutableAttributedString *)text
@@ -547,19 +617,19 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
         self.monospaceItalicFont        = self.monospaceFont;
         self.monospaceBoldItalicFont    = self.monospaceFont;
 
-        self.codeTextColor              = [NSColor blackColor];
-        self.codeBackgroundColor        = [NSColor lightGrayColor];
-        self.codeBorderColor            = [NSColor blackColor];;
+        self.codeTextColor              = [NSColor colorWithCalibratedRed:0.765 green:0.102 blue:0.337 alpha:1.000];
+        self.codeBackgroundColor        = [NSColor colorWithCalibratedRed:0.961 green:0.961 blue:0.969 alpha:1.000];
+        self.codeBorderColor            = [NSColor colorWithCalibratedRed:0.851 green:0.855 blue:0.890 alpha:1.000];
         self.codeBorderWidth            = kDefaultBorderWidth;;
         self.codeBorderRadius           = kDefaultBorderRadius;
 
         self.preTextColor               = [NSColor blackColor];
-        self.preBackgroundColor         = [NSColor lightGrayColor];
-        self.preBorderColor             = [NSColor blackColor];
+        self.preBackgroundColor         = [NSColor colorWithCalibratedRed:0.980 green:0.976 blue:0.965 alpha:1.000];
+        self.preBorderColor             = [NSColor colorWithCalibratedRed:0.796 green:0.792 blue:0.788 alpha:1.000];
         self.preBorderWidth             = kDefaultBorderWidth;
         self.preBorderRadius            = kDefaultBorderRadius;
 
-        self.linkColor                  = [NSColor blueColor];
+        self.linkColor                  = [NSColor colorWithCalibratedRed:0.949 green:0.957 blue:0.961 alpha:1.000];
         self.underlineLinks             = YES;
 
         self.listBullet                 = 0x2022;
@@ -570,9 +640,9 @@ static CGFloat  kDefaultBulletIndent    = 5.0;
 
         self.checklistUncheckedFont     = [NSFont systemFontOfSize:kDefaultFontSize];
         self.checklistCheckedFont       = [fontManager fontWithFamily:self.checklistUncheckedFont.familyName traits:NSItalicFontMask weight:0 size:kDefaultFontSize];
-        self.checklistCheckedTextColor  = [NSColor darkGrayColor];
+        self.checklistCheckedTextColor  = [NSColor colorWithCalibratedRed:0.475 green:0.475 blue:0.478 alpha:1.0];
         self.checklistUncheckedTextColor  = [NSColor blackColor];
-        self.checklistBackgroundColor   = [NSColor lightGrayColor];
+        self.checklistBackgroundColor   = [NSColor colorWithCalibratedRed:0.949 green:0.957 blue:0.961 alpha:1.000];
         self.checklistBorderColor       = [NSColor blackColor];
         self.checklistBorderWidth       = kDefaultBorderWidth;
         self.checklistBorderRadius      = kDefaultBorderRadius;

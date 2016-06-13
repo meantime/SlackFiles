@@ -10,6 +10,8 @@
 
 @class PostsTheme;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface PostsProcessor : NSObject
 
 @property (nullable)    PostsTheme  *theme;
@@ -19,6 +21,9 @@
 - (nonnull NSAttributedString *)attributedStringFromPost:(nonnull NSDictionary *)document;
 
 @end
+
+extern NSString * const PostsPreAttributeName;
+extern NSString * const PostsChecklistAttributeName;
 
 @interface PostsTheme : NSObject
 
@@ -78,3 +83,5 @@
 @property               CGFloat         checklistIndent;
 
 @end
+
+NS_ASSUME_NONNULL_END
