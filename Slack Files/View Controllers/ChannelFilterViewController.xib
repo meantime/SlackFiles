@@ -98,7 +98,7 @@
                     </scroller>
                 </scrollView>
                 <button id="bV8-5z-eih">
-                    <rect key="frame" x="18" y="18" width="213" height="18"/>
+                    <rect key="frame" x="18" y="13" width="213" height="18"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="check" title="Include archived/deleted" bezelStyle="regularSquare" imagePosition="left" refusesFirstResponder="YES" inset="2" id="4Jm-s1-dgc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -111,12 +111,12 @@
                 <popUpButton verticalHuggingPriority="750" id="fc1-aU-RMX">
                     <rect key="frame" x="18" y="571" width="214" height="26"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="All Media Types" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="wNP-iI-dhY" id="5hj-p1-rvD">
+                    <popUpButtonCell key="cell" type="push" title="All Media Types" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="wNP-iI-dhY" id="5hj-p1-rvD">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="gHX-JB-cWl">
                             <items>
-                                <menuItem title="All Media Types" id="wNP-iI-dhY"/>
+                                <menuItem title="All Media Types" state="on" id="wNP-iI-dhY"/>
                                 <menuItem isSeparatorItem="YES" id="HvU-aX-0PS"/>
                                 <menuItem title="Images" tag="1" id="PYP-wt-u2a"/>
                                 <menuItem title="Videos" tag="2" id="ute-qP-vhW"/>

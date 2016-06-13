@@ -119,7 +119,7 @@ NS_ENUM(NSInteger, MediaType)
 
             if (includeDeleted)
             {
-                unsortedList = [Channel objectsWhere:@"team = %@", self.team.teamId];
+                unsortedList = [Channel objectsWhere:@"team = %@", self.team];
             }
             else
             {
