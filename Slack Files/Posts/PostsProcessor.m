@@ -90,7 +90,7 @@ NSString * const PostsChecklistAttributeName    = @"PostsChecklistAttributeName"
         {
             if (preRange.location != NSNotFound)
             {
-                preRange.length = result.length - preRange.location;
+                preRange.length = location - preRange.location;
                 [self applyPreParagraphStyleToText:result inRange:preRange];
             }
 
@@ -109,7 +109,7 @@ NSString * const PostsChecklistAttributeName    = @"PostsChecklistAttributeName"
         {
             if (checklistRange.location != NSNotFound)
             {
-                checklistRange.length = result.length - checklistRange.location;
+                checklistRange.length = location - checklistRange.location;
                 [self applyChecklistParagraphStyleToText:result inRange:checklistRange];
             }
 
