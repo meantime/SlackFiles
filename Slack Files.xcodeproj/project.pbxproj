@@ -20,6 +20,7 @@
 		8337E71E1D06B8B600051C17 /* ImageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337E71C1D06B8B600051C17 /* ImageWindowController.m */; };
 		8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8337E71D1D06B8B600051C17 /* ImageWindowController.xib */; };
 		834359761D0386D200F309B9 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 834359751D0386D200F309B9 /* File.m */; };
+		835ED2181D0E420400D91796 /* Email Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 835ED2171D0E420400D91796 /* Email Icon.png */; };
 		837E36131D04DBB500483B61 /* FilesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E36111D04DBB500483B61 /* FilesCollectionViewController.m */; };
 		837E36141D04DBB500483B61 /* FilesCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */; };
 		837E36181D04DD4D00483B61 /* FilesCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 837E36161D04DD4D00483B61 /* FilesCollectionViewItem.m */; };
@@ -92,6 +93,7 @@
 		8337E71D1D06B8B600051C17 /* ImageWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageWindowController.xib; sourceTree = "<group>"; };
 		834359741D0386D200F309B9 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		834359751D0386D200F309B9 /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
+		835ED2171D0E420400D91796 /* Email Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Icon.png"; sourceTree = "<group>"; };
 		837E36101D04DBB500483B61 /* FilesCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesCollectionViewController.h; sourceTree = "<group>"; };
 		837E36111D04DBB500483B61 /* FilesCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesCollectionViewController.m; sourceTree = "<group>"; };
 		837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesCollectionViewController.xib; sourceTree = "<group>"; };
@@ -190,6 +192,22 @@
 			name = "Filter List";
 			sourceTree = "<group>";
 		};
+		835ED2131D0E3B8000D91796 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				835ED2141D0E3B9600D91796 /* Images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		835ED2141D0E3B9600D91796 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				835ED2171D0E420400D91796 /* Email Icon.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		83A1AE881CFD3BD400A39387 = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +246,7 @@
 				83B886CD1D07D46E00C9F3F3 /* PostsProcessor.h */,
 				83B886CE1D07D46E00C9F3F3 /* PostsProcessor.m */,
 				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
+				835ED2131D0E3B8000D91796 /* Resources */,
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
 				83A1AE971CFD3BD500A39387 /* Supporting Files */,
 				83B262081D05396800737310 /* View Controllers */,
@@ -410,6 +429,7 @@
 				83A717D41D03681A00C4DE32 /* FilesWindowController.xib in Resources */,
 				8336210A1D0CCAEC00589089 /* ChannelFilterViewController.xib in Resources */,
 				83A1AE9B1CFD3BD500A39387 /* Assets.xcassets in Resources */,
+				835ED2181D0E420400D91796 /* Email Icon.png in Resources */,
 				83A1AE9E1CFD3BD600A39387 /* MainMenu.xib in Resources */,
 				8337E71F1D06B8B600051C17 /* ImageWindowController.xib in Resources */,
 				837E36191D04DD4D00483B61 /* FilesCollectionViewItem.xib in Resources */,

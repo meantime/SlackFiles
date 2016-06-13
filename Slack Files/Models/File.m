@@ -12,6 +12,7 @@
 
 static NSCache  *gMIMETypeIconCache;
 static NSCache  *gExtensionIconCache;
+static NSCache  *gPrettyTypeIconCache;
 
 @implementation File
 
@@ -19,6 +20,7 @@ static NSCache  *gExtensionIconCache;
 {
     gMIMETypeIconCache = [NSCache new];
     gExtensionIconCache = [NSCache new];
+    gPrettyTypeIconCache = [NSCache new];
 }
 
 + (NSString *)primaryKey
@@ -197,21 +199,41 @@ static NSCache  *gExtensionIconCache;
 {
     NSImage     *iconImage = nil;
 
-    //  The the file extension first
-    NSString    *extension = [self.filename pathExtension];
-
-    iconImage = [gExtensionIconCache objectForKey:extension];
+    //  Quick check for known unhandled formats
+    iconImage = [gPrettyTypeIconCache objectForKey:self.prettyType];
 
     if (nil == iconImage)
     {
-        iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:extension];
+        if ([@"Email" isEqualToString:self.prettyType])
+        {
+            iconImage = [NSImage imageNamed:@"Email Icon.png"];
+        }
 
         if (iconImage)
         {
-            [gExtensionIconCache setObject:iconImage forKey:extension];
+            [gPrettyTypeIconCache setObject:iconImage forKey:self.prettyType];
         }
     }
 
+    //  Try by file extension first
+    if (nil == iconImage)
+    {
+        NSString    *extension = [self.filename pathExtension];
+
+        iconImage = [gExtensionIconCache objectForKey:extension];
+
+        if (nil == iconImage)
+        {
+            iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:extension];
+
+            if (iconImage)
+            {
+                [gExtensionIconCache setObject:iconImage forKey:extension];
+            }
+        }
+    }
+
+    //  Next try by MIME type
     if (nil == iconImage)
     {
         iconImage = [gMIMETypeIconCache objectForKey:self.mimeType];
@@ -232,13 +254,13 @@ static NSCache  *gExtensionIconCache;
         }
     }
 
+    //  Lastly, generic document icon
     if (nil == iconImage)
     {
         iconImage = [gExtensionIconCache objectForKey:(__bridge NSString *) kUTTypeItem];
 
         if (nil == iconImage)
         {
-            //  Last resort, try to load a generic document icon
             iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:(__bridge NSString *) kUTTypeItem];
 
             if (iconImage)
