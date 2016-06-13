@@ -128,7 +128,7 @@
 
     if (self.mediaFilteredFiles.count)
     {
-        fileCount = [formatter stringFromNumber:@(self.baseFiles.count)];
+        fileCount = [formatter stringFromNumber:@(self.mediaFilteredFiles.count)];
     }
     else
     {
