@@ -14,9 +14,12 @@
 @interface WindowController () <NSWindowDelegate>
 
 @property (nonnull, readwrite)  File    *file;
+@property (nonnull, readwrite)  NSData  *fileData;
 
 @property   NSURLSession                *networkSession;
 @property   NSURLSessionDataTask        *networkTask;
+
+@property   NSSavePanel                 *savePanel;
 
 @end
 
@@ -61,12 +64,49 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^{
 
+                self.fileData = data;
+
                 completionHandler(data, response, error);
             });
         }
     }];
     
     [self.networkTask resume];
+}
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+    BOOL    result = NO;
+
+    if ([anItem action] == @selector(saveDocument:) || [anItem action] == @selector(saveDocumentAs:))
+    {
+        result = (nil != self.fileData);
+    }
+
+    return result;
+}
+
+- (IBAction)saveDocument:(id)sender
+{
+    [self saveDocumentAs:sender];
+}
+
+- (IBAction)saveDocumentAs:(id)sender
+{
+    self.savePanel = [NSSavePanel savePanel];
+
+    self.savePanel.title = self.file.title;
+    self.savePanel.nameFieldStringValue = self.file.filename;
+
+    [self.savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+
+        if (NSFileHandlingPanelOKButton == result)
+        {
+            NSURL   *url = self.savePanel.URL;
+
+            [self.fileData writeToURL:url atomically:NO];
+        }
+    }];
 }
 
 #pragma mark - <NSWindowDelegate>

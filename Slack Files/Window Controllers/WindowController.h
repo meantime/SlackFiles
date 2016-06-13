@@ -15,10 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WindowController : NSWindowController
 
 @property (nonnull, readonly)   File    *file;
+@property (nonnull, readonly)   NSData  *fileData;
 
 + (instancetype)windowControllerForFile:(File *)file;
 
 - (void)loadContentWithCompletion:(void (^)(NSData * __nullable data, NSURLResponse * __nullable response, NSError * __nullable error))completionHandler;
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem;
 
 @end
 

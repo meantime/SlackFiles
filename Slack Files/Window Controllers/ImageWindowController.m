@@ -13,7 +13,6 @@
 @interface ImageWindowController ()
 
 @property   IBOutlet    NSImageView *imageView;
-@property               NSData      *imageData;
 @property               NSSavePanel *savePanel;
 
 @end
@@ -40,24 +39,23 @@
         {
             NSImage *image = [[NSImage alloc] initWithData:data];
 
-            self.imageData = data;
             self.window.maxSize = image.size;
             self.imageView.image = image;
         }
     }];
 }
 
-- (BOOL)validateUserInterfaceItem:(id < NSValidatedUserInterfaceItem >)anItem
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
     BOOL    result = NO;
 
     if ([anItem action] == @selector(copy:))
     {
-        result = (nil != self.imageData);
+        result = (nil != self.fileData);
     }
-    else if ([anItem action] == @selector(saveDocument:) || [anItem action] == @selector(saveDocumentAs:))
+    else
     {
-        result = (nil != self.imageData);
+        result = [super validateUserInterfaceItem:anItem];
     }
 
     return result;
@@ -69,30 +67,6 @@
 
     [pasteboard clearContents];
     [pasteboard writeObjects:@[ self.imageView.image ]];
-}
-
-- (IBAction)saveDocument:(id)sender
-{
-    [self saveDocumentAs:sender];
-}
-
-- (IBAction)saveDocumentAs:(id)sender
-{
-    self.savePanel = [NSSavePanel savePanel];
-
-    self.savePanel.prompt = @"Save Image";
-    self.savePanel.title = self.file.title;
-    self.savePanel.nameFieldStringValue = self.file.filename;
-
-    [self.savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
-
-        if (NSFileHandlingPanelOKButton == result)
-        {
-            NSURL   *url = self.savePanel.URL;
-
-            [self.imageData writeToURL:url atomically:NO];
-        }
-    }];
 }
 
 @end
