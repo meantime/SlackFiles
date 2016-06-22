@@ -68,7 +68,7 @@
 {
     [self.playerView.player pause];
 
-    [NSAppDelegate windowWillClose:self];
+    [SFAppDelegate windowWillClose:self];
 
     return YES;
 }

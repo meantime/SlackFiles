@@ -97,7 +97,7 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     {
         NSMutableData   *key = [NSMutableData dataWithLength:64];
 
-        SecRandomCopyBytes(kSecRandomDefault, key.length, (uint8_t *) key.mutableBytes);
+        (void) SecRandomCopyBytes(kSecRandomDefault, key.length, (uint8_t *) key.mutableBytes);
 
         realmKey = [NSData dataWithData:key];
 

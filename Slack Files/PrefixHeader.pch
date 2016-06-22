@@ -19,8 +19,8 @@
 #define IsStringWithContents(a) (! IsEmptyString((a)))
 #endif
 
-#if !defined(AppDelegate)
-#define NSAppDelegate [NSApp delegate]
+#if !defined(SFAppDelegate)
+#define SFAppDelegate ((AppDelegate *) [NSApp delegate])
 #endif
 
 #endif /* PrefixHeader_pch */

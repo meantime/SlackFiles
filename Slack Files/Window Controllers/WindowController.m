@@ -118,7 +118,7 @@
     self.networkSession = nil;
     self.networkTask = nil;
 
-    [NSAppDelegate windowWillClose:self];
+    [SFAppDelegate windowWillClose:self];
 
     return YES;
 }
