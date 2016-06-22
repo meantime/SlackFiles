@@ -270,6 +270,8 @@ NS_ENUM(NSUInteger, FetchState)
             [self updateProgressInfo];
             [self updateBrowser];
 
+            [self.api openRealtimeSocket];
+
             return;
         }
     }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8324994C1D1A446300C3601A /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8324994A1D1A444800C3601A /* SocketRocket.framework */; };
+		8324994D1D1A446300C3601A /* SocketRocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8324994A1D1A444800C3601A /* SocketRocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		832499531D1A454700C3601A /* RealtimeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 832499521D1A454700C3601A /* RealtimeDelegate.m */; };
 		833230FA1D02690000933E7E /* SlackAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 833230F91D02690000933E7E /* SlackAPI.m */; };
 		833230FD1D02769A00933E7E /* Team.m in Sources */ = {isa = PBXBuildFile; fileRef = 833230FC1D02769A00933E7E /* Team.m */; };
 		833620F41D0C848E00589089 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 833620F31D0C848E00589089 /* User.m */; };
@@ -63,6 +66,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				83A717CE1D03569A00C4DE32 /* Realm.framework in Embed Frameworks */,
+				8324994D1D1A446300C3601A /* SocketRocket.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,6 +74,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8324994A1D1A444800C3601A /* SocketRocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketRocket.framework; sourceTree = "<group>"; };
+		832499511D1A454700C3601A /* RealtimeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealtimeDelegate.h; sourceTree = "<group>"; };
+		832499521D1A454700C3601A /* RealtimeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealtimeDelegate.m; sourceTree = "<group>"; };
 		833230F81D02690000933E7E /* SlackAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlackAPI.h; sourceTree = "<group>"; };
 		833230F91D02690000933E7E /* SlackAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlackAPI.m; sourceTree = "<group>"; };
 		833230FB1D02769A00933E7E /* Team.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Team.h; sourceTree = "<group>"; };
@@ -157,6 +164,7 @@
 				83B2621C1D05548D00737310 /* AVFoundation.framework in Frameworks */,
 				83B262191D0552B200737310 /* AVKit.framework in Frameworks */,
 				83A717CD1D03569A00C4DE32 /* Realm.framework in Frameworks */,
+				8324994C1D1A446300C3601A /* SocketRocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +270,8 @@
 				83A1AEA61CFD40E400A39387 /* OAuth2 */,
 				838918B41D0E6C1800FCE97B /* Posts */,
 				83A1AEAA1CFD465E00A39387 /* PrefixHeader.pch */,
+				832499511D1A454700C3601A /* RealtimeDelegate.h */,
+				832499521D1A454700C3601A /* RealtimeDelegate.m */,
 				835ED2131D0E3B8000D91796 /* Resources */,
 				83A1AEA51CFD3C2B00A39387 /* Slack Files.entitlements */,
 				83A1AE971CFD3BD500A39387 /* Supporting Files */,
@@ -305,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				83A717C81D03564700C4DE32 /* Realm.framework */,
+				8324994A1D1A444800C3601A /* SocketRocket.framework */,
 			);
 			path = External;
 			sourceTree = "<group>";
@@ -468,6 +479,7 @@
 				83A1AEA91CFD411E00A39387 /* SlackAuth.m in Sources */,
 				833230FA1D02690000933E7E /* SlackAPI.m in Sources */,
 				8337E71A1D06A3A600051C17 /* WindowController.m in Sources */,
+				832499531D1A454700C3601A /* RealtimeDelegate.m in Sources */,
 				834359761D0386D200F309B9 /* File.m in Sources */,
 				833621091D0CCAEC00589089 /* ChannelFilterViewController.m in Sources */,
 				833620F41D0C848E00589089 /* User.m in Sources */,

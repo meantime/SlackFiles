@@ -22,6 +22,7 @@ extern const struct SlackEndpoints
     NSString    __unsafe_unretained *imList;
     NSString    __unsafe_unretained *mpimList;
     NSString    __unsafe_unretained *oauthAccess;
+    NSString    __unsafe_unretained *rtmLeanStart;
     NSString    __unsafe_unretained *teamInfo;
     NSString    __unsafe_unretained *usersInfo;
     NSString    __unsafe_unretained *usersList;
@@ -31,7 +32,7 @@ extern const struct SlackEndpoints
 
 @interface SlackAPI : NSObject
 
-@property (nonatomic, nullable, strong) Team    *team;
+@property (nonatomic, readonly) Team    *team;
 
 - (instancetype)initWithTeam:(nullable Team *)team;
 
@@ -40,6 +41,9 @@ extern const struct SlackEndpoints
 
 - (void)suspend;
 - (void)resume;
+
+- (void)openRealtimeSocket;
+- (void)closeRealtimeSocket;
 
 @end
 
