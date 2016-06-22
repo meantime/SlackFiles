@@ -26,6 +26,7 @@ const struct SlackEndpoints SlackEndpoints =
     .mpimList           = @"mpim.list",
     .oauthAccess        = @"oauth.access",
     .rtmLeanStart       = @"rtm.leanStart",
+    .rtmStart           = @"rtm.start",
     .teamInfo           = @"team.info",
     .usersInfo          = @"users.info",
     .usersList          = @"users.list"

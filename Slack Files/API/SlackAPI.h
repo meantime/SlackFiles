@@ -23,6 +23,7 @@ extern const struct SlackEndpoints
     NSString    __unsafe_unretained *mpimList;
     NSString    __unsafe_unretained *oauthAccess;
     NSString    __unsafe_unretained *rtmLeanStart;
+    NSString    __unsafe_unretained *rtmStart;
     NSString    __unsafe_unretained *teamInfo;
     NSString    __unsafe_unretained *usersInfo;
     NSString    __unsafe_unretained *usersList;

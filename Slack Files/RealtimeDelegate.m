@@ -45,7 +45,7 @@
 
 - (BOOL)webSocketShouldConvertTextFrameToString:(SRWebSocket *)webSocket
 {
-    //  Have to do this to force everything to be piped thruogh didReceiveMessageWithData
+    //  Have to do this to force everything to be piped through didReceiveMessageWithData
     return NO;
 }
 
@@ -104,6 +104,13 @@
 {
     NSLog(@"webSocketDidCloseWithCode for team %@, code %ld, reason %@, was clean %d", self.teamId, code, reason, wasClean);
     [self closeProcessingQueue];
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongData
+{
+    NSDictionary    *pong = [NSJSONSerialization JSONObjectWithData:pongData options:0 error:nil];
+
+    NSLog(@"webSocket didReceivePong: %@", pong);
 }
 
 #pragma mark - File Message Processing

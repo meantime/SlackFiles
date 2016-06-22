@@ -18,7 +18,7 @@
 static NSString *kAuthEndpoint      = @"https://slack.com/oauth/authorize";
 static NSString *kRedirectURI       = @"slackfiles://authendpoint";
 //static NSString *kScope             = @"channels:read files:read groups:read im:read mpim:read team:read users:read";
-static NSString *kScope             = @"client";
+static NSString *kScope             = @"client";    //  Sadly I need this more permissive scope to do rtm.leanStart
 
 static NSString *kClientIdArg       = @"client_id";
 static NSString *kClientSecretArg   = @"client_secret";
