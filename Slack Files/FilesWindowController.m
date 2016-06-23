@@ -11,9 +11,10 @@
 #import "Channel.h"
 #import "ChannelFilterViewController.h"
 #import "File.h"
+#import "FilesCollectionViewController.h"
 #import "Group.h"
 #import "IM.h"
-#import "FilesCollectionViewController.h"
+#import "ModelListProcessor.h"
 #import "SlackAPI.h"
 #import "Team.h"
 #import "User.h"
@@ -39,6 +40,7 @@ NS_ENUM(NSUInteger, FetchState)
 
 @property (readwrite)               Team                *team;
 @property                           SlackAPI            *api;
+@property (nonatomic, strong)       ModelListProcessor  *listProcessor;
 
 @property                           NSUInteger          highestPage;
 @property                           NSUInteger          numPages;
@@ -50,8 +52,6 @@ NS_ENUM(NSUInteger, FetchState)
 @property (nullable)                NSDate              *fetchFromDate;
 @property (nullable)                NSDate              *fetchToDate;
 @property (weak)        IBOutlet    id<SyncUIDelegate>  syncUIDelegate;
-@property                           NSUInteger          totalNewFileCount;
-@property                           NSUInteger          totalFiles;
 
 @property               IBOutlet    NSView              *browserContainer;
 @property (nullable)    IBOutlet    NSTextField         *statusMessage;
@@ -70,6 +70,7 @@ NS_ENUM(NSUInteger, FetchState)
 
     result.team = team;
     result.api = [[SlackAPI alloc] initWithTeam:team];
+    result.listProcessor = [[ModelListProcessor alloc] initWithTeamId:team.teamId];
 
     return result;
 }
@@ -125,7 +126,7 @@ NS_ENUM(NSUInteger, FetchState)
         {
             NSArray *userList = result[@"members"];
 
-            [weakSelf processUserList:userList];
+            [weakSelf.listProcessor processServerUserList:userList];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -149,7 +150,7 @@ NS_ENUM(NSUInteger, FetchState)
         {
             NSArray *channelList = result[@"channels"];
 
-            [weakSelf processChannelList:channelList];
+            [weakSelf.listProcessor processServerChannelList:channelList];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -173,7 +174,7 @@ NS_ENUM(NSUInteger, FetchState)
         {
             NSArray *groupList = result[@"groups"];
 
-            [weakSelf processGroupList:groupList];
+            [weakSelf.listProcessor processServerGroupList:groupList];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -196,7 +197,7 @@ NS_ENUM(NSUInteger, FetchState)
         {
             NSArray *imList = result[@"ims"];
 
-            [weakSelf processIMList:imList];
+            [weakSelf.listProcessor processServerIMList:imList];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -316,13 +317,12 @@ NS_ENUM(NSUInteger, FetchState)
             self.highestPage = MAX(self.highestPage, number);
 
             number = [paging[@"total"] unsignedIntegerValue];
-            self.totalFiles = MAX(self.totalFiles, number);
 
             self.phasePageNum = self.phasePageNum + 1;
             [self updateProgressInfo];
 
             NSLog(@"[%@] page %ld of %ld", self.team.teamName, self.highestPage, self.numPages);
-            [self processFileList:result[@"files"]];
+            [self.listProcessor processServerFileList:result[@"files"]];
 
             dispatch_async(dispatch_get_main_queue(), ^{
 
@@ -353,167 +353,6 @@ NS_ENUM(NSUInteger, FetchState)
                 NSLog(@"oh shit");
             }
         }
-    }];
-}
-
-- (void)processFileList:(NSArray *)files
-{
-    NSLog(@"Processing %ld files", files.count);
-    
-    if (files.count < 1)
-    {
-        return;
-    }
-
-    RLMRealm    *realm = [RLMRealm defaultRealm];
-
-    [realm transactionWithBlock:^{
-
-        NSUInteger  newFileCount = 0;
-
-        for (NSDictionary *f in files)
-        {
-            File    *file = [File objectInRealm:realm forPrimaryKey:f[@"id"]];
-
-            if (nil == file)
-            {
-                newFileCount++;
-            }
-
-            NSDictionary    *values = [File valuesFromNetworkResponse:f];
-
-            file = [File createOrUpdateInRealm:realm withValue:values];
-
-            User    *creator = [User objectInRealm:realm forPrimaryKey:f[@"user"]];
-
-            file.team = self.team;
-            file.creator = creator;
-        }
-
-        self.totalNewFileCount = self.totalNewFileCount + newFileCount;
-        NSLog(@"Total files added: %ld out of %ld", self.totalNewFileCount, self.totalFiles);
-
-        [self updateProgressInfo];
-    }];
-}
-
-- (void)processUserList:(NSArray *)users
-{
-    NSLog(@"Processing %ld users", users.count);
-
-    RLMRealm    *realm = [RLMRealm defaultRealm];
-    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
-
-    [realm transactionWithBlock:^{
-
-        NSUInteger  newUserCount = 0;
-
-        for (NSDictionary *u in users)
-        {
-            User    *user = [User objectInRealm:realm forPrimaryKey:u[@"id"]];
-
-            if (nil == user)
-            {
-                newUserCount++;
-            }
-
-            NSDictionary    *values = [User valuesFromNetworkResponse:u];
-
-            user = [User createOrUpdateInRealm:realm withValue:values];
-            user.team = team;
-        }
-
-        NSLog(@"New users added: %ld", newUserCount);
-    }];
-}
-
-- (void)processChannelList:(NSArray *)channels
-{
-    NSLog(@"Processing %ld channels", channels.count);
-
-    RLMRealm    *realm = [RLMRealm defaultRealm];
-    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
-
-    [realm transactionWithBlock:^{
-
-        NSUInteger  newChannelCount = 0;
-
-        for (NSDictionary *c in channels)
-        {
-            Channel *channel = [Channel objectInRealm:realm forPrimaryKey:c[@"id"]];
-
-            if (nil == channel)
-            {
-                newChannelCount++;
-            }
-
-            NSDictionary    *values = [Channel valuesFromNetworkResponse:c];
-
-            channel = [Channel createOrUpdateInRealm:realm withValue:values];
-            channel.team = team;
-        }
-
-        NSLog(@"New channels added: %ld", newChannelCount);
-    }];
-}
-
-- (void)processGroupList:(NSArray *)channels
-{
-    NSLog(@"Processing %ld private channels", channels.count);
-
-    RLMRealm    *realm = [RLMRealm defaultRealm];
-    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
-
-    [realm transactionWithBlock:^{
-
-        NSUInteger  newChannelCount = 0;
-
-        for (NSDictionary *c in channels)
-        {
-            Group   *channel = [Group objectInRealm:realm forPrimaryKey:c[@"id"]];
-
-            if (nil == channel)
-            {
-                newChannelCount++;
-            }
-
-            NSDictionary    *values = [Group valuesFromNetworkResponse:c];
-
-            channel = [Group createOrUpdateInRealm:realm withValue:values];
-            channel.team = team;
-        }
-
-        NSLog(@"New private channels added: %ld", newChannelCount);
-    }];
-}
-
-- (void)processIMList:(NSArray *)channels
-{
-    NSLog(@"Processing %ld direct message channels", channels.count);
-
-    RLMRealm    *realm = [RLMRealm defaultRealm];
-    Team        *team = [Team objectInRealm:realm forPrimaryKey:self.team.teamId];
-
-    [realm transactionWithBlock:^{
-
-        NSUInteger  newChannelCount = 0;
-
-        for (NSDictionary *c in channels)
-        {
-            IM  *channel = [IM objectInRealm:realm forPrimaryKey:c[@"id"]];
-
-            if (nil == channel)
-            {
-                newChannelCount++;
-            }
-
-            NSDictionary    *values = [IM valuesFromNetworkResponse:c];
-
-            channel = [IM createOrUpdateInRealm:realm withValue:values];
-            channel.team = team;
-        }
-
-        NSLog(@"New direct message channels added: %ld", newChannelCount);
     }];
 }
 

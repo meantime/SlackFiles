@@ -54,6 +54,7 @@
 		83B2622D1D056C2500737310 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B2622C1D056C2500737310 /* Quartz.framework */; };
 		83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */; };
 		83B4B3201D0AC0C400EC9912 /* HTMLWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */; };
+		83BB95271D1C81DA00F1539F /* ModelListProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BB95261D1C81DA00F1539F /* ModelListProcessor.m */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
 /* End PBXBuildFile section */
@@ -150,6 +151,8 @@
 		83B4B31C1D0AC0C400EC9912 /* HTMLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLWindowController.h; sourceTree = "<group>"; };
 		83B4B31D1D0AC0C400EC9912 /* HTMLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLWindowController.m; sourceTree = "<group>"; };
 		83B4B31E1D0AC0C400EC9912 /* HTMLWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTMLWindowController.xib; sourceTree = "<group>"; };
+		83BB95251D1C81DA00F1539F /* ModelListProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelListProcessor.h; sourceTree = "<group>"; };
+		83BB95261D1C81DA00F1539F /* ModelListProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelListProcessor.m; sourceTree = "<group>"; };
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
 		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
 		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
@@ -340,6 +343,8 @@
 				833620F91D0CB53400589089 /* Group.m */,
 				833621011D0CBA4A00589089 /* IM.h */,
 				833621021D0CBA4A00589089 /* IM.m */,
+				83BB95251D1C81DA00F1539F /* ModelListProcessor.h */,
+				83BB95261D1C81DA00F1539F /* ModelListProcessor.m */,
 				833620FB1D0CB59100589089 /* SlackModelObject.h */,
 				833620FC1D0CB59100589089 /* SlackModelObject.m */,
 				833230FB1D02769A00933E7E /* Team.h */,
@@ -486,6 +491,7 @@
 				833620FD1D0CB59100589089 /* SlackModelObject.m in Sources */,
 				83B2622A1D056B5300737310 /* PDFWindowController.m in Sources */,
 				83A1AEAE1CFD486500A39387 /* NSURL+QueryArgs.m in Sources */,
+				83BB95271D1C81DA00F1539F /* ModelListProcessor.m in Sources */,
 				833620FA1D0CB53400589089 /* Group.m in Sources */,
 				833621001D0CB8F700589089 /* Channel.m in Sources */,
 				83B262161D05503B00737310 /* VideoWindowController.m in Sources */,
