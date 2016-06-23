@@ -37,8 +37,8 @@ const struct SlackEndpoints SlackEndpoints =
 @property (nullable, strong)    NSURLSession            *networkSession;
 @property (nullable, strong)    NSURLSessionDataTask    *activeTask;
 @property (nonnull, strong)     NSMutableArray          *pendingTasks;
-@property (strong, readwrite)   Team                    *team;
 @property (copy)                NSString                *teamId;
+@property (copy)                NSString                *apiToken;
 @property (nullable, strong)    SRWebSocket             *websocket;
 @property (nullable, strong)    RealtimeDelegate        *realtimeDelegate;
 
@@ -57,8 +57,8 @@ const struct SlackEndpoints SlackEndpoints =
 
     if (self)
     {
-        self.team = team;
         self.teamId = team.teamId;
+        self.apiToken = team.apiToken;
         
         self.pendingTasks = [NSMutableArray array];
     }
@@ -73,7 +73,7 @@ const struct SlackEndpoints SlackEndpoints =
 
 - (NSURLRequest *)requestForEndpoint:(NSString *)endpoint arguments:(nullable NSDictionary *)args
 {
-    if (IsStringWithContents(self.team.apiToken))
+    if (IsStringWithContents(self.apiToken))
     {
         NSMutableDictionary  *a = [NSMutableDictionary dictionary];
 
@@ -82,7 +82,7 @@ const struct SlackEndpoints SlackEndpoints =
             [a addEntriesFromDictionary:args];
         }
 
-        a[@"token"] = self.team.apiToken;
+        a[@"token"] = self.apiToken;
 
         args = [NSDictionary dictionaryWithDictionary:a];
     }
@@ -213,6 +213,7 @@ const struct SlackEndpoints SlackEndpoints =
 
             self.websocket = [[SRWebSocket alloc] initWithURLRequest:request];
             self.realtimeDelegate = [[RealtimeDelegate alloc] initWithTeamId:self.teamId];
+            [self.realtimeDelegate setAPI:self];
             self.websocket.delegate = self.realtimeDelegate;
 
             [self.websocket open];

@@ -8,11 +8,15 @@
 
 @import SocketRocket;
 
+@class SlackAPI;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RealtimeDelegate : NSObject <SRWebSocketDelegate>
 
 - (instancetype)initWithTeamId:(NSString *)teamId;
+
+- (void)setAPI:(SlackAPI *)api;
 
 @end
 

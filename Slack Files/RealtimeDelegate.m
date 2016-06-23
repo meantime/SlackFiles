@@ -10,10 +10,15 @@
 
 @import Realm;
 
+#import "ModelListProcessor.h"
+#import "SlackAPI.h"
+
 @interface RealtimeDelegate ()
 
-@property   dispatch_queue_t    messageProcessingQueue;
-@property   NSString            *teamId;
+@property (nonatomic, strong)   dispatch_queue_t    messageProcessingQueue;
+@property (nonatomic, strong)   NSString            *teamId;
+@property (nonatomic, weak)     SlackAPI            *slackAPI;
+@property (nonatomic, strong)   ModelListProcessor  *modelProcessor;
 
 @end
 
@@ -26,6 +31,7 @@
     if (self)
     {
         self.teamId = teamId;
+        self.modelProcessor = [[ModelListProcessor alloc] initWithTeamId:teamId];
     }
 
     return self;
@@ -39,6 +45,11 @@
 - (void)closeProcessingQueue
 {
     self.messageProcessingQueue = 0;
+}
+
+- (void)setAPI:(SlackAPI *)api
+{
+    self.slackAPI = api;
 }
 
 #pragma mark - <SRWebSocketDelegate>
@@ -58,7 +69,7 @@
 
         if ([@"file_created" isEqualToString:type])
         {
-            [self processCreateFileMessage:message[@"file"]];
+            [self processCreateOrUpdateFileMessage:message[@"file"]];
         }
         else if ([@"file_shared" isEqualToString:type])
         {
@@ -70,7 +81,7 @@
         }
         else if ([@"file_change" isEqualToString:type])
         {
-            [self processChangeFileMessage:message[@"file"]];
+            [self processCreateOrUpdateFileMessage:message[@"file"]];
         }
         else if ([@"file_deleted" isEqualToString:type])
         {
@@ -115,9 +126,17 @@
 
 #pragma mark - File Message Processing
 
-- (void)processCreateFileMessage:(NSDictionary *)file
+- (void)processCreateOrUpdateFileMessage:(NSDictionary *)file
 {
-    NSLog(@"Received file create: %@", file);
+    NSString    *fileId = file[@"id"];
+    
+    [self.slackAPI callEndpoint:SlackEndpoints.filesInfo withArguments:@{ @"file" : fileId } completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+        
+        if ([result[@"ok"] boolValue])
+        {
+            [self.modelProcessor processServerFileList:@[ result[@"file"] ]];
+        }
+    }];
 }
 
 - (void)processShareFileMessage:(NSDictionary *)file
@@ -128,11 +147,6 @@
 - (void)processUnshareFileMessage:(NSDictionary *)file
 {
     NSLog(@"Received file unshare: %@", file);
-}
-
-- (void)processChangeFileMessage:(NSDictionary *)file
-{
-    NSLog(@"Received file change: %@", file);
 }
 
 - (void)processDeleteFileMessage:(NSString *)fileId

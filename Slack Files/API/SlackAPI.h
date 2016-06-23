@@ -33,8 +33,6 @@ extern const struct SlackEndpoints
 
 @interface SlackAPI : NSObject
 
-@property (nonatomic, readonly) Team    *team;
-
 - (instancetype)initWithTeam:(nullable Team *)team;
 
 - (NSURLRequest *)requestForEndpoint:(NSString *)endpoint arguments:(nullable NSDictionary *)args;
