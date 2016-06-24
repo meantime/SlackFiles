@@ -10,6 +10,7 @@
 
 @import Realm;
 
+#import "File.h"
 #import "ModelListProcessor.h"
 #import "SlackAPI.h"
 
@@ -67,19 +68,10 @@
         NSDictionary    *message = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSString        *type = message[@"type"];
 
-        if ([@"file_created" isEqualToString:type])
-        {
-            [self processCreateOrUpdateFileMessage:message[@"file"]];
-        }
-        else if ([@"file_shared" isEqualToString:type])
-        {
-            [self processShareFileMessage:message[@"file"]];
-        }
-        else if ([@"file_unshared" isEqualToString:type])
-        {
-            [self processUnshareFileMessage:message[@"file"]];
-        }
-        else if ([@"file_change" isEqualToString:type])
+        if (([@"file_created" isEqualToString:type])
+        ||  ([@"file_change" isEqualToString:type])
+        ||  ([@"file_shared" isEqualToString:type])
+        ||  ([@"file_unshared" isEqualToString:type]))
         {
             [self processCreateOrUpdateFileMessage:message[@"file"]];
         }
@@ -139,19 +131,18 @@
     }];
 }
 
-- (void)processShareFileMessage:(NSDictionary *)file
-{
-    NSLog(@"Received file share: %@", file);
-}
-
-- (void)processUnshareFileMessage:(NSDictionary *)file
-{
-    NSLog(@"Received file unshare: %@", file);
-}
-
 - (void)processDeleteFileMessage:(NSString *)fileId
 {
-    NSLog(@"Received file deleted: %@", fileId);
+    RLMRealm    *realm = [RLMRealm defaultRealm];
+    File        *file = [File objectInRealm:realm forPrimaryKey:fileId];
+    
+    if (file)
+    {
+        [realm transactionWithBlock:^{
+            
+            [realm deleteObject:file];
+        }];
+    }
 }
 
 @end

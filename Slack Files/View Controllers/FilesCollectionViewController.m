@@ -58,7 +58,7 @@
     self.sortedFiles = [self.mediaFilteredFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
 
     [self.collectionView reloadData];
-//    [self subscribeToCollectionNotifications];
+    [self subscribeToCollectionNotifications];
 
     self.filterName = @"All Files";
     [self updateWindowTitle];
@@ -307,7 +307,10 @@
 
 - (void)didFetchMoreFiles
 {
-    [self loadFilesData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self loadFilesData];
+    });
 }
 
 #pragma mark - <ChannelFilterDelegate>
@@ -328,8 +331,13 @@
         self.mediaFilteredFiles = self.baseFiles;
     }
 
+    [self.filesNotificationToken stop];
+    self.filesNotificationToken = nil;
+    
     self.sortedFiles = [self.mediaFilteredFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
-
+    
+    [self subscribeToCollectionNotifications];
+    
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
 
