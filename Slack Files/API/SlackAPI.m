@@ -57,9 +57,12 @@ const struct SlackEndpoints SlackEndpoints =
 
     if (self)
     {
-        self.teamId = team.teamId;
-        self.apiToken = team.apiToken;
-        
+        if (team)
+        {
+            self.teamId = team.teamId;
+            self.apiToken = team.apiToken;
+        }
+
         self.pendingTasks = [NSMutableArray array];
     }
 

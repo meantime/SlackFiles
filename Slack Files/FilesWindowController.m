@@ -273,6 +273,8 @@ NS_ENUM(NSUInteger, FetchState)
 
             [self.api openRealtimeSocket];
 
+            [self reportRealtimeOpen];
+
             return;
         }
     }
@@ -315,8 +317,6 @@ NS_ENUM(NSUInteger, FetchState)
 
             number = [paging[@"page"] unsignedIntegerValue];
             self.highestPage = MAX(self.highestPage, number);
-
-            number = [paging[@"total"] unsignedIntegerValue];
 
             self.phasePageNum = self.phasePageNum + 1;
             [self updateProgressInfo];
@@ -477,6 +477,17 @@ NS_ENUM(NSUInteger, FetchState)
         if (self.syncUIDelegate)
         {
             [self.syncUIDelegate didFetchMoreFiles];
+        }
+    });
+}
+
+- (void)reportRealtimeOpen
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        if (self.syncUIDelegate)
+        {
+            [self.syncUIDelegate didStartRealtimeSession];
         }
     });
 }

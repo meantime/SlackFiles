@@ -23,6 +23,7 @@
 @property (nullable)    RLMNotificationToken    *filesNotificationToken;
 @property (nullable)    NSString                *filterName;
 @property (nullable)    NSString                *mediaFilter;
+@property               BOOL                    hasRealtimeSession;
 
 @end
 
@@ -66,6 +67,11 @@
 
 - (void)subscribeToCollectionNotifications
 {
+    if (NO == self.hasRealtimeSession)
+    {
+        return;
+    }
+
     [self.filesNotificationToken stop];
 
     __weak typeof(self) weakSelf = self;
@@ -310,6 +316,15 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self loadFilesData];
+    });
+}
+
+- (void)didStartRealtimeSession
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        self.hasRealtimeSession = YES;
+        [self subscribeToCollectionNotifications];
     });
 }
 
