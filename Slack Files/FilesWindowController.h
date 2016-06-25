@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SyncUIDelegate <NSObject>
 
 - (void)didFetchMoreFiles;
+- (void)didStartRealtimeSession;
 
 @end
 

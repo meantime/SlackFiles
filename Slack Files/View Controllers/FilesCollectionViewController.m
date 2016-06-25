@@ -23,6 +23,7 @@
 @property (nullable)    RLMNotificationToken    *filesNotificationToken;
 @property (nullable)    NSString                *filterName;
 @property (nullable)    NSString                *mediaFilter;
+@property               BOOL                    hasRealtimeSession;
 
 @end
 
@@ -58,7 +59,7 @@
     self.sortedFiles = [self.mediaFilteredFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
 
     [self.collectionView reloadData];
-//    [self subscribeToCollectionNotifications];
+    [self subscribeToCollectionNotifications];
 
     self.filterName = @"All Files";
     [self updateWindowTitle];
@@ -66,6 +67,11 @@
 
 - (void)subscribeToCollectionNotifications
 {
+    if (NO == self.hasRealtimeSession)
+    {
+        return;
+    }
+
     [self.filesNotificationToken stop];
 
     __weak typeof(self) weakSelf = self;
@@ -307,7 +313,19 @@
 
 - (void)didFetchMoreFiles
 {
-    [self loadFilesData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self loadFilesData];
+    });
+}
+
+- (void)didStartRealtimeSession
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        self.hasRealtimeSession = YES;
+        [self subscribeToCollectionNotifications];
+    });
 }
 
 #pragma mark - <ChannelFilterDelegate>
@@ -328,8 +346,13 @@
         self.mediaFilteredFiles = self.baseFiles;
     }
 
+    [self.filesNotificationToken stop];
+    self.filesNotificationToken = nil;
+    
     self.sortedFiles = [self.mediaFilteredFiles sortedResultsUsingProperty:@"timestamp" ascending:NO];
-
+    
+    [self subscribeToCollectionNotifications];
+    
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
 

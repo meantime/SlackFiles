@@ -7,6 +7,10 @@
 //
 
 #import "SlackAPI.h"
+
+@import SocketRocket;
+
+#import "RealtimeDelegate.h"
 #import "Team.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,6 +25,8 @@ const struct SlackEndpoints SlackEndpoints =
     .imList             = @"im.list",
     .mpimList           = @"mpim.list",
     .oauthAccess        = @"oauth.access",
+    .rtmLeanStart       = @"rtm.leanStart",
+    .rtmStart           = @"rtm.start",
     .teamInfo           = @"team.info",
     .usersInfo          = @"users.info",
     .usersList          = @"users.list"
@@ -31,6 +37,10 @@ const struct SlackEndpoints SlackEndpoints =
 @property (nullable, strong)    NSURLSession            *networkSession;
 @property (nullable, strong)    NSURLSessionDataTask    *activeTask;
 @property (nonnull, strong)     NSMutableArray          *pendingTasks;
+@property (copy)                NSString                *teamId;
+@property (copy)                NSString                *apiToken;
+@property (nullable, strong)    SRWebSocket             *websocket;
+@property (nullable, strong)    RealtimeDelegate        *realtimeDelegate;
 
 @end
 
@@ -47,16 +57,26 @@ const struct SlackEndpoints SlackEndpoints =
 
     if (self)
     {
-        self.team = team;
+        if (team)
+        {
+            self.teamId = team.teamId;
+            self.apiToken = team.apiToken;
+        }
+
         self.pendingTasks = [NSMutableArray array];
     }
 
     return self;
 }
 
+- (void)dealloc
+{
+    [self closeRealtimeSocket];
+}
+
 - (NSURLRequest *)requestForEndpoint:(NSString *)endpoint arguments:(nullable NSDictionary *)args
 {
-    if (IsStringWithContents(self.team.apiToken))
+    if (IsStringWithContents(self.apiToken))
     {
         NSMutableDictionary  *a = [NSMutableDictionary dictionary];
 
@@ -65,7 +85,7 @@ const struct SlackEndpoints SlackEndpoints =
             [a addEntriesFromDictionary:args];
         }
 
-        a[@"token"] = self.team.apiToken;
+        a[@"token"] = self.apiToken;
 
         args = [NSDictionary dictionaryWithDictionary:a];
     }
@@ -168,6 +188,47 @@ const struct SlackEndpoints SlackEndpoints =
     networkConfig.HTTPShouldUsePipelining = YES;
 
     self.networkSession = [NSURLSession sessionWithConfiguration:networkConfig];
+}
+
+#pragma mark - Realtime Support
+
+- (void)openRealtimeSocket
+{
+    if (self.websocket)
+    {
+        return;
+    }
+
+    NSDictionary    *args = @{ @"features"              : @"0",
+                               @"include_full_users"    : @"0",
+                               @"no_subteams"           : @"1",
+                               @"only_relevant_ims"     : @"1",
+                               @"eac_cache_ts"          : @"0",
+                               @"canonical_avatars"     : @"0",
+                               @"name_tagging"          : @"0" };
+
+    [self callEndpoint:SlackEndpoints.rtmLeanStart withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        if ([result[@"ok"] boolValue])
+        {
+            NSURL           *url = [NSURL URLWithString:result[@"url"]];
+            NSURLRequest    *request = [NSURLRequest requestWithURL:url];
+
+            self.websocket = [[SRWebSocket alloc] initWithURLRequest:request];
+            self.realtimeDelegate = [[RealtimeDelegate alloc] initWithTeamId:self.teamId];
+            [self.realtimeDelegate setAPI:self];
+            self.websocket.delegate = self.realtimeDelegate;
+
+            [self.websocket open];
+        }
+    }];
+}
+
+- (void)closeRealtimeSocket
+{
+    [self.websocket close];
+    self.websocket = nil;
+    self.realtimeDelegate = nil;
 }
 
 @end
