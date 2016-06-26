@@ -13,5 +13,6 @@
 @interface FilesCollectionViewItem : NSCollectionViewItem
 
 - (void)configureWithFile:(File *)file;
+- (NSImage *)dragImage;
 
 @end

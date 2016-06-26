@@ -57,6 +57,7 @@
 		83BB95271D1C81DA00F1539F /* ModelListProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BB95261D1C81DA00F1539F /* ModelListProcessor.m */; };
 		83DD493E1CFFFD3C00622724 /* AuthWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DD493C1CFFFD3C00622724 /* AuthWindowController.m */; };
 		83DD493F1CFFFD3C00622724 /* AuthWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */; };
+		83F789561D1F417E001692D6 /* FilePboardItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F789551D1F417E001692D6 /* FilePboardItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -103,6 +104,7 @@
 		8337E71D1D06B8B600051C17 /* ImageWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageWindowController.xib; sourceTree = "<group>"; };
 		834359741D0386D200F309B9 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		834359751D0386D200F309B9 /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
+		834F8F8E1D1F39F400741204 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		835ED2171D0E420400D91796 /* Email Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Icon.png"; sourceTree = "<group>"; };
 		835ED2191D0E443A00D91796 /* Post Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Post Icon.png"; sourceTree = "<group>"; };
 		837E36101D04DBB500483B61 /* FilesCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesCollectionViewController.h; sourceTree = "<group>"; };
@@ -156,6 +158,8 @@
 		83DD493B1CFFFD3C00622724 /* AuthWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthWindowController.h; sourceTree = "<group>"; };
 		83DD493C1CFFFD3C00622724 /* AuthWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthWindowController.m; sourceTree = "<group>"; };
 		83DD493D1CFFFD3C00622724 /* AuthWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthWindowController.xib; sourceTree = "<group>"; };
+		83F789541D1F417E001692D6 /* FilePboardItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePboardItem.h; sourceTree = "<group>"; };
+		83F789551D1F417E001692D6 /* FilePboardItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePboardItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,6 +343,8 @@
 				833620FF1D0CB8F700589089 /* Channel.m */,
 				834359741D0386D200F309B9 /* File.h */,
 				834359751D0386D200F309B9 /* File.m */,
+				83F789541D1F417E001692D6 /* FilePboardItem.h */,
+				83F789551D1F417E001692D6 /* FilePboardItem.m */,
 				833620F81D0CB53400589089 /* Group.h */,
 				833620F91D0CB53400589089 /* Group.m */,
 				833621011D0CBA4A00589089 /* IM.h */,
@@ -382,6 +388,7 @@
 		83B2621A1D05546500737310 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				834F8F8E1D1F39F400741204 /* CoreServices.framework */,
 				83B2622C1D056C2500737310 /* Quartz.framework */,
 				83B2621B1D05548D00737310 /* AVFoundation.framework */,
 				83B262181D0552B200737310 /* AVKit.framework */,
@@ -501,6 +508,7 @@
 				83B4B31F1D0AC0C400EC9912 /* HTMLWindowController.m in Sources */,
 				838918B91D0E6C3400FCE97B /* PostsLayoutManager.m in Sources */,
 				83B262111D05432300737310 /* FileCollectionViewItemView.m in Sources */,
+				83F789561D1F417E001692D6 /* FilePboardItem.m in Sources */,
 				83A717D31D03681A00C4DE32 /* FilesWindowController.m in Sources */,
 				833621031D0CBA4A00589089 /* IM.m in Sources */,
 				833230FD1D02769A00933E7E /* Team.m in Sources */,
@@ -620,6 +628,7 @@
 				GCC_PREFIX_HEADER = "Slack Files/PrefixHeader.pch";
 				INFOPLIST_FILE = "Slack Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.desalvo.Slack-Files";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -643,6 +652,7 @@
 				GCC_PREFIX_HEADER = "Slack Files/PrefixHeader.pch";
 				INFOPLIST_FILE = "Slack Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.desalvo.Slack-Files";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

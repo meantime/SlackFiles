@@ -17,6 +17,7 @@ extern const struct SlackEndpoints
     NSString    __unsafe_unretained *channelsList;
     NSString    __unsafe_unretained *filesInfo;
     NSString    __unsafe_unretained *filesList;
+    NSString    __unsafe_unretained *filesShare;
     NSString    __unsafe_unretained *groupsInfo;
     NSString    __unsafe_unretained *groupsList;
     NSString    __unsafe_unretained *imList;
@@ -33,7 +34,7 @@ extern const struct SlackEndpoints
 
 @interface SlackAPI : NSObject
 
-- (instancetype)initWithTeam:(nullable Team *)team;
+- (instancetype)initWithTeam:(nullable Team *)team NS_DESIGNATED_INITIALIZER;
 
 - (NSURLRequest *)requestForEndpoint:(NSString *)endpoint arguments:(nullable NSDictionary *)args;
 - (void)callEndpoint:(NSString *)endpoint withArguments:(nullable NSDictionary *)args completion:(APICompletionBlock)completion;

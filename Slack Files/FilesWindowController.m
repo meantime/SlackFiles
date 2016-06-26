@@ -39,7 +39,7 @@ NS_ENUM(NSUInteger, FetchState)
 @interface FilesWindowController () <NSWindowDelegate>
 
 @property (readwrite)               Team                *team;
-@property                           SlackAPI            *api;
+@property (readwrite)               SlackAPI            *api;
 @property (nonatomic, strong)       ModelListProcessor  *listProcessor;
 
 @property                           NSUInteger          highestPage;

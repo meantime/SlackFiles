@@ -116,4 +116,9 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
     self.networkSession = [NSURLSession sessionWithConfiguration:gNetworkConfiguration];
 }
 
+- (NSImage *)dragImage
+{
+    return self.iconView.image;
+}
+
 @end

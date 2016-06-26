@@ -20,6 +20,7 @@ const struct SlackEndpoints SlackEndpoints =
     .channelsList       = @"channels.list",
     .filesInfo          = @"files.info",
     .filesList          = @"files.list",
+    .filesShare         = @"files.share",
     .groupsInfo         = @"groups.info",
     .groupsList         = @"groups.list",
     .imList             = @"im.list",

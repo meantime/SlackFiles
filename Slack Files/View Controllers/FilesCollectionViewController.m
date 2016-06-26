@@ -12,18 +12,22 @@
 
 #import "File.h"
 #import "FilesCollectionViewItem.h"
+#import "FilePboardItem.h"
+#import "FilesWindowController.h"
+#import "SlackAPI.h"
 
 @interface FilesCollectionViewController () <NSCollectionViewDelegate, NSCollectionViewDataSource>
 
-@property               Team                    *team;
+@property                   Team                    *team;
 
-@property (nullable)    RLMResults              *baseFiles;
-@property (nullable)    RLMResults              *mediaFilteredFiles;
-@property (nullable)    RLMResults              *sortedFiles;
-@property (nullable)    RLMNotificationToken    *filesNotificationToken;
-@property (nullable)    NSString                *filterName;
-@property (nullable)    NSString                *mediaFilter;
-@property               BOOL                    hasRealtimeSession;
+@property (nullable)        RLMResults              *baseFiles;
+@property (nullable)        RLMResults              *mediaFilteredFiles;
+@property (nullable)        RLMResults              *sortedFiles;
+@property (nullable)        RLMNotificationToken    *filesNotificationToken;
+@property (nullable, copy)  NSString                *filterName;
+@property (nullable, copy)  NSString                *mediaFilter;
+@property (nullable, copy)  NSString                *sharingChannel;
+@property                   BOOL                    hasRealtimeSession;
 
 @end
 
@@ -265,6 +269,110 @@
     //  be horrible. Do not ever do anything here.
 }
 
+- (void)copy:(id)sender
+{
+    NSSet<NSIndexPath *>    *selections = [self.collectionView selectionIndexPaths];
+
+    if (0 == selections.count)
+    {
+        NSBeep();
+        return;
+    }
+
+    NSCollectionViewItem    *item = [self.collectionView itemAtIndexPath:[selections anyObject]];
+    File                    *file = item.representedObject;
+    NSDictionary            *metadata = [NSJSONSerialization JSONObjectWithData:file.jsonBlob options:0 error:nil];
+    NSMutableArray          *objects = [NSMutableArray array];
+    FilePboardItem          *fileItem = [[FilePboardItem alloc] init];
+
+    fileItem.teamId = self.team.teamId;
+    fileItem.fileId = metadata[@"id"];
+
+    [objects addObject:fileItem];
+
+    if (IsStringWithContents(metadata[@"permalink_public"]))
+    {
+        NSURL   *url = [NSURL URLWithString:metadata[@"permalink_public"]];
+
+        [objects addObject:url];
+    }
+
+    if (objects.count)
+    {
+        NSPasteboard    *pasteboard = [NSPasteboard generalPasteboard];
+
+        [pasteboard clearContents];
+        [pasteboard writeObjects:objects];
+    }
+}
+
+- (void)paste:(id)sender
+{
+    if (nil == self.sharingChannel)
+    {
+        return;
+    }
+
+    NSPasteboard    *pasteboard = [NSPasteboard generalPasteboard];
+
+    if (NO == [pasteboard canReadObjectForClasses:@[ [FilePboardItem class] ] options:nil])
+    {
+        return;
+    }
+
+    NSArray         *items = [pasteboard readObjectsForClasses:@[ [FilePboardItem class] ] options:nil];
+    FilePboardItem  *fileItem = items.firstObject;
+
+    if (NO == [fileItem.teamId isEqualToString:self.team.teamId])
+    {
+        NSAlert *alert = [NSAlert new];
+
+        alert.messageText = @"Sharing Error";
+        alert.informativeText = @"You may not share files across teams.";
+
+        [alert runModal];
+
+        return;
+    }
+
+    NSDictionary            *args = @{ @"file" : fileItem.fileId, @"channel" : self.sharingChannel };
+    FilesWindowController   *w = (FilesWindowController *) self.view.window.windowController;
+
+    [w.api callEndpoint:SlackEndpoints.filesShare withArguments:args completion:^(NSDictionary * _Nullable result, NSError * _Nullable error) {
+
+        if ([result[@"ok"] boolValue])
+        {
+            return;
+        }
+
+        NSString    *reason = result[@"error"];
+        NSString    *title = @"Sharing Error";
+        NSString    *details;
+
+        if ([reason isEqualToString:@"file_deleted"])
+        {
+            details = @"The file has been deleted and can no longer be shared.";
+        }
+        else if ([reason isEqualToString:@"file_not_found"])
+        {
+            details = @"You do not have permission to share this file.";
+        }
+        else
+        {
+            details = reason;
+        }
+
+        NSAlert *alert = [NSAlert new];
+
+        alert.messageText = title;
+        alert.informativeText = details;
+
+        [alert runModal];
+
+        return;
+    }];
+}
+
 - (void)doCommandBySelector:(SEL)aSelector
 {
     if (NO == [self respondsToSelector:aSelector])
@@ -366,6 +474,7 @@
     RLMResults  *list = [File objectsWhere:@"team = %@", self.team];
 
     self.filterName = @"All Files";
+    self.sharingChannel = nil;
     [self resetWithFileList:list];
 }
 
@@ -381,6 +490,8 @@
     RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY channels = %@", self.team, channel];
 
     self.filterName = channel.name;
+    self.sharingChannel = channel.channelId;
+
     [self resetWithFileList:list];
 }
 
@@ -389,6 +500,8 @@
     RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY groups = %@", self.team, group];
 
     self.filterName = group.name;
+    self.sharingChannel = group.groupId;
+
     [self resetWithFileList:list];
 }
 
@@ -397,6 +510,8 @@
     RLMResults  *list = [File objectsWhere:@"team = %@ AND ANY ims = %@", self.team, im];
 
     self.filterName = [NSString stringWithFormat:@"%@ DM", im.realName];
+    self.sharingChannel = im.imId;
+
     [self resetWithFileList:list];
 }
 
@@ -405,6 +520,8 @@
     RLMResults  *list = [File objectsWhere:@"team = %@ AND creator = %@", self.team, user];
 
     self.filterName = user.realName;
+    self.sharingChannel = nil;
+
     [self resetWithFileList:list];
 }
 

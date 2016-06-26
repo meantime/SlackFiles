@@ -8,6 +8,7 @@
 
 @import Cocoa;
 
+@class SlackAPI;
 @class Team;
 @protocol SyncUIDelegate;
 
@@ -15,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FilesWindowController : NSWindowController
 
-@property (readonly)    Team    *team;
+@property (readonly)    SlackAPI    *api;
+@property (readonly)    Team        *team;
 
 + (instancetype)windowControllerForTeam:(Team *)team;
 
