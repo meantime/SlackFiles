@@ -31,6 +31,8 @@
 @property   RLMArray<Group *><Group>        *groups;
 @property   RLMArray<IM *><IM>              *ims;
 
++ (NSString *)notificationKeyForFileWithId:(NSString *)fileId;
+
 //  Some files have a 'timestamp' field of zero. This corrects them to mirror the 'created' date
 + (void)fixBadTimestamps;
 

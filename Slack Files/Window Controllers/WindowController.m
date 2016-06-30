@@ -35,12 +35,26 @@
     return result;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 
     self.window.title = self.file.title;
     self.window.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileContentsDidChange:)
+                                                 name:[File notificationKeyForFileWithId:self.file.fileId]
+                                               object:nil];
+}
+
+- (void)fileContentsDidChange:(NSNotification *)note
+{
+    self.window.title = self.file.title;
 }
 
 - (void)loadContentWithCompletion:(void (^)(NSData * __nullable data, NSURLResponse * __nullable response, NSError * __nullable error))completionHandler

@@ -68,10 +68,25 @@
         NSDictionary    *message = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSString        *type = message[@"type"];
 
-        if (([@"file_created" isEqualToString:type])
-        ||  ([@"file_change" isEqualToString:type])
-        ||  ([@"file_shared" isEqualToString:type])
-        ||  ([@"file_unshared" isEqualToString:type]))
+        if ([@"file_created" isEqualToString:type])
+        {
+            [self processCreateOrUpdateFileMessage:message[@"file"]];
+        }
+        else if ([@"file_change" isEqualToString:type])
+        {
+            [self processCreateOrUpdateFileMessage:message[@"file"]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:[File notificationKeyForFileWithId:message[@"file"][@"id"]]
+                                                                    object:nil];
+            });
+        }
+        else if ([@"file_shared" isEqualToString:type])
+        {
+            [self processCreateOrUpdateFileMessage:message[@"file"]];
+        }
+        else if ([@"file_unshared" isEqualToString:type])
         {
             [self processCreateOrUpdateFileMessage:message[@"file"]];
         }

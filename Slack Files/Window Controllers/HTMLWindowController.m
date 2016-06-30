@@ -37,7 +37,7 @@
 
     self.webview = [[WKWebView alloc] initWithFrame:content.frame configuration:config];
     self.webview.allowsBackForwardNavigationGestures = NO;
-    self.webview.autoresizingMask =    NSViewMinXMargin | NSViewWidthSizable | NSViewMaxXMargin | NSViewMinYMargin | NSViewHeightSizable | NSViewMaxYMargin;
+    self.webview.autoresizingMask = NSViewMinXMargin | NSViewWidthSizable | NSViewMaxXMargin | NSViewMinYMargin | NSViewHeightSizable | NSViewMaxYMargin;
 
     [content addSubview:self.webview];
 
@@ -53,7 +53,6 @@
             [self.webview loadData:data MIMEType:self.file.mimeType characterEncodingName:@"UTF-8" baseURL:[NSURL URLWithString:@""]];
         }
     }];
-
 }
 
 @end

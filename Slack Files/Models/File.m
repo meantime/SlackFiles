@@ -10,6 +10,8 @@
 
 @import Cocoa;
 
+static NSString * const FileContentsDidChangeNotification = @"org.desalvo.SlackFiles.FileContentsDidChangeNotification";
+
 static NSCache  *gMIMETypeIconCache;
 static NSCache  *gExtensionIconCache;
 static NSCache  *gPrettyTypeIconCache;
@@ -132,6 +134,11 @@ static NSCache  *gPrettyTypeIconCache;
 #undef TryIconNamed
 
     return @"";
+}
+
++ (NSString *)notificationKeyForFileWithId:(NSString *)fileId
+{
+    return [NSString stringWithFormat:@"%@:%@", FileContentsDidChangeNotification, fileId];
 }
 
 + (void)fixBadTimestamps

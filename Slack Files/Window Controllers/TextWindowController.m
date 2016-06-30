@@ -31,6 +31,13 @@
     [self loadTextContent];
 }
 
+- (void)fileContentsDidChange:(NSNotification *)note
+{
+    [super fileContentsDidChange:note];
+
+    [self loadTextContent];
+}
+
 - (void)loadTextContent
 {
     [self loadContentWithCompletion:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -40,6 +47,12 @@
             if ([@"Post" isEqualToString:self.file.prettyType])
             {
                 NSDictionary        *post = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                if (nil == post)
+                {
+                    return;
+                }
+                
                 PostsProcessor      *processor = [PostsProcessor new];
                 NSAttributedString  *text = [processor attributedStringFromPost:post];
                 PostsLayoutManager  *layoutManager = [PostsLayoutManager new];
@@ -48,7 +61,7 @@
 
                 [self.textView.textContainer setLineFragmentPadding:0.0];
                 [self.textView.textContainer replaceLayoutManager:layoutManager];
-                [self.textView.textStorage appendAttributedString:text];
+                [self.textView.textStorage setAttributedString:text];
             }
             else
             {

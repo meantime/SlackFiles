@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem;
 
+- (void)fileContentsDidChange:(NSNotification *)note;
+
 @end
 
 NS_ASSUME_NONNULL_END
