@@ -185,12 +185,11 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
 
 - (IBAction)addNewTeam:(id)sender
 {
-    if (self.auth)
+    if (nil == self.auth)
     {
-        return;
+        self.auth = [SlackAuth new];
     }
 
-    self.auth = [SlackAuth new];
     [self.auth run];
 }
 
@@ -277,8 +276,6 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     NSString            *mimeType = file.mimeType;
     NSWindowController  *controller = nil;
 
-    NSLog(@"Request to open file of type: %@", mimeType);
-
     if ([mimeType hasPrefix:@"video/"])
     {
         controller = [VideoWindowController windowControllerForFile:file];
@@ -307,6 +304,10 @@ NSString * const OpenFileWindowNotification = @"OpenFileWindowNotification";
     else if ([mimeType isEqualToString:@"application/pdf"])
     {
         controller = [PDFWindowController windowControllerForFile:file];
+    }
+    else
+    {
+        NSLog(@"Request to open file of type: %@", mimeType);
     }
 
     if (controller)

@@ -94,6 +94,10 @@
         {
             [self processDeleteFileMessage:message[@"file_id"]];
         }
+        else if ([@"presence_change" isEqualToString:type])
+        {
+            NSLog(@"presence_change: %@:%@", message[@"user"], message[@"presence"]);
+        }
         else
         {
             NSLog(@"Ignoring message of type: %@", type);
