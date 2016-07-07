@@ -13,6 +13,7 @@
 #import "File.h"
 #import "ModelListProcessor.h"
 #import "SlackAPI.h"
+#import "User.h"
 
 @interface RealtimeDelegate ()
 
@@ -96,7 +97,9 @@
         }
         else if ([@"presence_change" isEqualToString:type])
         {
-            NSLog(@"presence_change: %@:%@", message[@"user"], message[@"presence"]);
+            User    *user = [User objectForPrimaryKey:message[@"user"]];
+            
+            NSLog(@"presence_change: %@:%@", user.realName, message[@"presence"]);
         }
         else
         {
