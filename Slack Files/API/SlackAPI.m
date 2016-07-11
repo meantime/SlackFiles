@@ -124,7 +124,7 @@ const struct SlackEndpoints SlackEndpoints =
 
                 NSDictionary    *result = nil;
 
-                if (data && data.length > 0)
+                if (data.length > 0)
                 {
                     result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 }
