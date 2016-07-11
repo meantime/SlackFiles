@@ -34,4 +34,4 @@ it should look something like this:
 #endif
 ```
 
-You can register as a Slack developer and get and get an app id at https://api.slack.com/register.
+You can register as a Slack developer and get an app id at https://api.slack.com/register.
