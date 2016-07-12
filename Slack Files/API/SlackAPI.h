@@ -8,6 +8,8 @@
 
 @import Cocoa;
 
+@protocol SlackRealtimeMessageDelegate;
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^APICompletionBlock)(NSDictionary * _Nullable result, NSError * _Nullable error);
@@ -33,6 +35,8 @@ extern const struct SlackEndpoints
 @class Team;
 
 @interface SlackAPI : NSObject
+
+@property (nonatomic, nullable, weak)   id<SlackRealtimeMessageDelegate>    realtimeMessageDelegate;
 
 - (instancetype)initWithTeam:(nullable Team *)team NS_DESIGNATED_INITIALIZER;
 

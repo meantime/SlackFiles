@@ -107,6 +107,7 @@
 		834F8F8E1D1F39F400741204 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		835ED2171D0E420400D91796 /* Email Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Icon.png"; sourceTree = "<group>"; };
 		835ED2191D0E443A00D91796 /* Post Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Post Icon.png"; sourceTree = "<group>"; };
+		837C3C041D34380800030B6C /* SlackRealtimeMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlackRealtimeMessageDelegate.h; sourceTree = "<group>"; };
 		837E36101D04DBB500483B61 /* FilesCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesCollectionViewController.h; sourceTree = "<group>"; };
 		837E36111D04DBB500483B61 /* FilesCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesCollectionViewController.m; sourceTree = "<group>"; };
 		837E36121D04DBB500483B61 /* FilesCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesCollectionViewController.xib; sourceTree = "<group>"; };
@@ -183,6 +184,7 @@
 			children = (
 				833230F81D02690000933E7E /* SlackAPI.h */,
 				833230F91D02690000933E7E /* SlackAPI.m */,
+				837C3C041D34380800030B6C /* SlackRealtimeMessageDelegate.h */,
 			);
 			path = API;
 			sourceTree = "<group>";

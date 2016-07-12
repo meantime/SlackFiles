@@ -11,6 +11,7 @@
 @import SocketRocket;
 
 #import "RealtimeDelegate.h"
+#import "SlackRealtimeMessageDelegate.h"
 #import "Team.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -33,7 +34,7 @@ const struct SlackEndpoints SlackEndpoints =
     .usersList          = @"users.list"
 };
 
-@interface SlackAPI ()
+@interface SlackAPI () <SRWebSocketDelegate>
 
 @property (nullable, strong)    NSURLSession            *networkSession;
 @property (nullable, strong)    NSURLSessionDataTask    *activeTask;
@@ -42,6 +43,8 @@ const struct SlackEndpoints SlackEndpoints =
 @property (copy)                NSString                *apiToken;
 @property (nullable, strong)    SRWebSocket             *websocket;
 @property (nullable, strong)    RealtimeDelegate        *realtimeDelegate;
+
+@property (nullable, nonatomic, strong) dispatch_queue_t    messageProcessingQueue;
 
 @end
 
@@ -230,6 +233,104 @@ const struct SlackEndpoints SlackEndpoints =
     [self.websocket close];
     self.websocket = nil;
     self.realtimeDelegate = nil;
+}
+
+#pragma mark - <SRWebSocketDelegate>
+
+- (void)closeProcessingQueue
+{
+    self.messageProcessingQueue = 0;
+}
+
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket
+{
+    NSLog(@"webSocketDidOpen for team %@", self.teamId);
+    
+    dispatch_queue_attr_t   attributes = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0);
+    NSString                *queueName = [NSString stringWithFormat:@"%@ realtime queue", self.teamId];
+    
+    self.messageProcessingQueue = dispatch_queue_create(queueName.UTF8String, attributes);
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
+{
+    NSLog(@"webSocketDidFailWithError for team %@, %@", self.teamId, error);
+    
+    [self closeProcessingQueue];
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(nullable NSString *)reason wasClean:(BOOL)wasClean
+{
+    NSLog(@"webSocketDidCloseWithCode for team %@, code %ld, reason %@, was clean %d", self.teamId, code, reason, wasClean);
+    [self closeProcessingQueue];
+}
+
+- (BOOL)webSocketShouldConvertTextFrameToString:(SRWebSocket *)webSocket
+{
+    //  Have to do this to force everything to be piped through didReceiveMessageWithData
+    return NO;
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithData:(NSData *)data
+{
+    if (nil == self.realtimeDelegate)
+    {
+        return;
+    }
+    
+    dispatch_async(self.messageProcessingQueue, ^{
+        
+        NSDictionary    *message = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSString        *type = message[@"type"];
+        
+        if ([@"hello" isEqualToString:type])
+        {
+            if ([self.realtimeMessageDelegate respondsToSelector:@selector(slackAPIDidMakeRealtimeConnection:)])
+            {
+                [self.realtimeMessageDelegate slackAPIDidMakeRealtimeConnection:self];
+            }
+        }
+        else if ([@"file_created" isEqualToString:type])
+        {
+
+        }
+        else if ([@"file_shared" isEqualToString:type])
+        {
+            
+        }
+        else if ([@"file_unshared" isEqualToString:type])
+        {
+            
+        }
+        else if ([@"file_change" isEqualToString:type])
+        {
+
+        }
+        else if ([@"file_deleted" isEqualToString:type])
+        {
+
+        }
+        else if ([@"presence_change" isEqualToString:type])
+        {
+
+        }
+        else
+        {
+            NSLog(@"Ignoring message of type: %@", type);
+        }
+    });
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(nullable NSData *)pongData
+{
+    if (nil == pongData)
+    {
+        return;
+    }
+    
+    NSDictionary    *pong = [NSJSONSerialization JSONObjectWithData:pongData options:0 error:nil];
+    
+    NSLog(@"webSocket didReceivePong: %@", pong);
 }
 
 @end
