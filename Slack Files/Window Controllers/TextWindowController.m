@@ -46,7 +46,7 @@
         {
             if ([@"Post" isEqualToString:self.file.prettyType])
             {
-                NSDictionary        *post = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSDictionary    *post = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 if (nil == post)
                 {
