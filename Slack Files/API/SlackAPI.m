@@ -271,6 +271,18 @@ const struct SlackEndpoints SlackEndpoints =
     return NO;
 }
 
+- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(nullable NSData *)pongData
+{
+    if (nil == pongData)
+    {
+        return;
+    }
+    
+    NSDictionary    *pong = [NSJSONSerialization JSONObjectWithData:pongData options:0 error:nil];
+    
+    NSLog(@"webSocket didReceivePong: %@", pong);
+}
+
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithData:(NSData *)data
 {
     if (nil == self.realtimeDelegate)
@@ -292,45 +304,49 @@ const struct SlackEndpoints SlackEndpoints =
         }
         else if ([@"file_created" isEqualToString:type])
         {
-
+            if ([self.realtimeMessageDelegate respondsToSelector:@selector(slackAPI:didCreateFileWithId:)])
+            {
+                [self.realtimeMessageDelegate slackAPI:self
+                                   didCreateFileWithId:[message valueForKeyPath:@"file.id"]];
+            }
         }
         else if ([@"file_shared" isEqualToString:type])
         {
-            
+            if ([self.realtimeMessageDelegate respondsToSelector:@selector(slackAPI:didShareFileWithId:)])
+            {
+                [self.realtimeMessageDelegate slackAPI:self
+                                    didShareFileWithId:[message valueForKeyPath:@"file.id"]];
+            }
         }
         else if ([@"file_unshared" isEqualToString:type])
         {
-            
+            if ([self.realtimeMessageDelegate respondsToSelector:@selector(slackAPI:didUnshareFileWithId:)])
+            {
+                [self.realtimeMessageDelegate slackAPI:self
+                                  didUnshareFileWithId:[message valueForKeyPath:@"file.id"]];
+            }
         }
         else if ([@"file_change" isEqualToString:type])
         {
-
+            if ([self.realtimeMessageDelegate respondsToSelector:@selector(slackAPI:didChangeFileWithId:)])
+            {
+                [self.realtimeMessageDelegate slackAPI:self
+                                   didChangeFileWithId:[message valueForKeyPath:@"file.id"]];
+            }
         }
         else if ([@"file_deleted" isEqualToString:type])
         {
-
-        }
-        else if ([@"presence_change" isEqualToString:type])
-        {
-
+            if ([self.realtimeMessageDelegate respondsToSelector:@selector(slackAPI:didDeleteFileWithId:)])
+            {
+                [self.realtimeMessageDelegate slackAPI:self
+                                   didDeleteFileWithId:message[@"file_id"]];
+            }
         }
         else
         {
             NSLog(@"Ignoring message of type: %@", type);
         }
     });
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(nullable NSData *)pongData
-{
-    if (nil == pongData)
-    {
-        return;
-    }
-    
-    NSDictionary    *pong = [NSJSONSerialization JSONObjectWithData:pongData options:0 error:nil];
-    
-    NSLog(@"webSocket didReceivePong: %@", pong);
 }
 
 @end
