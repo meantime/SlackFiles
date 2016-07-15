@@ -97,13 +97,13 @@
         }
         else if ([@"presence_change" isEqualToString:type])
         {
-            User    *user = [User objectForPrimaryKey:message[@"user"]];
-            
-            NSLog(@"presence_change: %@:%@", user.realName, message[@"presence"]);
+//            User    *user = [User objectForPrimaryKey:message[@"user"]];
+//            
+//            NSLog(@"presence_change: %@:%@", user.realName, message[@"presence"]);
         }
         else
         {
-            NSLog(@"Ignoring message of type: %@", type);
+//            NSLog(@"Ignoring message of type: %@", type);
         }
     });
 }
