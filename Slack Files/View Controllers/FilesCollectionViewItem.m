@@ -19,6 +19,7 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 @property   IBOutlet    NSImageView *iconView;
 @property   IBOutlet    NSTextField *titleView;
 @property   IBOutlet    NSTextField *dateView;
+@property   IBOutlet    NSTextField *sizeView;
 
 @property   NSURLSession            *networkSession;
 @property   NSURLSessionDataTask    *iconTask;
@@ -71,9 +72,11 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 
     self.iconView.image = [file filesystemIcon];
     self.titleView.stringValue = file.title;
-
+    self.view.toolTip = file.title;
+    
     self.dateView.stringValue = [gDateFormatter stringFromDate:file.timestamp];
-
+    self.sizeView.stringValue = [NSByteCountFormatter stringFromByteCount:file.filesize.unsignedIntegerValue countStyle:NSByteCountFormatterCountStyleFile];
+    
     if (IsStringWithContents(file.thumbnailURL))
     {
         NSURL   *iconURL = [NSURL URLWithString:file.thumbnailURL];
@@ -97,6 +100,8 @@ static NSURLSessionConfiguration    *gNetworkConfiguration;
 
 - (void)prepareForReuse
 {
+    self.view.toolTip = nil;
+    
     self.iconView.image = nil;
     
     [self.iconTask cancel];
