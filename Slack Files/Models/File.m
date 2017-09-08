@@ -113,7 +113,7 @@ static NSCache  *gPrettyTypeIconCache;
 
 + (NSDate *)dateFromResponse:(NSDictionary *)response withKey:(NSString *)key
 {
-    NSUInteger  number = [response[key] unsignedIntegerValue];
+    NSUInteger  number = (NSUInteger) [response[key] intValue];
 
     return [NSDate dateWithTimeIntervalSince1970:number];
 }
